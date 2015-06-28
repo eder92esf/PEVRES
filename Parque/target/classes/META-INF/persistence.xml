@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+
+	<persistence-unit name="VilaRica">
+	
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		
+		<class>br.com.vilarica.model.Contato</class>
+		<class>br.com.vilarica.model.Endereco</class>
+		<class>br.com.vilarica.model.Excursao</class>
+		<class>br.com.vilarica.model.ExcursaoEscolar</class>
+		<class>br.com.vilarica.model.Municipio</class>
+		<class>br.com.vilarica.model.Pesquisa</class>
+		<class>br.com.vilarica.model.VisitanteMaster</class>
+		<class>br.com.vilarica.model.Instituicao</class>
+		<class>br.com.vilarica.model.Acompanhante</class>
+		<class>br.com.vilarica.model.TipoAtividadeExcursao</class>
+		
+		<properties>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/vilarica" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="toor" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+		</properties>
+	</persistence-unit>
+
+</persistence>
