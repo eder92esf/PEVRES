@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -21,13 +23,43 @@ public class JPATest {
 	EntityManager manager;
 
 	public static void main(String[] args) {
-		//new JPATest().createTables();
+		// new JPATest().createTables();
 		// new JPATest().insertInit();
 		// new JPATest().multiInsert();
 		// new JPATest().updateInstituicao();
-		//new JPATest().search("", EstadoEnum.PR);
-		//new JPATest().findAll();
+		// new JPATest().search("", EstadoEnum.PR);
+		// new JPATest().findAll();
+		test();
 		System.exit(0);
+	}
+
+	@SuppressWarnings("deprecation")
+	public static void test() {
+		Date atual = new Date(115, 5, 30);
+		Date dataNascimento = new Date(97, 6, 1);
+		
+		System.out.println(atual);
+		System.out.println(dataNascimento);
+
+		int ano = atual.getYear() - dataNascimento.getYear();
+
+		if (ano > 18)
+			System.out.println("EH MAIOR DE IDADE");
+		else if (ano == 18) {
+			if (dataNascimento.getMonth() < atual.getMonth())
+				System.out.println("EH MAIOR DE IDADE");
+			else if (dataNascimento.getMonth() == atual.getMonth()) {
+				if (atual.getDay() >= dataNascimento.getDay()) {
+					System.out.println("EH MAIOR DE IDADE");
+				} else {
+					System.out.println("MENOR DE IDADE");
+				}
+			}else{
+				System.out.println("MENOR DE IDADE");
+			}
+		} else {
+			System.out.println("MENOR DE IDADE");
+		}
 	}
 
 	private void createTables() {
@@ -45,9 +77,8 @@ public class JPATest {
 		String sql = "SELECT i FROM Instituicao i JOIN i.municipio m "
 				+ "WHERE LOWER(i.nome) like LOWER(:nome) and m.estado = :estado ORDER BY i.nome";
 		instituicoes = manager.createQuery(sql)
-				.setParameter("nome", '%'+ instituicao + '%')
-				.setParameter("estado", estado)
-				.getResultList();
+				.setParameter("nome", '%' + instituicao + '%')
+				.setParameter("estado", estado).getResultList();
 
 		System.out.println("");
 
@@ -65,27 +96,9 @@ public class JPATest {
 
 		System.out.println(i);
 
-		Municipio antigo = i.getMunicipio();
-
-		for (Instituicao aux : antigo.getInstituicoes()) {
-			System.out.println("\nTamanho da lista de instituicoes "
-					+ antigo.getInstituicoes().size());
-			if (aux.getId().equals(i.getId())) {
-				antigo.getInstituicoes().remove(i);
-				manager.merge(antigo);
-				break;
-			}
-		}
-
-		Municipio novo = manager.find(Municipio.class, new Long(2));
-
-		System.out.println(novo);
-
-		i.setMunicipio(novo);
-		novo.getInstituicoes().add(i);
+		i.setNome("TESTE DE ATUALIZAÇÃO");
 
 		manager.merge(i);
-		manager.merge(novo);
 
 		t.commit();
 	}
@@ -138,11 +151,6 @@ public class JPATest {
 		manager.persist(e2);
 		manager.persist(i2);
 
-		m.getInstituicoes().add(i1);
-		m.getInstituicoes().add(i2);
-
-		manager.merge(m);
-
 		t.commit();
 	}
 
@@ -179,20 +187,14 @@ public class JPATest {
 		manager.persist(e);
 		manager.persist(i);
 
-		m.getInstituicoes().add(i);
-
-		manager.merge(m);
-
 		t.commit();
-
-		System.exit(0);
 	}
-	
-	private void findAll(){
+
+	private void findAll() {
 		Session s = JpaUtil.getEntityManager().unwrap(Session.class);
 		Criteria c = s.createCriteria(Instituicao.class);
 		c.addOrder(Order.asc("nome")).list();
-		
+
 	}
 
 }

@@ -13,8 +13,6 @@
 
 			<h1 style="margin-top: 20px;">Check-in Excursão</h1>
 
-			<p:messages id="msg-agd-excursao" />
-
 			<p:toolbar styleClass="space-top">
 				<p:toolbarGroup>
 					<p:button value="Novo" outcome="/excursoes/AgendarExcursao" />
@@ -27,18 +25,24 @@
 				</p:toolbarGroup>
 			</p:toolbar>
 
+			<p:messages id="msg-agd-excursao" closable="true" autoUpdate="false" />
+
 			<h:panelGrid columnClasses="rotulo, campo, rotulo, campo" columns="4"
 				styleClass="space-top">
 
 				<p:outputLabel value="Nome" for="nome" />
-				<p:inputText id="nome" size="60"
+				<p:inputText id="nome" size="60" maxlength="100"
 					value="#{agendaExcursaoBean.excursao.visitanteMaster.nome}" />
 
 				<p:outputLabel value="Data de Nascimento" for="data-nascimento" />
 				<p:calendar id="data-nascimento" pattern="dd - MM - yyyy"
 					mask="true" maxdate="#{agendaExcursaoBean.controller.dataAtual}"
-					value="#{agendaExcursaoBean.excursao.visitanteMaster.dataNascimento}">
+					value="#{agendaExcursaoBean.excursao.visitanteMaster.dataNascimento}"
+					required="true"
+					requiredMessage="Data de Nascimento - Deve ser informado.">
 					<f:convertDateTime pattern="dd - MM - yyyy" />
+					<p:ajax event="dateSelect"
+						listener="#{agendaExcursaoBean.onDateSelect}" update="atividades" />
 				</p:calendar>
 
 				<p:outputLabel value="Sexo" for="sexo" />
@@ -82,7 +86,7 @@
 					value="#{agendaExcursaoBean.excursao.visitanteMaster.endereco.bairro}" />
 
 				<p:outputLabel value="Número" for="numero" />
-				<p:inputText id="numero"
+				<p:inputText id="numero" maxlength="4"
 					value="#{agendaExcursaoBean.excursao.visitanteMaster.endereco.numero}" />
 
 				<p:outputLabel value="Meio de Transporte" for="meio-transporte" />
@@ -93,39 +97,103 @@
 						var="meio" itemValue="#{meio}" itemLabel="#{meio.meioTransporte}" />
 				</p:selectOneMenu>
 
-				<p:outputLabel value="Data da Visita" for="data-visita" />
-				<p:calendar id="data-visita" pages="1" pattern="dd - MM - yyyy"
-					mask="true" maxdate="#{agendaExcursaoBean.controller.dataAtual}"
-					mindate="#{agendaExcursaoBean.controller.dataAtual}"
-					value="#{agendaExcursaoBean.excursao.dataExcursao}" locale="pt_BR">
-					<f:convertDateTime pattern="dd - MM - yyyy" />
-				</p:calendar>
-
-				<p:outputLabel value="Horário" for="horario" />
-				<p:calendar id="horario" pattern="HH:mm a" timeOnly="true"
-					maxHour="16" maxMinute="55" minHour="8" minMinute="5"
-					value="#{agendaExcursaoBean.controller.horario}" locale="pt_BR" />
-
 				<p:outputLabel value="Atividades" for="atividades" />
-				<p:selectManyCheckbox id="atividades"
+				<p:selectManyCheckbox id="atividades" required="true"
+					requiredMessage="Atividades - Selecione uma atividade."
 					value="#{agendaExcursaoBean.controller.atividadesValue}">
-					<f:selectItems
-						value="#{agendaExcursaoBean.controller.tipoAtividades}"
-						var="atividade" itemValue="#{atividade}" itemLabel="#{atividade}" />
+					<f:selectItem itemLabel="Vídeo" itemValue="Vídeo" />
+					<f:selectItem itemLabel="Museu" itemValue="Museu" />
+					<f:selectItem itemLabel="Trilha do Lago" itemValue="Trilha do Lago"
+						itemDisabled="#{agendaExcursaoBean.controller.imputavel}" />
 				</p:selectManyCheckbox>
 
 			</h:panelGrid>
 
-			<p:button value="Adicionar" title="Adicionar Acompanhantes" />
+			<p:commandButton value="Adicionar" title="Adicionar Acompanhantes"
+				styleClass="space-top" onclick="showDialog('dlg-acompanhantes');" />
 
 			<p:dataTable id="dt-acompanhantes" widgetVar="wv-dt-acompanhantes"
 				emptyMessage="Nenhum acompanhante encontrado" paginator="true"
+				value="#{agendaExcursaoBean.excursao.acompanhantes}"
+				var="acompanhante"
 				paginatorAlwaysVisible="false" rows="10" paginatorPosition="bottom"
 				styleClass="space-top">
+					<p:column headerText="Nome">
+						<p:outputLabel value="#{acompanhante.nome}"/>
+					</p:column>
+					<p:column headerText="Sexo">
+						<p:outputLabel value="#{acompanhante.sexo.sexo}"/>
+					</p:column>
+					<p:column headerText="Escolaridade">
+						<p:outputLabel value="#{acompanhante.escolaridade.escolaridade}"/>
+					</p:column>
+					<p:column headerText="Data de Nascimento">
+						<p:outputLabel value="#{acompanhante.dataNascimento}">
+							<f:convertDateTime pattern="dd - MM - yyyy" locale="pt_BR"/>
+						</p:outputLabel>
+					</p:column>
+					<p:column headerText="Município">
+						<p:outputLabel value="#{acompanhante.municipio.nome}"/>
+					</p:column>
 			</p:dataTable>
-
 		</h:form>
+		
+		<h:form id="frm-add-acomp">
+			<p:dialog widgetVar="dlg-acompanhantes" modal="true"
+				closeOnEscape="true" resizable="false">
 
+				<h1>Adicionar Acompanhantes</h1>
+
+				<p:messages id="dlg-msg-add-acomp" autoUpdate="false" closable="true" />
+
+				<h:panelGrid columns="2" columnClasses="rotulo, campo">
+					<p:outputLabel value="Nome" for="a-nome" />
+					<p:inputText id="a-nome" maxlength="100" size="60"
+						value="#{agendaExcursaoBean.acompanhante.nome}" />
+
+					<p:outputLabel value="Sexo" for="a-sexo" />
+					<p:selectOneMenu id="a-sexo"
+						value="#{agendaExcursaoBean.acompanhante.sexo}">
+						<f:selectItems value="#{agendaExcursaoBean.controller.sexos}"
+							var="sexo" itemValue="#{sexo}" itemLabel="#{sexo.sexo}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Escolaridade" for="a-escolaridade" />
+					<p:selectOneMenu id="a-escolaridade"
+						value="#{agendaExcursaoBean.acompanhante.escolaridade}">
+						<f:selectItems
+							value="#{agendaExcursaoBean.controller.escolaridades}"
+							var="escolaridade" itemValue="#{escolaridade}"
+							itemLabel="#{escolaridade.escolaridade}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Data de Nascimento" for="a-nascimento" />
+					<p:calendar id="a-nascimento" pattern="dd - MM - yyyy" mask="true"
+						maxdate="#{agendaExcursaoBean.controller.dataAtual}" locale="pt_BR"
+						value="#{agendaExcursaoBean.acompanhante.dataNascimento}"
+						required="true"
+						requiredMessage="Data de Nascimento - Deve ser informado.">
+						<f:convertDateTime pattern="dd - MM - yyyy" />
+					</p:calendar>
+
+					<p:outputLabel value="Município" for="a-municipio" />
+					<p:autoComplete id="a-municipio" size="60" forceSelection="true"
+						value="#{agendaExcursaoBean.acompanhante.municipio}"
+						completeMethod="#{agendaExcursaoBean.filtrarMunicipio}"
+						emptyMessage="Nenhum Muncípio Encontrado." var="municipio"
+						itemLabel="#{municipio.nome}" itemValue="#{municipio}"
+						maxResults="7" />
+
+					<p:commandButton value="Salvar"
+						title="Adicionar Acompanhante a excursão"
+						update="@form"
+						action="#{agendaExcursaoBean.addAcompanhante}"
+						process="@form"
+						onclick="validate('dlg-acompanhantes', args);"/>
+
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 
 </ui:composition>

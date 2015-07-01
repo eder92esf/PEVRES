@@ -29,13 +29,14 @@ public class Excursao implements Serializable {
 	private Long id;
 	
 	@NotNull
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataExcursao;
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private MeioTransporteEnum MeioTransporte;
 
+	@NotNull
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<TipoAtividadeExcursao> atividades = new ArrayList<TipoAtividadeExcursao>();
 	
@@ -94,8 +95,8 @@ public class Excursao implements Serializable {
 	@Override
 	public String toString() {
 		return "Excursao [id=" + id + ", dataExcursao=" + dataExcursao
-				+ ", MeioTransporte=" + MeioTransporte + ", atividades="
-				+ atividades + ", visitanteMaster=" + visitanteMaster
-				+ ", acompanhantes=" + acompanhantes + "]";
+				+ ", MeioTransporte=" + MeioTransporte + ", \natividades="
+				+ atividades + ", \nvisitanteMaster=" + visitanteMaster
+				+ ", \nacompanhantes=" + acompanhantes + "]";
 	}
 }

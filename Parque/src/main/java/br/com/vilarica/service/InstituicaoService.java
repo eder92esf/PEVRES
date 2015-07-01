@@ -32,31 +32,12 @@ public class InstituicaoService implements Serializable {
 	@Transactional
 	public String save(Instituicao instituicao, Municipio oldMunicipio) {
 		try {
-			List<Instituicao> lista = instituicao.getMunicipio()
-					.getInstituicoes();
 			if (instituicao.getId() == null) {
 				this.manager.persist(instituicao.getContato());
 				this.manager.persist(instituicao.getEndereco());
 
 				this.manager.persist(instituicao);
-
-				lista.add(instituicao);
-				instituicao.getMunicipio().setInstituicoes(lista);
-				this.manager.merge(instituicao.getMunicipio());
 			} else {
-
-				if (oldMunicipio != null) {
-					for (Instituicao i : oldMunicipio.getInstituicoes()) {
-						if (i.getId().equals(instituicao.getId())) {
-							oldMunicipio.getInstituicoes().remove(instituicao);
-							this.manager.merge(oldMunicipio);
-							break;
-						}
-					}
-					lista.add(instituicao);
-					instituicao.getMunicipio().setInstituicoes(lista);
-					this.manager.merge(instituicao.getMunicipio());
-				}
 				this.manager.merge(instituicao);
 			}
 			instituicao = new Instituicao();
@@ -81,18 +62,10 @@ public class InstituicaoService implements Serializable {
 			estado = EstadoEnum.PR;
 		}
 		
-		System.out.println("\nNOME: " + nomeInstituicao + " ESTADO: " + estado.getUf());
-
 		instituicoes =  manager.createQuery(sql)
 				.setParameter("nome", '%'+ nomeInstituicao + '%')
 				.setParameter("estado", estado)
 				.getResultList();
-		
-		System.out.println("\nTAMANHO DA LISTA " + instituicoes.size());
-		
-		for (Instituicao instituicao : instituicoes) {
-			System.out.println("\n" + instituicao);
-		}
 	}
 
 	@SuppressWarnings("unchecked")

@@ -1,0 +1,65 @@
+<ui:composition template="/WEB-INF/template/LayoutDefault.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="municipio"
+			value="#{cadastroMunicipioBean.municipio}" />
+	</f:metadata>
+
+	<ui:define name="titulo">#{cadastroMunicipioBean.editando ? "Editar Município" : "Cadastrar Município"}</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frm-cad-mun">
+		
+		<h1 class="descricao">#{cadastroMunicipioBean.editando ? "Editar Município" : "Cadastrar Município"}</h1>
+		
+			<p:toolbar styleClass="space-top">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/municipio/CadastroMunicipio" />
+					<p:commandButton value="Salvar"
+						action="#{cadastroMunicipioBean.salvar}" process="@form"
+						update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisar" outcome="/municipio/PesquisaMunicipio"/>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg-dlg" autoUpdate="false" closable="true" />
+
+			<h:panelGrid columns="2" columnClasses="rotulo, campo"
+				styleClass="space-top" id="grid-cad-mun">
+
+				<p:outputLabel value="Município" for="municipio" />
+				<p:inputText id="municipio"
+					value="#{cadastroMunicipioBean.municipio.nome}"
+					size="60" maxlength="50" />
+
+				<p:outputLabel value="CEP" for="cep" />
+				<p:inputMask id="cep" mask="99.999-999" maxlength="8" size="20"
+					value="#{cadastroMunicipioBean.municipio.cep}" />
+				
+				<p:outputLabel value="Estado" for="estado" />
+				<p:selectOneMenu id="estado"
+					value="#{cadastroMunicipioBean.municipio.estado}">
+					<f:selectItems value="#{cadastroMunicipioBean.controller.estados}"
+						var="estado" itemValue="#{estado}" itemLabel="#{estado.uf}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="País" for="pais" />
+				<p:selectOneMenu id="pais"
+					value="#{cadastroMunicipioBean.municipio.pais}">
+					<f:selectItems value="#{cadastroMunicipioBean.controller.paises}"
+						var="pais" itemValue="#{pais}" itemLabel="#{pais.nome}" />
+				</p:selectOneMenu>
+			</h:panelGrid>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

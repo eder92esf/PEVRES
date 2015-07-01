@@ -34,7 +34,7 @@ public class AgendaExcursaoService implements Serializable {
 	private List<EscolaridadeEnum> escolaridades;
 	private List<String> tipoAtividades;
 	private String[] atividadesValue;
-	private Date horario;
+	private boolean imputavel;
 
 	@PostConstruct
 	private void init() {
@@ -54,21 +54,6 @@ public class AgendaExcursaoService implements Serializable {
 
 	public Date getDataAtual() {
 		return Calendar.getInstance().getTime();
-	}
-
-	@SuppressWarnings("deprecation")
-	public Date getDataImputavel() {
-		Date dataImputavel = Calendar.getInstance().getTime();
-		dataImputavel.setYear(dataImputavel.getYear() - 18);
-		return dataImputavel;
-	}
-
-	public Date getHorario() {
-		return horario;
-	}
-
-	public void setHorario(Date horario) {
-		this.horario = horario;
 	}
 
 	public List<EscolaridadeEnum> getEscolaridades() {
@@ -95,13 +80,23 @@ public class AgendaExcursaoService implements Serializable {
 		this.atividadesValue = atividadesValue;
 	}
 
-	@SuppressWarnings("deprecation")
+	public boolean isImputavel() {
+		return imputavel;
+	}
+
+	public void setImputavel(boolean imputavel) {
+		this.imputavel = imputavel;
+	}
+
 	public String checkinExcursao(Excursao excursao) {
 		try {
+			if (atividadesValue == null) {
+				return "Selecione pelo menos uma atividade.";
+			}
 			ChecaTipoAtividadeExcursao(excursao);
-			excursao.getDataExcursao().setHours(horario.getHours());
-			excursao.getDataExcursao().setMinutes(horario.getMinutes());
-			
+
+			excursao.setDataExcursao(new Date());
+
 			System.out.println(excursao);
 
 			/*
@@ -150,13 +145,29 @@ public class AgendaExcursaoService implements Serializable {
 			}
 		}
 	}
-	
-	public boolean isImputavel(Date dataNascimento){
+
+	@SuppressWarnings("deprecation")
+	public void checaImputavel(Date dataNascimento) {
 		Date atual = Calendar.getInstance().getTime();
 		int ano = atual.getYear() - dataNascimento.getYear();
-		
-		if(ano > 17)
-			return true;
-		return false;
+
+		if (ano > 18)
+			this.imputavel = true;
+		else if (ano == 18) {
+			if (dataNascimento.getMonth() < atual.getMonth())
+				this.imputavel = true;
+			else if (dataNascimento.getMonth() == atual.getMonth()) {
+				if (atual.getDay() >= dataNascimento.getDay())
+					this.imputavel = true;
+				else
+					this.imputavel = false;
+			} else
+				this.imputavel = false;
+		} else {
+			this.imputavel = false;
+		}
+
+		// Invertendo o Valor para Hab/Des o campo trilha
+		this.imputavel = !this.imputavel;
 	}
 }

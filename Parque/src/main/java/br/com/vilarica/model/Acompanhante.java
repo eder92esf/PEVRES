@@ -2,6 +2,7 @@ package br.com.vilarica.model;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.inject.Inject;
 import javax.persistence.Column;
@@ -41,7 +42,7 @@ public class Acompanhante implements Serializable{
 	@NotNull
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_nascimento", nullable = false)
-	private Calendar dataNascimento;
+	private Date dataNascimento;
 	
 	@NotNull
 	@OneToOne
@@ -79,11 +80,11 @@ public class Acompanhante implements Serializable{
 		this.escolaridade = escolaridade;
 	}
 
-	public Calendar getDataNascimento() {
+	public Date getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setDataNascimento(Calendar dataNascimento) {
+	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
 
@@ -93,5 +94,12 @@ public class Acompanhante implements Serializable{
 
 	public void setMunicipio(Municipio municipio) {
 		this.municipio = municipio;
+	}
+
+	@Override
+	public String toString() {
+		return "Acompanhante [id=" + id + ", nome=" + nome + ", sexo=" + sexo
+				+ ", escolaridade=" + escolaridade + ", dataNascimento="
+				+ dataNascimento + ", municipio=" + municipio + "]";
 	}
 }

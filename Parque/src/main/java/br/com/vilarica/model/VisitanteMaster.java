@@ -1,19 +1,15 @@
 package br.com.vilarica.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -58,9 +54,6 @@ public class VisitanteMaster implements Serializable{
 	@OneToOne
 	private @Inject Municipio municipio;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Acompanhante> acompanhantes = new ArrayList<Acompanhante>();
-
 	public Long getId() {
 		return id;
 	}
@@ -125,21 +118,12 @@ public class VisitanteMaster implements Serializable{
 		this.municipio = municipio;
 	}
 
-	public List<Acompanhante> getAcompanhantes() {
-		return acompanhantes;
-	}
-
-	public void setAcompanhantes(List<Acompanhante> acompanhantes) {
-		this.acompanhantes = acompanhantes;
-	}
-
 	@Override
 	public String toString() {
 		return "VisitanteMaster [id=" + id + ", nome=" + nome
 				+ ", dataNascimento=" + dataNascimento + ", sexo=" + sexo
-				+ ", escolaridade=" + escolaridade + ", \ncontato=" + contato
-				+ ", \nendereco=" + endereco + ", \nmunicipio=" + municipio
-				+ ", acompanhantes=" + acompanhantes + "]";
+				+ ", escolaridade=" + escolaridade + ", contato=" + contato
+				+ ", endereco=" + endereco + ", municipio=" + municipio + "]";
 	}
-	
+
 }

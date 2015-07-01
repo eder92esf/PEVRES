@@ -38,9 +38,6 @@ public class Municipio implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private PaisEnum pais;
 	
-	@OneToMany(targetEntity = Instituicao.class, orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Instituicao> instituicoes = new ArrayList<Instituicao>();
-
 	public Long getId() {
 		return id;
 	}
@@ -79,14 +76,6 @@ public class Municipio implements Serializable{
 
 	public void setPais(PaisEnum pais) {
 		this.pais = pais;
-	}
-
-	public List<Instituicao> getInstituicoes() {
-		return instituicoes;
-	}
-
-	public void setInstituicoes(List<Instituicao> instituicoes) {
-		this.instituicoes = instituicoes;
 	}
 
 	@Override
