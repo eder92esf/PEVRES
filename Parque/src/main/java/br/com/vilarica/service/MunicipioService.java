@@ -50,17 +50,17 @@ public class MunicipioService implements Serializable {
 			paises = PaisEnum.getPaises();
 		}
 	}
-	
+
 	public Municipio porId(Long value) {
 		return this.manager.find(Municipio.class, value);
 	}
-	
+
 	@Transactional
-	public String save(Municipio municipio){
+	public String save(Municipio municipio) {
 		try {
-			if(municipio.getId() != null){
+			if (municipio.getId() != null) {
 				this.manager.merge(municipio);
-			}else{
+			} else {
 				this.manager.persist(municipio);
 			}
 			municipio = new Municipio();
@@ -71,7 +71,7 @@ public class MunicipioService implements Serializable {
 			return e.getMessage();
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void filter(String nome, EstadoEnum estado){
 		municipios = new ArrayList<Municipio>();
@@ -81,6 +81,11 @@ public class MunicipioService implements Serializable {
 		if(nome != null && nome.trim().length() > 0){
 			c.add(Restrictions.ilike("nome", nome, MatchMode.ANYWHERE));
 		}
+		if(estado == null){
+			estado = EstadoEnum.PR;
+		}
+		c.add(Restrictions.eq("estado", estado));
+		
 		municipios = c.addOrder(Order.asc("nome")).list();
 	}
 }

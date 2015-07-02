@@ -100,6 +100,6 @@ public class Acompanhante implements Serializable{
 	public String toString() {
 		return "Acompanhante [id=" + id + ", nome=" + nome + ", sexo=" + sexo
 				+ ", escolaridade=" + escolaridade + ", dataNascimento="
-				+ dataNascimento + ", municipio=" + municipio + "]";
+				+ dataNascimento + ", \nmunicipio=" + municipio + "]";
 	}
 }

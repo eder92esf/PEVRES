@@ -16,6 +16,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import br.com.vilarica.jpa.Transactional;
 import br.com.vilarica.model.EscolaridadeEnum;
 import br.com.vilarica.model.Excursao;
 import br.com.vilarica.model.MeioTransporteEnum;
@@ -87,24 +88,30 @@ public class AgendaExcursaoService implements Serializable {
 	public void setImputavel(boolean imputavel) {
 		this.imputavel = imputavel;
 	}
-
+	
+	@Transactional
 	public String checkinExcursao(Excursao excursao) {
 		try {
-			if (atividadesValue == null) {
-				return "Selecione pelo menos uma atividade.";
-			}
 			ChecaTipoAtividadeExcursao(excursao);
-
 			excursao.setDataExcursao(new Date());
 
 			System.out.println(excursao);
 
-			/*
-			 * if (excursao.getId() == null) { this.manager.persist(excursao); }
-			 * else { this.manager.merge(excursao); }
-			 */
-			excursao = new Excursao();
+			if (excursao.getId() == null) {
+				this.manager
+						.persist(excursao.getVisitanteMaster().getContato());
+				this.manager.persist(excursao.getVisitanteMaster()
+						.getEndereco());
+				this.manager.persist(excursao.getVisitanteMaster());
+				this.manager.persist(excursao);
+			} else {
+				this.manager.merge(excursao.getVisitanteMaster().getContato());
+				this.manager.merge(excursao.getVisitanteMaster().getEndereco());
+				this.manager.merge(excursao.getVisitanteMaster());
+				this.manager.merge(excursao);
+			}
 			/* LIMPAR EXCURSAO AO SALVAR NO MANAGE BEAN */
+			excursao = new Excursao();
 			return "";
 		} catch (Exception e) {
 			e.printStackTrace();

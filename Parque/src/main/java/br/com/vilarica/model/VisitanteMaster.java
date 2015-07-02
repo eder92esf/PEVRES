@@ -122,8 +122,8 @@ public class VisitanteMaster implements Serializable{
 	public String toString() {
 		return "VisitanteMaster [id=" + id + ", nome=" + nome
 				+ ", dataNascimento=" + dataNascimento + ", sexo=" + sexo
-				+ ", escolaridade=" + escolaridade + ", contato=" + contato
-				+ ", endereco=" + endereco + ", municipio=" + municipio + "]";
+				+ ", escolaridade=" + escolaridade + ", \ncontato=" + contato
+				+ ", \nendereco=" + endereco + ", \nmunicipio=" + municipio + "]";
 	}
 
 }

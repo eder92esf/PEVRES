@@ -1,0 +1,153 @@
+<ui:composition template="/WEB-INF/template/LayoutDefault.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Agendar Excursão Escolar</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form>
+			<h1 style="margin-top: 20px;">Agendar Excursão Escolar</h1>
+
+			<p:toolbar styleClass="space-top">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/excursoes/ExcursaoEscolar" />
+					<p:commandButton value="Salvar" process="@form" update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisar" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg-agd-excursao" closable="true" autoUpdate="true" />
+
+			<h:panelGrid columns="2" columnClasses="rotulo, campo">
+				<p:outputLabel value="Instituição" for="instituicao" />
+				<p:autoComplete id="instituicao" size="75"
+					emptyMessage="Nenhuma Instituição Encontrada."
+					value="#{agendaExcursaoEscolarBean.excursaoEscolar.instituicao}"
+					completeMethod="#{agendaExcursaoEscolarBean.filtrarInstituicoes}"
+					var="instituicao" itemLabel="#{instituicao.nome}"
+					itemValue="#{instituicao}" forceSelection="true" maxResults="10" />
+
+				<p:outputLabel value="Data da Excursão" for="data-excursao" />
+				<p:calendar id="data-excursao" locale="pt_BR" minHour="8"
+					minMinute="15" maxHour="15" maxMinute="55" required="true"
+					mindate="#{agendaExcursaoEscolarBean.controller.dataAtual}"
+					requiredMessage="Informe o data e horário para a excursao."
+					pattern="dd-MM-yyyy HH:mm" mask="true"
+					value="#{agendaExcursaoEscolarBean.excursaoEscolar.dataExcursao}">
+					<f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+					<p:ajax event="dateSelect"
+						listener="#{agendaExcursaoEscolarBean.onDateSelect}"
+						update="atividades" />
+				</p:calendar>
+
+				<p:outputLabel value="Meio de Transporte" for="meio-transporte" />
+				<p:selectOneMenu id="meio-transporte"
+					value="#{agendaExcursaoEscolarBean.excursaoEscolar.meioTransporte}">
+					<f:selectItems
+						value="#{agendaExcursaoEscolarBean.controller.meiosTransporte}"
+						var="mt" itemValue="#{mt}" itemLabel="#{mt.meioTransporte}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Atividades" for="atividades" />
+				<p:selectManyCheckbox id="atividades" required="true"
+					requiredMessage="Atividades - Selecione uma atividade."
+					value="#{agendaExcursaoEscolarBean.controller.atividadesValue}">
+					<f:selectItem itemLabel="Vídeo" itemValue="Vídeo" />
+					<f:selectItem itemLabel="Museu" itemValue="Museu" />
+					<f:selectItem itemLabel="Trilha do Lago" itemValue="Trilha do Lago"
+						itemDisabled="#{agendaExcursaoEscolarBean.controller.desabilitado}" />
+				</p:selectManyCheckbox>
+			</h:panelGrid>
+		</h:form>
+
+		<p:separator />
+
+		<h:form id="frm-dt-acomp" enctype="multipart/form-data">
+			<h1>Acompanhantes</h1>
+
+			<h:panelGrid columns="2" columnClasses="rotulo, campo">
+				<p:fileUpload value="#{agendaExcursaoEscolarBean.file}"
+					mode="simple" allowTypes="/(\.|\/)(csv)$/" />
+
+				<h:panelGroup>
+					<p:commandButton value="Enviar"
+						title="Adicionar acompanhantes ao excursão."
+						actionListener="#{agendaExcursaoEscolarBean.upload}"
+						update="dt-acompanhantes" />
+						 ou 
+					<p:commandButton value="Adicionar"
+						title="Adicionar acompanhantes ao excursão manualmente." />
+				</h:panelGroup>
+			</h:panelGrid>
+
+			<p:dataTable id="dt-acompanhantes" styleClass="space-top"
+				emptyMessage="Nenhum acompanhante adicionado.">
+				<p:column headerText="Nome"></p:column>
+				<p:column headerText="Sexo"></p:column>
+				<p:column headerText="Data de Nascimento"></p:column>
+				<p:column></p:column>
+			</p:dataTable>
+		</h:form>
+		
+		<h:form id="frm-add-acomp">
+			<p:dialog widgetVar="dlg-add-acomp">
+				<h1>Adicionar Acompanhantes</h1>
+
+				<p:messages id="dlg-msg-add-acomp" autoUpdate="false"
+					closable="true" />
+
+				<h:panelGrid columns="2" columnClasses="rotulo, campo">
+					<p:outputLabel value="Nome" for="a-nome" />
+					<p:inputText id="a-nome" maxlength="100" size="60"
+						value="#{agendaExcursaoEscolarBean.acompanhante.nome}" />
+
+					<p:outputLabel value="Sexo" for="a-sexo" />
+					<p:selectOneMenu id="a-sexo"
+						value="#{agendaExcursaoEscolarBean.acompanhante.sexo}">
+						<f:selectItems value="#{agendaExcursaoEscolarBean.controller.sexos}"
+							var="sexo" itemValue="#{sexo}" itemLabel="#{sexo.sexo}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Escolaridade" for="a-escolaridade" />
+					<p:selectOneMenu id="a-escolaridade"
+						value="#{agendaExcursaoBean.acompanhante.escolaridade}">
+						<f:selectItems
+							value="#{agendaExcursaoEscolarBean.controller.escolaridades}"
+							var="escolaridade" itemValue="#{escolaridade}"
+							itemLabel="#{escolaridade.escolaridade}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Data de Nascimento" for="a-nascimento" />
+					<p:calendar id="a-nascimento" pattern="dd-MM-yyyy" mask="true"
+						maxdate="#{agendaExcursaoEscolarBean.controller.dataAtual}"
+						locale="pt_BR"
+						value="#{agendaExcursaoEscolarBean.acompanhante.dataNascimento}"
+						required="true"
+						requiredMessage="Data de nascimento - Deve ser informado.">
+						<f:convertDateTime pattern="dd-MM-yyyy" />
+					</p:calendar>
+
+					<p:outputLabel value="Município" for="a-municipio" />
+					<p:autoComplete id="a-municipio" size="60" forceSelection="true"
+						value="#{agendaExcursaoEscolarBean.acompanhante.municipio}"
+						completeMethod="#{agendaExcursaoEscolarBean.filtrarMunicipio}"
+						emptyMessage="Nenhum Muncípio Encontrado." var="municipio"
+						itemLabel="#{municipio.nome}" itemValue="#{municipio}"
+						maxResults="7" />
+
+					<p:commandButton value="Salvar"
+						title="Adicionar Acompanhante a excursão" update="@form"
+						action="#{agendaExcursaoEscolarBean.addAcompanhante}" process="@form"
+						onclick="validate('dlg-add-acomp', args);" />
+
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

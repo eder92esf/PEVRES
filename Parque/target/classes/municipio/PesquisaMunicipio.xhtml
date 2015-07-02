@@ -10,35 +10,39 @@
 	<ui:define name="corpo">
 
 		<h:form id="frm-pes-inst" styleClass="space-top">
-		
-			<p:messages autoUpdate="true" id="msg-info"/>
-		
+
+			<p:messages autoUpdate="true" id="msg-info" />
+
 			<h1 class="descricao">Pesquisar Município</h1>
 
 			<h:panelGrid columns="2" columnClasses="rotulo, campo"
 				styleClass="space-top">
 
 				<p:outputLabel value="Nome" for="nome" />
-				<h:panelGroup>
-					<p:inputText id="nome" size="60" title="Informe um nome."
-						value="#{pesquisaMunicipioBean.nomeMunicipio}" />
-					<p:commandButton value="Pesquisar" update="@all"
-						style="margin-left: 10px;"
-						action="#{pesquisaMunicipioBean.filter}" />
-				</h:panelGroup>
+				<p:inputText id="nome" size="60" title="Informe um nome."
+					value="#{pesquisaMunicipioBean.nomeMunicipio}" />
+
+				<p:outputLabel value="Estado" for="estado" />
+				<p:selectOneMenu id="estado"
+					value="#{pesquisaMunicipioBean.selecionado}">
+					<f:selectItems value="#{pesquisaMunicipioBean.controller.estados}"
+						var="estado" itemValue="#{estado}" itemLabel="#{estado.uf}" />
+				</p:selectOneMenu>
+				
+				<p:commandButton value="Pesquisar" update="@all" action="#{pesquisaMunicipioBean.filter}" />
 
 			</h:panelGrid>
 
 			<p:dataTable id="dt-municipio" paginator="true"
 				paginatorPosition="bottom" paginatorAlwaysVisible="false"
 				value="#{pesquisaMunicipioBean.controller.municipios}"
-				var="municipio" emptyMessage="Nenhum registro encontrado."
-				rows="10" widgetVar="dt-inst" styleClass="space-top">
+				var="municipio" emptyMessage="Nenhum registro encontrado." rows="10"
+				widgetVar="dt-inst" styleClass="space-top">
 
 				<p:column headerText="Nome" style="width: 70%">
 					<p:outputLabel value="#{municipio.nome}" />
 				</p:column>
-				
+
 				<p:column headerText="CEP" style="width: 10%">
 					<p:outputLabel value="#{municipio.cep}" />
 				</p:column>
@@ -59,7 +63,7 @@
 				</p:column>
 			</p:dataTable>
 		</h:form>
-		
+
 	</ui:define>
 
 </ui:composition>

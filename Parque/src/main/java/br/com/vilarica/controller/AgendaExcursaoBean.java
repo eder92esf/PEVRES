@@ -24,6 +24,7 @@ public class AgendaExcursaoBean implements Serializable {
 
 	private @Inject Excursao excursao;
 	private @Inject Acompanhante acompanhante;
+	private @Inject Acompanhante selecionado;
 	private @Inject AgendaExcursaoService controller;
 	
 	public Excursao getExcursao() {
@@ -46,6 +47,14 @@ public class AgendaExcursaoBean implements Serializable {
 		this.acompanhante = acompanhante;
 	}
 
+	public Acompanhante getSelecionado() {
+		return selecionado;
+	}
+
+	public void setSelecionado(Acompanhante selecionado) {
+		this.selecionado = selecionado;
+	}
+
 	public List<Municipio> filtrarMunicipio(String consulta){
 		return this.controller.filtarMunicipios(consulta);
 	}
@@ -58,6 +67,15 @@ public class AgendaExcursaoBean implements Serializable {
 		this.excursao.getAcompanhantes().add(acompanhante);
 		acompanhante = new Acompanhante();
 		System.out.println("\nTAMANHO DA LISTA "+excursao.getAcompanhantes().size());
+	}
+	
+	public void removeAcompanhante(){
+		for (Acompanhante a : this.excursao.getAcompanhantes()) {
+			if(a.equals(selecionado)){
+				this.excursao.getAcompanhantes().remove(a);
+				break;
+			}
+		}
 	}
 	
 	public void checkin(){

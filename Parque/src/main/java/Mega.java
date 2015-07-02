@@ -4,7 +4,7 @@ public class Mega {
 	static int[] v = new int[6];
 	static int count = 0;
 	static boolean fim = false;
-	static int apostas = 5;
+	static int apostas = 22;
 	
 	public static void main(String[] args){
 		for (int i = 0; i < apostas; i++) {

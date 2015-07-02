@@ -2,7 +2,7 @@ package br.com.vilarica.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,11 +33,18 @@ public class ExcursaoEscolar implements Serializable {
 
 	@NotNull
 	@Temporal(TemporalType.DATE)
-	private Calendar dataExcursao;
+	private Date dataExcursao;
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private MeioTransporteEnum MeioTransporte;
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private StatusExcursao status;
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<TipoAtividadeExcursao> atividades = new ArrayList<TipoAtividadeExcursao>();
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Acompanhante> acompanhantes = new ArrayList<Acompanhante>();
@@ -58,11 +65,11 @@ public class ExcursaoEscolar implements Serializable {
 		this.id = id;
 	}
 
-	public Calendar getDataExcursao() {
+	public Date getDataExcursao() {
 		return dataExcursao;
 	}
 
-	public void setDataExcursao(Calendar dataExcursao) {
+	public void setDataExcursao(Date dataExcursao) {
 		this.dataExcursao = dataExcursao;
 	}
 
@@ -72,6 +79,22 @@ public class ExcursaoEscolar implements Serializable {
 
 	public void setMeioTransporte(MeioTransporteEnum meioTransporte) {
 		MeioTransporte = meioTransporte;
+	}
+
+	public StatusExcursao getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusExcursao status) {
+		this.status = status;
+	}
+
+	public List<TipoAtividadeExcursao> getAtividades() {
+		return atividades;
+	}
+
+	public void setAtividades(List<TipoAtividadeExcursao> atividades) {
+		this.atividades = atividades;
 	}
 
 	public List<Acompanhante> getAcompanhantes() {

@@ -6,6 +6,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import br.com.vilarica.model.EstadoEnum;
 import br.com.vilarica.service.MunicipioService;
 
 @Named
@@ -16,6 +17,7 @@ public class PesquisaMunicipioBean implements Serializable{
 
 	private @Inject MunicipioService controller;
 	private String nomeMunicipio;
+	private EstadoEnum selecionado;
 
 	public String getNomeMunicipio() {
 		return nomeMunicipio;
@@ -29,7 +31,15 @@ public class PesquisaMunicipioBean implements Serializable{
 		return controller;
 	}
 
+	public EstadoEnum getSelecionado() {
+		return selecionado;
+	}
+
+	public void setSelecionado(EstadoEnum selecionado) {
+		this.selecionado = selecionado;
+	}
+
 	public void filter(){
-		this.controller.filter(nomeMunicipio, null);
+		this.controller.filter(nomeMunicipio, selecionado);
 	}
 }
