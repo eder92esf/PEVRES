@@ -68,6 +68,7 @@
 
 		<p:separator />
 
+		<!-- FORM PARA ADICIONAR ACOMPANHANTES AUTOMATICAMENTE -->
 		<h:form id="frm-dt-acomp" enctype="multipart/form-data">
 			<h1>Acompanhantes</h1>
 
@@ -76,27 +77,46 @@
 					mode="simple" allowTypes="/(\.|\/)(csv)$/" />
 
 				<h:panelGroup>
-					<p:commandButton value="Enviar"
+					<p:commandButton value="Enviar" ajax="false"
 						title="Adicionar acompanhantes ao excursão."
 						actionListener="#{agendaExcursaoEscolarBean.upload}"
 						update="dt-acompanhantes" />
 						 ou 
 					<p:commandButton value="Adicionar"
+						onclick="showDialog('dlg-add-acomp');"
 						title="Adicionar acompanhantes ao excursão manualmente." />
 				</h:panelGroup>
 			</h:panelGrid>
 
 			<p:dataTable id="dt-acompanhantes" styleClass="space-top"
-				emptyMessage="Nenhum acompanhante adicionado.">
-				<p:column headerText="Nome"></p:column>
-				<p:column headerText="Sexo"></p:column>
-				<p:column headerText="Data de Nascimento"></p:column>
-				<p:column></p:column>
+				emptyMessage="Nenhum acompanhante adicionado."
+				value="#{agendaExcursaoEscolarBean.excursaoEscolar.acompanhantes}"
+				var="acompanhante" paginator="true" paginatorPosition="bottom"
+				paginatorAlwaysVisible="false" rows="20">
+				<p:column headerText="Nome" style="width:50%;">
+					<p:outputLabel value="#{acompanhante.nome}"/>
+				</p:column>
+				<p:column headerText="Sexo" style="width:10%; text-align:center;">
+					<p:outputLabel value="#{acompanhante.sexo.sexo}"/>
+				</p:column>
+				<p:column headerText="Data de Nascimento" style="width:10%; text-align:center;">
+					<p:outputLabel value="#{acompanhante.dataNascimento}">
+						<f:convertDateTime pattern="dd-MM-yyyy"/>
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Município" style="width:27%;">
+					<p:outputLabel value="#{acompanhante.municipio.nome}"/>
+				</p:column>
+				<p:column style="width:3%;">
+					<p:commandButton icon="ui-icon-trash" title="Remover Acompanhante"/>
+				</p:column>
 			</p:dataTable>
 		</h:form>
-		
+
+		<!-- FORM PARA ADICIONAR ACOMPANHANTES MANUALMENTE -->
 		<h:form id="frm-add-acomp">
-			<p:dialog widgetVar="dlg-add-acomp">
+			<p:dialog widgetVar="dlg-add-acomp" modal="true" resizable="false"
+				closeOnEscape="true" header="Adicionar Acompanhantes">
 				<h1>Adicionar Acompanhantes</h1>
 
 				<p:messages id="dlg-msg-add-acomp" autoUpdate="false"
@@ -110,13 +130,14 @@
 					<p:outputLabel value="Sexo" for="a-sexo" />
 					<p:selectOneMenu id="a-sexo"
 						value="#{agendaExcursaoEscolarBean.acompanhante.sexo}">
-						<f:selectItems value="#{agendaExcursaoEscolarBean.controller.sexos}"
-							var="sexo" itemValue="#{sexo}" itemLabel="#{sexo.sexo}" />
+						<f:selectItems
+							value="#{agendaExcursaoEscolarBean.controller.sexos}" var="sexo"
+							itemValue="#{sexo}" itemLabel="#{sexo.sexo}" />
 					</p:selectOneMenu>
 
 					<p:outputLabel value="Escolaridade" for="a-escolaridade" />
 					<p:selectOneMenu id="a-escolaridade"
-						value="#{agendaExcursaoBean.acompanhante.escolaridade}">
+						value="#{agendaExcursaoEscolarBean.acompanhante.escolaridade}">
 						<f:selectItems
 							value="#{agendaExcursaoEscolarBean.controller.escolaridades}"
 							var="escolaridade" itemValue="#{escolaridade}"
@@ -143,8 +164,8 @@
 
 					<p:commandButton value="Salvar"
 						title="Adicionar Acompanhante a excursão" update="@form"
-						action="#{agendaExcursaoEscolarBean.addAcompanhante}" process="@form"
-						onclick="validate('dlg-add-acomp', args);" />
+						action="#{agendaExcursaoEscolarBean.addAcompanhante}"
+						process="@form" onclick="validate('dlg-add-acomp', args);" />
 
 				</h:panelGrid>
 			</p:dialog>

@@ -1,7 +1,6 @@
 package br.com.vilarica.model;
 
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.inject.Inject;

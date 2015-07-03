@@ -10,7 +10,7 @@
 		
 		<class>br.com.vilarica.model.Contato</class>
 		<class>br.com.vilarica.model.Endereco</class>
-		<class>br.com.vilarica.model.Excursao</class>
+		<class>br.com.vilarica.model.ExcursaoTuristica</class>
 		<class>br.com.vilarica.model.ExcursaoEscolar</class>
 		<class>br.com.vilarica.model.Municipio</class>
 		<class>br.com.vilarica.model.Pesquisa</class>
@@ -18,6 +18,7 @@
 		<class>br.com.vilarica.model.Instituicao</class>
 		<class>br.com.vilarica.model.Acompanhante</class>
 		<class>br.com.vilarica.model.TipoAtividadeExcursao</class>
+		<class>br.com.vilarica.model.Excursao</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/vilarica" />

@@ -2,29 +2,25 @@ package br.com.vilarica.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-@Entity
-public class Excursao implements Serializable {
+@MappedSuperclass
+public class Excursao implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -36,15 +32,9 @@ public class Excursao implements Serializable {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private MeioTransporteEnum MeioTransporte;
-
-	@NotNull
+	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<TipoAtividadeExcursao> atividades = new ArrayList<TipoAtividadeExcursao>();
-	
-	@NotNull
-	@OneToOne
-	@JoinColumn(name = "visitante_master", nullable = false)
-	private @Inject VisitanteMaster visitanteMaster;
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Acompanhante> acompanhantes = new ArrayList<Acompanhante>();
@@ -65,22 +55,6 @@ public class Excursao implements Serializable {
 		this.dataExcursao = dataExcursao;
 	}
 
-	public VisitanteMaster getVisitanteMaster() {
-		return visitanteMaster;
-	}
-
-	public void setVisitanteMaster(VisitanteMaster visitanteMaster) {
-		this.visitanteMaster = visitanteMaster;
-	}
-
-	public List<Acompanhante> getAcompanhantes() {
-		return acompanhantes;
-	}
-
-	public void setAcompanhantes(List<Acompanhante> acompanhantes) {
-		this.acompanhantes = acompanhantes;
-	}
-
 	public MeioTransporteEnum getMeioTransporte() {
 		return MeioTransporte;
 	}
@@ -93,11 +67,22 @@ public class Excursao implements Serializable {
 		return atividades;
 	}
 
+	public void setAtividades(List<TipoAtividadeExcursao> atividades) {
+		this.atividades = atividades;
+	}
+
+	public List<Acompanhante> getAcompanhantes() {
+		return acompanhantes;
+	}
+
+	public void setAcompanhantes(List<Acompanhante> acompanhantes) {
+		this.acompanhantes = acompanhantes;
+	}
+
 	@Override
 	public String toString() {
 		return "Excursao [id=" + id + ", dataExcursao=" + dataExcursao
-				+ ", MeioTransporte=" + MeioTransporte + ", \natividades="
-				+ atividades + ", \nvisitanteMaster=" + visitanteMaster
-				+ ", \nacompanhantes=" + acompanhantes + "]";
+				+ ", MeioTransporte=" + MeioTransporte + ", atividades="
+				+ atividades + ", acompanhantes=" + acompanhantes + "]";
 	}
 }

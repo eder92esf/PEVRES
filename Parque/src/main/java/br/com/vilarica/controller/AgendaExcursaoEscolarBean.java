@@ -14,7 +14,7 @@ import br.com.vilarica.model.Acompanhante;
 import br.com.vilarica.model.ExcursaoEscolar;
 import br.com.vilarica.model.Instituicao;
 import br.com.vilarica.model.Municipio;
-import br.com.vilarica.service.AgendaExcursaoEscolarService;
+import br.com.vilarica.service.AgendaExcursaoService;
 
 @Named
 @ViewScoped
@@ -23,12 +23,13 @@ public class AgendaExcursaoEscolarBean implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private @Inject ExcursaoEscolar excursaoEscolar;
-	private @Inject AgendaExcursaoEscolarService controller;
+	//private @Inject AgendaExcursaoEscolarService controller;
 	private @Inject Acompanhante acompanhante;
 	private @Inject Acompanhante selecionado;
+	private @Inject AgendaExcursaoService controller;
 	private UploadedFile file;
 	
-	public AgendaExcursaoEscolarService getController() {
+	public AgendaExcursaoService getController() {
 		return controller;
 	}
 
@@ -69,7 +70,7 @@ public class AgendaExcursaoEscolarBean implements Serializable{
 	}
 	
 	public void agendar(){
-		this.controller.agendaExcursao(excursaoEscolar);
+		this.controller.agendaExcursaoEscolar(excursaoEscolar);
 	}
 	
 	public void onDateSelect(SelectEvent event){
