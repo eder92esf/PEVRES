@@ -35,7 +35,7 @@ public enum EscolaridadeEnum {
 		return escolaridades;
 	}
 
-	public static Enum getEscolaridade(String esc) {
+	public static EscolaridadeEnum getEscolaridade(String esc) {
 		switch (esc) {
 		case "Sem Escolaridade":
 			return SEM_ESCOLARIDADE;

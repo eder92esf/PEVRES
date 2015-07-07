@@ -1,5 +1,5 @@
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -21,18 +21,39 @@ import br.com.vilarica.model.PaisEnum;
 public class JPATest {
 
 	EntityManager manager;
-
+	
 	public static void main(String[] args) {
-		new JPATest().createTables();
+		//new JPATest().createTables();
 		// new JPATest().insertInit();
 		// new JPATest().multiInsert();
 		// new JPATest().updateInstituicao();
 		// new JPATest().search("", EstadoEnum.PR);
 		// new JPATest().findAll();
 		//test();
+		try {
+			manipulaArquivo();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.exit(0);
 	}
 
+	public static void manipulaArquivo() throws Exception{		
+		String raiz = null;
+		if(File.separator.equals("\\"))
+			raiz = "C:\\PEVRES";
+		else
+			raiz = "/home";
+		
+		System.out.println(raiz.toString());
+			
+		File diretorio = new File(raiz.toString());
+		File arquivo = new File(diretorio.getAbsolutePath() + File.separator + "acompanhantes.csv");
+		
+		System.out.println(arquivo.getAbsolutePath());
+	}
+	
 	@SuppressWarnings("deprecation")
 	public static void test() {
 		Date atual = new Date(115, 5, 30);
