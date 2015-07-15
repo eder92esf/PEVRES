@@ -9,6 +9,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import br.com.vilarica.model.Contato;
+import br.com.vilarica.model.Endereco;
 import br.com.vilarica.model.Instituicao;
 import br.com.vilarica.model.Municipio;
 import br.com.vilarica.service.InstituicaoService;
@@ -21,7 +23,6 @@ public class CadastroInstituicaoBean implements Serializable {
 
 	private @Inject InstituicaoService controller;
 	private @Inject Instituicao instituicao;
-	private Municipio oldMunicipio;
 
 	public Instituicao getInstituicao() {
 		return instituicao;
@@ -36,7 +37,6 @@ public class CadastroInstituicaoBean implements Serializable {
 	}
 	
 	public List<Municipio> filtrarMunicipio(String consulta){
-		oldMunicipio = this.instituicao.getMunicipio();
 		return this.controller.filtarMunicipios(consulta);
 	}
 
@@ -48,7 +48,7 @@ public class CadastroInstituicaoBean implements Serializable {
 	
 	public void salvar(){
 		boolean editando = isEditando();
-		String retorno = this.controller.save(instituicao, oldMunicipio);
+		String retorno = this.controller.save(instituicao);
 		FacesContext context = FacesContext.getCurrentInstance();
 		FacesMessage msg = null;
 		if(retorno.equals("")){
@@ -56,6 +56,8 @@ public class CadastroInstituicaoBean implements Serializable {
 				msg = new FacesMessage("Instituição atualizada com sucesso!");
 			else
 				msg = new FacesMessage("Instituição cadastrada com sucesso!");
+			
+			msg.setDetail("");
 		}else{
 			if(editando)
 				msg = new FacesMessage("Erro ao atualizar instituição!");
@@ -66,5 +68,9 @@ public class CadastroInstituicaoBean implements Serializable {
 			msg.setDetail(retorno);
 		}
 		context.addMessage(null, msg);
+		instituicao = new Instituicao();
+		instituicao.setContato(new Contato());
+		instituicao.setEndereco(new Endereco());
+		instituicao.setMunicipio(new Municipio());
 	}
 }

@@ -18,12 +18,14 @@ import br.com.vilarica.jpa.Transactional;
 import br.com.vilarica.model.EstadoEnum;
 import br.com.vilarica.model.Municipio;
 import br.com.vilarica.model.PaisEnum;
+import br.com.vilarica.util.FilterUtil;
 
 public class MunicipioService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private @Inject EntityManager manager;
+	private @Inject FilterUtil filterUtil;
 	private List<EstadoEnum> estados;
 	private List<PaisEnum> paises;
 	private List<Municipio> municipios;
@@ -51,8 +53,9 @@ public class MunicipioService implements Serializable {
 		}
 	}
 
-	public Municipio porId(Long value) {
-		return this.manager.find(Municipio.class, value);
+	public Municipio porId(Long id) {
+		//return this.manager.find(Municipio.class, id);
+		return (Municipio) filterUtil.porId(Municipio.class, id);
 	}
 
 	@Transactional
@@ -74,6 +77,7 @@ public class MunicipioService implements Serializable {
 
 	@SuppressWarnings("unchecked")
 	public void filter(String nome, EstadoEnum estado){
+		/*
 		municipios = new ArrayList<Municipio>();
 		Session s = this.manager.unwrap(Session.class);
 		Criteria c = s.createCriteria(Municipio.class);
@@ -87,5 +91,7 @@ public class MunicipioService implements Serializable {
 		c.add(Restrictions.eq("estado", estado));
 		
 		municipios = c.addOrder(Order.asc("nome")).list();
+		*/
+		municipios = filterUtil.filtarMunicipios(nome, estado);
 	}
 }

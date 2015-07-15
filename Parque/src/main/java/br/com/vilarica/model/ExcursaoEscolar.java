@@ -22,6 +22,9 @@ public class ExcursaoEscolar extends Excursao implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private StatusExcursao status;
 	
+	@NotNull
+	@OneToOne
+	private @Inject Guia guia;
 
 	public Instituicao getInstituicao() {
 		return instituicao;
@@ -39,9 +42,17 @@ public class ExcursaoEscolar extends Excursao implements Serializable {
 		this.status = status;
 	}
 
+	public Guia getGuia() {
+		return guia;
+	}
+
+	public void setGuia(Guia guia) {
+		this.guia = guia;
+	}
+
 	@Override
 	public String toString() {
-		return "ExcursaoEscolar [\ninstituicao=" + instituicao + ", status="
+		return "ExcursaoEscolar ["+ super.toString() +" \ninstituicao=" + instituicao + ", status="
 				+ status + "]";
 	}
 

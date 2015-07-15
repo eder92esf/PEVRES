@@ -48,6 +48,8 @@ public class CadastroMunicipioBean implements Serializable {
 				msg = new FacesMessage("Município atualizado com sucesso!");
 			else
 				msg = new FacesMessage("Município cadastrado com sucesso!");
+			
+			msg.setDetail("");
 		}else{
 			if(editando)
 				msg = new FacesMessage("Erro ao atualizar Município!");
@@ -58,6 +60,7 @@ public class CadastroMunicipioBean implements Serializable {
 			msg.setDetail(retorno);
 		}
 		context.addMessage(null, msg);
+		this.municipio = new Municipio();
 	}
 
 }

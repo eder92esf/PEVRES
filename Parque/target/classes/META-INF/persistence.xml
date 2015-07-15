@@ -19,6 +19,7 @@
 		<class>br.com.vilarica.model.Acompanhante</class>
 		<class>br.com.vilarica.model.TipoAtividadeExcursao</class>
 		<class>br.com.vilarica.model.Excursao</class>
+		<class>br.com.vilarica.model.Guia</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/vilarica" />

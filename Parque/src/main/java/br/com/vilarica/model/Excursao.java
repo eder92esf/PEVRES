@@ -83,6 +83,6 @@ public class Excursao implements Serializable{
 	public String toString() {
 		return "Excursao [id=" + id + ", dataExcursao=" + dataExcursao
 				+ ", MeioTransporte=" + MeioTransporte + ", atividades="
-				+ atividades + ", acompanhantes=" + acompanhantes + "]";
+				+ atividades + ", \nacompanhantes=\n\t" + acompanhantes + "]\n";
 	}
 }

@@ -15,16 +15,18 @@
 			<p:toolbar styleClass="space-top">
 				<p:toolbarGroup>
 					<p:button value="Novo" outcome="/excursoes/ExcursaoEscolar" />
-					<p:commandButton value="Salvar" process="@form" update="@form" />
+					<p:commandButton value="Salvar" process="@form" update="@form"
+						action="#{agendaExcursaoEscolarBean.agendar}" />
 				</p:toolbarGroup>
 				<p:toolbarGroup align="right">
 					<p:button value="Pesquisar" />
 				</p:toolbarGroup>
 			</p:toolbar>
 
-			<p:messages id="msg-agd-excursao" closable="true" autoUpdate="true" />
+			<p:messages id="msg-agd-excursao" closable="true" autoUpdate="true" showDetail="true"/>
 
 			<h:panelGrid columns="2" columnClasses="rotulo, campo">
+
 				<p:outputLabel value="Instituição" for="instituicao" />
 				<p:autoComplete id="instituicao" size="75"
 					emptyMessage="Nenhuma Instituição Encontrada."
@@ -32,6 +34,13 @@
 					completeMethod="#{agendaExcursaoEscolarBean.filtrarInstituicoes}"
 					var="instituicao" itemLabel="#{instituicao.nome}"
 					itemValue="#{instituicao}" forceSelection="true" maxResults="10" />
+
+				<p:outputLabel value="Guia" for="guia" />
+				<p:autoComplete id="guia" emptyMessage="Nenhum guia encontrado."
+					value="#{agendaExcursaoEscolarBean.excursaoEscolar.guia}"
+					completeMethod="#{agendaExcursaoEscolarBean.filtrarGuia}"
+					var="guia" itemLabel="#{guia.nome}" itemValue="#{guia}"
+					forceSelection="true" maxResults="5" size="75"/>
 
 				<p:outputLabel value="Data da Excursão" for="data-excursao" />
 				<p:calendar id="data-excursao" locale="pt_BR" minHour="8"
@@ -43,7 +52,7 @@
 					<f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
 					<p:ajax event="dateSelect"
 						listener="#{agendaExcursaoEscolarBean.onDateSelect}"
-						update="atividades" />
+						update="atividades dt-excursoes" />
 				</p:calendar>
 
 				<p:outputLabel value="Meio de Transporte" for="meio-transporte" />
@@ -52,6 +61,14 @@
 					<f:selectItems
 						value="#{agendaExcursaoEscolarBean.controller.meiosTransporte}"
 						var="mt" itemValue="#{mt}" itemLabel="#{mt.meioTransporte}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Status" for="status" />
+				<p:selectOneMenu id="status"
+					value="#{agendaExcursaoEscolarBean.excursaoEscolar.status}">
+					<f:selectItems
+						value="#{agendaExcursaoEscolarBean.controller.statusExcursao}"
+						var="status" itemValue="#{status}" itemLabel="#{status.status}" />
 				</p:selectOneMenu>
 
 				<p:outputLabel value="Atividades" for="atividades" />
@@ -64,9 +81,35 @@
 						itemDisabled="#{agendaExcursaoEscolarBean.controller.desabilitado}" />
 				</p:selectManyCheckbox>
 			</h:panelGrid>
+
+			<!-- DATA TABLE PARA VISUALIZAR EXCURSOES AGENDADAS -->
+			<p:separator styleClass="space-top" />
+			<p:dataTable id="dt-excursoes" styleClass="space-top"
+				emptyMessage="Nenhuma excursão agendada para essa data."
+				value="#{agendaExcursaoEscolarBean.controller.excursoes}"
+				var="excursao" paginator="true" paginatorPosition="bottom"
+				paginatorTemplate="true" paginatorAlwaysVisible="false" rows="40">
+
+				<p:column headerText="Insituição" style="width:40%">
+					<p:outputLabel value="#{excursao.instituicao.nome}" />
+				</p:column>
+				<p:column headerText="Município"
+					style="width:25%; text-align:center;">
+					<p:outputLabel value="#{excursao.instituicao.municipio.nome}" />
+				</p:column>
+				<p:column headerText="Data/Horário"
+					style="width:20%; text-align:center;">
+					<p:outputLabel value="#{excursao.dataExcursao}">
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Status" style="width:15%; text-align:center;">
+					<p:outputLabel value="#{excursao.status.status}" />
+				</p:column>
+			</p:dataTable>
 		</h:form>
 
-		<p:separator />
+		<p:separator styleClass="space-top" />
 
 		<!-- FORM PARA ADICIONAR ACOMPANHANTES AUTOMATICAMENTE -->
 		<h:form id="frm-dt-acomp" enctype="multipart/form-data">
@@ -92,23 +135,30 @@
 				emptyMessage="Nenhum acompanhante adicionado."
 				value="#{agendaExcursaoEscolarBean.excursaoEscolar.acompanhantes}"
 				var="acompanhante" paginator="true" paginatorPosition="bottom"
-				paginatorAlwaysVisible="false" rows="20">
+				paginatorTemplate="true" paginatorAlwaysVisible="false" rows="40">
 				<p:column headerText="Nome" style="width:50%;">
-					<p:outputLabel value="#{acompanhante.nome}"/>
+					<p:outputLabel value="#{acompanhante.nome}" />
 				</p:column>
 				<p:column headerText="Sexo" style="width:10%; text-align:center;">
-					<p:outputLabel value="#{acompanhante.sexo.sexo}"/>
+					<p:outputLabel value="#{acompanhante.sexo.sexo}" />
 				</p:column>
-				<p:column headerText="Data de Nascimento" style="width:10%; text-align:center;">
+				<p:column headerText="Escolaridade"
+					style="width:27%; text-align:center;">
+					<p:outputLabel value="#{acompanhante.escolaridade.escolaridade}" />
+				</p:column>
+				<p:column headerText="Data de Nascimento"
+					style="width:20%; text-align:center;">
 					<p:outputLabel value="#{acompanhante.dataNascimento}">
-						<f:convertDateTime pattern="dd-MM-yyyy"/>
+						<f:convertDateTime pattern="dd-MM-yyyy" />
 					</p:outputLabel>
 				</p:column>
-				<p:column headerText="Município" style="width:27%;">
-					<p:outputLabel value="#{acompanhante.municipio.nome}"/>
-				</p:column>
 				<p:column style="width:3%;">
-					<p:commandButton icon="ui-icon-trash" title="Remover Acompanhante"/>
+					<p:commandButton icon="ui-icon-trash" title="Remover Acompanhante"
+						action="#{agendaExcursaoEscolarBean.removeAcompanhante}"
+						update="dt-acompanhantes">
+						<f:setPropertyActionListener value="#{acompanhante}"
+							target="#{agendaExcursaoEscolarBean.selecionado}" />
+					</p:commandButton>
 				</p:column>
 			</p:dataTable>
 		</h:form>

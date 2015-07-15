@@ -17,12 +17,14 @@ import br.com.vilarica.jpa.Transactional;
 import br.com.vilarica.model.EstadoEnum;
 import br.com.vilarica.model.Instituicao;
 import br.com.vilarica.model.Municipio;
+import br.com.vilarica.util.FilterUtil;
 
 public class InstituicaoService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private @Inject EntityManager manager;
+	private @Inject FilterUtil filterUtil;
 	private List<Instituicao> instituicoes;
 
 	public List<Instituicao> getInstituicoes() {
@@ -30,7 +32,7 @@ public class InstituicaoService implements Serializable {
 	}
 
 	@Transactional
-	public String save(Instituicao instituicao, Municipio oldMunicipio) {
+	public String save(Instituicao instituicao) {
 		try {
 			if (instituicao.getId() == null) {
 				this.manager.persist(instituicao.getContato());
@@ -51,6 +53,7 @@ public class InstituicaoService implements Serializable {
 
 	@SuppressWarnings("unchecked")
 	public void filtarInstituicoes(String nomeInstituicao, EstadoEnum estado) {
+		/*
 		instituicoes = new ArrayList<Instituicao>();
 
 		String sql = "SELECT i FROM Instituicao i JOIN i.municipio m WHERE LOWER(i.nome) like LOWER(:nome) and m.estado = :estado ORDER BY i.nome";
@@ -66,10 +69,16 @@ public class InstituicaoService implements Serializable {
 				.setParameter("nome", '%'+ nomeInstituicao + '%')
 				.setParameter("estado", estado)
 				.getResultList();
+		*/
+		if (estado == null) {
+			estado = EstadoEnum.PR;
+		}
+		instituicoes = filterUtil.filtarInstituicoes(nomeInstituicao, estado);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Municipio> filtarMunicipios(String consulta) {
+		/*
 		Session s = this.manager.unwrap(Session.class);
 		Criteria c = s.createCriteria(Municipio.class);
 
@@ -78,10 +87,13 @@ public class InstituicaoService implements Serializable {
 		}
 
 		return c.addOrder(Order.asc("nome")).list();
+		*/
+		return filterUtil.filtarMunicipios(consulta, null);
 	}
 
 	public Instituicao porId(Long id) {
-		return this.manager.find(Instituicao.class, id);
+		//return this.manager.find(Instituicao.class, id);
+		return (Instituicao) filterUtil.porId(Instituicao.class, id);
 	}
 
 }

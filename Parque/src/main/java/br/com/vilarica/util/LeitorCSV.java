@@ -29,11 +29,11 @@ public class LeitorCSV implements Serializable {
 		if (File.separator.equals("\\"))
 			raiz = "C:\\PEVRES";
 		else
-			raiz = "/home";
+			raiz = "/home/PEVRES";
 
 		File diretorio = new File(raiz);
-		this.arquivo = new File(new StringBuilder( diretorio.getAbsolutePath()
-				+ File.separator + "acompanhantes.csv").toString() );
+		this.arquivo = new File(new StringBuilder(diretorio.getAbsolutePath()
+				+ File.separator + "acompanhantes.csv").toString());
 
 		byte[] buffer = new byte[(int) size];
 		stream.read(buffer, 0, (int) size);
@@ -54,8 +54,7 @@ public class LeitorCSV implements Serializable {
 		return this.arquivo.getAbsolutePath();
 	}
 
-	public List<Acompanhante> ler(File file, Municipio municipio)
-			throws IOException {
+	public List<Acompanhante> ler(File file) throws IOException {
 		List<Acompanhante> lista = new ArrayList<Acompanhante>();
 		fileReader = new FileReader(file);
 		reader = new BufferedReader(fileReader);
@@ -67,6 +66,8 @@ public class LeitorCSV implements Serializable {
 			Acompanhante a = new Acompanhante();
 			a.setNome(object[0]);
 			a.setSexo(SexoEnum.getEnum(object[1]));
+			object[2] = object[2].replaceAll("Ã©", "é")
+					.replaceAll("Ã§Ã£", "çã");
 			a.setEscolaridade(EscolaridadeEnum.getEscolaridade(object[2]));
 
 			String[] dn = object[3].split("/");
@@ -75,10 +76,9 @@ public class LeitorCSV implements Serializable {
 			int ano = Integer.valueOf(dn[2]);
 			mes -= 1;
 			ano -= 1900;
-			
+
 			Date dataNascimento = new Date(ano, mes, dia);
 			a.setDataNascimento(dataNascimento);
-			a.setMunicipio(municipio);
 
 			lista.add(a);
 		}

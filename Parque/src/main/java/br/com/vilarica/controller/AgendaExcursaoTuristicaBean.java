@@ -1,6 +1,7 @@
 package br.com.vilarica.controller;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -14,6 +15,7 @@ import org.primefaces.event.SelectEvent;
 import br.com.vilarica.model.Acompanhante;
 import br.com.vilarica.model.ExcursaoTuristica;
 import br.com.vilarica.model.Municipio;
+import br.com.vilarica.model.VisitanteMaster;
 import br.com.vilarica.service.AgendaExcursaoService;
 
 @Named
@@ -25,7 +27,6 @@ public class AgendaExcursaoTuristicaBean implements Serializable {
 	private @Inject ExcursaoTuristica excursao;
 	private @Inject Acompanhante acompanhante;
 	private @Inject Acompanhante selecionado;
-	//private @Inject AgendaExcursaoTuristicaService controller;
 	private @Inject AgendaExcursaoService controller;
 	
 	public ExcursaoTuristica getExcursao() {
@@ -67,7 +68,6 @@ public class AgendaExcursaoTuristicaBean implements Serializable {
 	public void addAcompanhante(){
 		this.excursao.getAcompanhantes().add(acompanhante);
 		acompanhante = new Acompanhante();
-		System.out.println("\nTAMANHO DA LISTA "+excursao.getAcompanhantes().size());
 	}
 	
 	public void removeAcompanhante(){
@@ -86,13 +86,16 @@ public class AgendaExcursaoTuristicaBean implements Serializable {
 		
 		if(retorno.equals("")){
 			msg = new FacesMessage("Check-in de excursão efetuado com sucesso.");
+			msg.setDetail("");
 		}else{
 			msg = new FacesMessage("Erro ao efetuar check-in de excursão.");
 			msg.setDetail(retorno);
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 		}
-		
 		context.addMessage(null, msg);
+		excursao = new ExcursaoTuristica();
+		excursao.setAcompanhantes(new ArrayList<Acompanhante>());
+		excursao.setVisitanteMaster(new VisitanteMaster());
 	}
 	
 }

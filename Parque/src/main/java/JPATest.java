@@ -14,6 +14,7 @@ import br.com.vilarica.jpa.JpaUtil;
 import br.com.vilarica.model.Contato;
 import br.com.vilarica.model.Endereco;
 import br.com.vilarica.model.EstadoEnum;
+import br.com.vilarica.model.ExcursaoEscolar;
 import br.com.vilarica.model.Instituicao;
 import br.com.vilarica.model.Municipio;
 import br.com.vilarica.model.PaisEnum;
@@ -21,44 +22,152 @@ import br.com.vilarica.model.PaisEnum;
 public class JPATest {
 
 	EntityManager manager;
-	
+
 	public static void main(String[] args) {
-		//new JPATest().createTables();
+		// new JPATest().createTables();
 		// new JPATest().insertInit();
 		// new JPATest().multiInsert();
 		// new JPATest().updateInstituicao();
 		// new JPATest().search("", EstadoEnum.PR);
 		// new JPATest().findAll();
-		//test();
-		try {
-			manipulaArquivo();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		 new JPATest().listExcursoes();
+		
+		Date agendadaInicio = null;
+		Date novaInicio = null;
+		boolean temp = false;
+		
+		agendadaInicio = new Date();
+		agendadaInicio.setHours(8);
+		agendadaInicio.setMinutes(0);
+		novaInicio = new Date();
+		novaInicio.setHours(9);
+		novaInicio.setMinutes(30);
+		temp = new JPATest().agendavel(agendadaInicio, novaInicio);
+		if (temp == true)
+			System.out.println("Agendavel");
+		else 
+			System.out.println("Não Agendavel");
+
+		agendadaInicio = new Date();
+		agendadaInicio.setHours(8);
+		agendadaInicio.setMinutes(0);
+		novaInicio = new Date();
+		novaInicio.setHours(8);
+		novaInicio.setMinutes(30);
+		temp = new JPATest().agendavel(agendadaInicio, novaInicio);
+		if (temp == true)
+			System.out.println("Agendavel");
+		else 
+			System.out.println("Não Agendavel");
+
+		agendadaInicio = new Date();
+		agendadaInicio.setHours(9);
+		agendadaInicio.setMinutes(30);
+		novaInicio = new Date();
+		novaInicio.setHours(8);
+		novaInicio.setMinutes(0);
+		temp = new JPATest().agendavel(agendadaInicio, novaInicio);
+		if (temp == true)
+			System.out.println("Agendavel");
+		else 
+			System.out.println("Não Agendavel");
+
+		agendadaInicio = new Date();
+		agendadaInicio.setHours(10);
+		agendadaInicio.setMinutes(0);
+		novaInicio = new Date();
+		novaInicio.setHours(8);
+		novaInicio.setMinutes(0);
+		temp = new JPATest().agendavel(agendadaInicio, novaInicio);
+		if (temp == true)
+			System.out.println("Agendavel");
+		else 
+			System.out.println("Não Agendavel");
+		
+		agendadaInicio = new Date();
+		agendadaInicio.setHours(13);
+		agendadaInicio.setMinutes(0);
+		novaInicio = new Date();
+		novaInicio.setHours(10);
+		novaInicio.setMinutes(0);
+		temp = new JPATest().agendavel(agendadaInicio, novaInicio);
+		if (temp == true)
+			System.out.println("Agendavel");
+		else 
+			System.out.println("Não Agendavel");
+
 		System.exit(0);
 	}
 
-	public static void manipulaArquivo() throws Exception{		
+	private boolean agendavel(Date agendadaInicio, Date novaInicio) {
+		Date agendadaFim = new Date();
+		agendadaFim.setHours(agendadaInicio.getHours() + 2);
+		agendadaFim.setMinutes(agendadaInicio.getMinutes());
+
+		Date novaFim = new Date();
+		novaFim.setHours(novaInicio.getHours() + 2);
+		novaFim.setMinutes(novaInicio.getMinutes());
+
+		if ((novaInicio.getHours() >= agendadaInicio.getHours())
+				&& (novaInicio.getHours() < agendadaFim.getHours())) {
+			return false;
+		} else if (novaInicio.getHours() == agendadaFim.getHours()) {
+			if (novaInicio.getMinutes() < agendadaFim.getMinutes()) 
+				return false;
+		} else if (novaFim.getHours() >= agendadaInicio.getHours()
+				&& novaFim.getHours() < agendadaFim.getHours()) {
+			if (novaFim.getMinutes() != agendadaInicio.getMinutes())
+				return false;
+		} else if (novaFim.getHours() == agendadaInicio.getHours()
+				&& novaFim.getMinutes() > agendadaInicio.getMinutes()) {
+			return false;
+		} 
+		return true;
+	}
+	
+	private void listExcursoes() {
+		manager = JpaUtil.getEntityManager();
+		String sql = "SELECT e FROM ExcursaoEscolar e JOIN e.guia WHERE e.guia.id = :id AND e.dataExcursao BETWEEN :dataInicial AND :dataFinal";
+		
+		Date inicial = new Date();
+		inicial.setHours(8);
+		inicial.setMinutes(0);
+		Date finall = new Date();
+		finall.setHours(17);
+		finall.setMinutes(0);
+		
+		List<ExcursaoEscolar> e = manager.createQuery(sql)
+				.setParameter("id", new Long(1))
+				.setParameter("dataInicial", inicial)
+				.setParameter("dataFinal", finall)
+				.getResultList();
+		
+		for (ExcursaoEscolar excursaoEscolar : e) {
+			System.out.println(excursaoEscolar);
+		}
+	}
+
+	public static void manipulaArquivo() throws Exception {
 		String raiz = null;
-		if(File.separator.equals("\\"))
+		if (File.separator.equals("\\"))
 			raiz = "C:\\PEVRES";
 		else
 			raiz = "/home";
-		
+
 		System.out.println(raiz.toString());
-			
+
 		File diretorio = new File(raiz.toString());
-		File arquivo = new File(diretorio.getAbsolutePath() + File.separator + "acompanhantes.csv");
-		
+		File arquivo = new File(diretorio.getAbsolutePath() + File.separator
+				+ "acompanhantes.csv");
+
 		System.out.println(arquivo.getAbsolutePath());
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public static void test() {
 		Date atual = new Date(115, 5, 30);
 		Date dataNascimento = new Date(97, 6, 1);
-		
+
 		System.out.println(atual);
 		System.out.println(dataNascimento);
 
@@ -75,7 +184,7 @@ public class JPATest {
 				} else {
 					System.out.println("MENOR DE IDADE");
 				}
-			}else{
+			} else {
 				System.out.println("MENOR DE IDADE");
 			}
 		} else {
