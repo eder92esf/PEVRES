@@ -1,0 +1,112 @@
+<ui:composition template="/WEB-INF/template/LayoutDefault.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Pesquisar Excursão Escolar</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frm-pesq-excursao">
+
+			<h1 style="margin-top: 20px;">Pesquisar Excursão Escolar</h1>
+
+			<!-- COLOCAR CAMPO DA EXCURSAO ESCOLAR -->
+			<h:panelGrid id="panel-list" columns="2"
+				columnClasses="rotulo, campo" styleClass="space-top">
+				<p:outputLabel value="Data da Excursão" />
+				<p:calendar pattern="dd-MM-yyyy" locale="pt_BR" mask="true"
+					value="#{pesquisaExcursaoEscolarBean.dataExcursao}"
+					maxdate="#{pesquisaExcursaoEscolarBean.controller.timeStamp}">
+					<p:ajax event="dateSelect"
+						listener="#{pesquisaExcursaoEscolarBean.onDateSelect}"
+						update="dt-excursoes" />
+				</p:calendar>
+			</h:panelGrid>
+
+			<p:separator styleClass="space-top" />
+
+			<p:dataTable widgetVar="dt-excursoes" id="dt-excursoes"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom" styleClass="space-top"
+				value="#{pesquisaExcursaoEscolarBean.excursoes}" var="excursao"
+				rows="10" emptyMessage="Nenhuma excursão agendada.">
+
+				<p:column headerText="Instituicao">
+					<p:outputLabel value="#{excursao.instituicao.nome}" />
+				</p:column>
+
+				<p:column headerText="Município">
+					<p:outputLabel value="#{excursao.instituicao.municipio.nome}" />
+				</p:column>
+
+				<p:column headerText="Telefone">
+					<p:outputLabel value="#{excursao.instituicao.contato.telefone}" />
+				</p:column>
+
+				<p:column headerText="Data/Horário">
+					<p:outputLabel value="#{excursao.dataExcursao}">
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm" locale="pt_BR" />
+					</p:outputLabel>
+				</p:column>
+
+				<p:column headerText="Total Visitantes">
+					<p:outputLabel value="#{excursao.acompanhantes.size() + 1}" />
+				</p:column>
+
+				<p:column headerText="Atividades">
+					<p:dataScroller value="#{excursao.atividades}" var="atividade">
+						<p:outputLabel value="#{atividade.atividadeEnum.atividade}" />
+					</p:dataScroller>
+				</p:column>
+
+				<p:column headerText="Status">
+					<p:outputLabel value="#{excursao.status.status}" />
+				</p:column>
+
+				<p:column>
+					<p:button title="Editar" icon="ui-icon-pencil">
+					</p:button>
+					<p:commandButton title="Informações adicionais" icon="ui-icon-info"
+						update=":frm-pesq-excursao:dt-info">
+						<f:setPropertyActionListener value="#{excursao}"
+							target="#{pesquisaExcursaoEscolarBean.excursaoEscolar}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+			<p:separator styleClass="space-top" />
+
+			<!-- DATA TABLE INFO ACOMPANHANTES -->
+			<h1 style="margin-top: 5px;">Acompanhantes da Excursão</h1>
+			<p:dataTable widgetVar="dt-info" id="dt-info" paginator="true"
+				paginatorAlwaysVisible="false" paginatorPosition="bottom"
+				styleClass="space-top" var="acompanhante" rows="10"
+				value="#{pesquisaExcursaoEscolarBean.acompanhantes}"
+				emptyMessage="Nenhum acompanhante encontrado.">
+
+				<p:column headerText="Nome" style="width: 40%;">
+					<p:outputLabel value="#{acompanhante.nome}" />
+				</p:column>
+
+				<p:column headerText="Sexo" style="width: 15%; text-align: center;">
+					<p:outputLabel value="#{acompanhante.sexo.sexo}" />
+				</p:column>
+
+				<p:column headerText="Data de Nascimento"
+					style="width: 15%; text-align: center;">
+					<p:outputLabel value="#{acompanhante.dataNascimento}" />
+				</p:column>
+
+				<p:column headerText="Escolaridade"
+					style="width: 15%; text-align: center;">
+					<p:outputLabel value="#{acompanhante.escolaridade.escolaridade}" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

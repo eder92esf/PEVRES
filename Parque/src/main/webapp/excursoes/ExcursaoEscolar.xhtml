@@ -23,7 +23,8 @@
 				</p:toolbarGroup>
 			</p:toolbar>
 
-			<p:messages id="msg-agd-excursao" closable="true" autoUpdate="true" showDetail="true"/>
+			<p:messages id="msg-agd-excursao" closable="true" autoUpdate="true"
+				showDetail="true" />
 
 			<h:panelGrid columns="2" columnClasses="rotulo, campo">
 
@@ -89,8 +90,11 @@
 				value="#{agendaExcursaoEscolarBean.controller.excursoes}"
 				var="excursao" paginator="true" paginatorPosition="bottom"
 				paginatorTemplate="true" paginatorAlwaysVisible="false" rows="40">
-
-				<p:column headerText="Insituição" style="width:40%">
+				
+				<p:column headerText="Guia" style="width:20%">
+					<p:outputLabel value="#{excursao.guia.nome}" />
+				</p:column>
+				<p:column headerText="Insituição" style="width:20%">
 					<p:outputLabel value="#{excursao.instituicao.nome}" />
 				</p:column>
 				<p:column headerText="Município"
@@ -136,6 +140,7 @@
 				value="#{agendaExcursaoEscolarBean.excursaoEscolar.acompanhantes}"
 				var="acompanhante" paginator="true" paginatorPosition="bottom"
 				paginatorTemplate="true" paginatorAlwaysVisible="false" rows="40">
+				
 				<p:column headerText="Nome" style="width:50%;">
 					<p:outputLabel value="#{acompanhante.nome}" />
 				</p:column>

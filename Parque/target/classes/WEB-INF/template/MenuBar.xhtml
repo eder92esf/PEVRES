@@ -7,19 +7,29 @@
 	<h:form>
 		<p:menubar>
 			<p:submenu label="Cadastrar">
-				<p:menuitem value="Instituição" outcome="/instituicao/CadastroInstituicao"/>
-				<p:menuitem value="Município" outcome="/municipio/CadastroMunicipio"/>
-				<p:menuitem value="Guia" outcome="/guia/CadastroGuia"/>
+				<p:menuitem value="Instituição"
+					outcome="/instituicao/CadastroInstituicao" />
+				<p:menuitem value="Município" outcome="/municipio/CadastroMunicipio" />
+				<p:menuitem value="Guia" outcome="/guia/CadastroGuia" />
 			</p:submenu>
 			<p:submenu label="Pesquisar">
-				<p:menuitem value="Instituição" outcome="/instituicao/PesquisaInstituicao"/>
-				<p:menuitem value="Município" outcome="/municipio/PesquisaMunicipio"/>
-				<p:menuitem value="Guia" outcome="/guia/PesquisaGuia"/>
+				<p:menuitem value="Instituição"
+					outcome="/instituicao/PesquisaInstituicao" />
+				<p:menuitem value="Município" outcome="/municipio/PesquisaMunicipio" />
+				<p:menuitem value="Guia" outcome="/guia/PesquisaGuia" />
+				<p:submenu label="Excursão">
+					<p:menuitem value="Excursão Turistica"
+						outcome="/excursoes/PesquisaExcursaoTuristica" />
+					<p:menuitem value="Excursão Escolar"
+						outcome="/excursoes/PesquisaExcursaoEscolar" />
+				</p:submenu>
 			</p:submenu>
 			<p:submenu label="Agendar">
-				<p:menuitem value="Excursão Escolar" outcome="/excursoes/ExcursaoEscolar"/>
-				<p:menuitem value="Excursão Turística" outcome="/excursoes/ExcursaoTuristica"/>
-				<p:menuitem value="Pesquisa"/>
+				<p:menuitem value="Excursão Escolar"
+					outcome="/excursoes/ExcursaoEscolar" />
+				<p:menuitem value="Excursão Turística"
+					outcome="/excursoes/ExcursaoTuristica" />
+				<p:menuitem value="Pesquisa" />
 			</p:submenu>
 		</p:menubar>
 	</h:form>

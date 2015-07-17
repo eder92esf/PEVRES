@@ -16,7 +16,7 @@ import br.com.vilarica.model.Acompanhante;
 import br.com.vilarica.model.ExcursaoTuristica;
 import br.com.vilarica.model.Municipio;
 import br.com.vilarica.model.VisitanteMaster;
-import br.com.vilarica.service.AgendaExcursaoService;
+import br.com.vilarica.service.ExcursaoService;
 
 @Named
 @ViewScoped
@@ -27,7 +27,7 @@ public class AgendaExcursaoTuristicaBean implements Serializable {
 	private @Inject ExcursaoTuristica excursao;
 	private @Inject Acompanhante acompanhante;
 	private @Inject Acompanhante selecionado;
-	private @Inject AgendaExcursaoService controller;
+	private @Inject ExcursaoService controller;
 	
 	public ExcursaoTuristica getExcursao() {
 		return excursao;
@@ -37,7 +37,7 @@ public class AgendaExcursaoTuristicaBean implements Serializable {
 		this.excursao = excursao;
 	}
 
-	public AgendaExcursaoService getController() {
+	public ExcursaoService getController() {
 		return controller;
 	}
 	
