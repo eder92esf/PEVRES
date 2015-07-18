@@ -24,13 +24,13 @@ public class JPATest {
 	EntityManager manager;
 
 	public static void main(String[] args) {
-		// new JPATest().createTables();
+		new JPATest().createTables();
 		// new JPATest().insertInit();
 		// new JPATest().multiInsert();
 		// new JPATest().updateInstituicao();
 		// new JPATest().search("", EstadoEnum.PR);
 		// new JPATest().findAll();
-		 new JPATest().listExcursoes();
+		 //new JPATest().listExcursoes();
 		
 		Date agendadaInicio = null;
 		Date novaInicio = null;

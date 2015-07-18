@@ -26,8 +26,8 @@ public class FilterUtil implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private @Inject EntityManager manager;
-	
-	private Date dataInicio(Date data){
+
+	private Date dataInicio(Date data) {
 		Date inicio = new Date();
 		inicio.setYear(data.getYear());
 		inicio.setMonth(data.getMonth());
@@ -36,8 +36,8 @@ public class FilterUtil implements Serializable {
 		inicio.setMinutes(0);
 		return inicio;
 	}
-	
-	private Date dataFim(Date data){
+
+	private Date dataFim(Date data) {
 		Date fim = new Date();
 		fim.setYear(data.getYear());
 		fim.setMonth(data.getMonth());
@@ -50,36 +50,51 @@ public class FilterUtil implements Serializable {
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	public List<ExcursaoTuristica> listExcursaoTuristica(Date data) {
 		List<ExcursaoTuristica> lista = new ArrayList<ExcursaoTuristica>();
+		/*
 		Session s = manager.unwrap(Session.class);
 		Criteria c = s.createCriteria(ExcursaoTuristica.class);
 
 		if (data == null)
 			data = new Date();
-		
+
 		Date inicio = dataInicio(data);
 		Date fim = dataFim(data);
 
 		lista = c.add(Restrictions.between("dataExcursao", inicio, fim))
 				.addOrder(Order.asc("dataExcursao")).list();
+		*/
+		Date inicio = dataInicio(data);
+		Date fim = dataFim(data);
 
+		String sql = "SELECT e FROM ExcursaoTuristica e WHERE e.dataExcursao BETWEEN :dataInicio AND :dataFim";
+		lista = this.manager.createQuery(sql)
+				.setParameter("dataInicio", inicio)
+				.setParameter("dataFim", fim).getResultList();
 		return lista;
 	}
-	
+
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	public List<ExcursaoEscolar> listExcursaoEscolar(Date data) {
 		List<ExcursaoEscolar> lista = new ArrayList<ExcursaoEscolar>();
-		Session s = manager.unwrap(Session.class);
-		Criteria c = s.createCriteria(ExcursaoEscolar.class);
+		/*
+		 * Session s = manager.unwrap(Session.class); Criteria c =
+		 * s.createCriteria(ExcursaoEscolar.class);
+		 * 
+		 * if (data == null) data = new Date();
+		 * 
+		 * Date inicio = dataInicio(data); Date fim = dataFim(data);
+		 * 
+		 * lista = c.add(Restrictions.between("dataExcursao", inicio, fim))
+		 * .addOrder(Order.asc("dataExcursao")).list();
+		 */
 
-		if (data == null)
-			data = new Date();
-		
 		Date inicio = dataInicio(data);
 		Date fim = dataFim(data);
 
-		lista = c.add(Restrictions.between("dataExcursao", inicio, fim))
-				.addOrder(Order.asc("dataExcursao")).list();
-
+		String sql = "SELECT e FROM ExcursaoEscolar e WHERE e.dataExcursao BETWEEN :dataInicio AND :dataFim";
+		lista = this.manager.createQuery(sql)
+				.setParameter("dataInicio", inicio)
+				.setParameter("dataFim", fim).getResultList();
 		return lista;
 	}
 
@@ -95,11 +110,9 @@ public class FilterUtil implements Serializable {
 		Date fim = dataFim(data);
 
 		String sql = "SELECT e FROM ExcursaoEscolar e JOIN e.guia WHERE e.guia.id = :id AND e.dataExcursao BETWEEN :dataInicio AND :dataFim";
-		lista = this.manager.createQuery(sql)
-				.setParameter("id", id)
+		lista = this.manager.createQuery(sql).setParameter("id", id)
 				.setParameter("dataInicio", inicio)
-				.setParameter("dataFim", fim)
-				.getResultList();
+				.setParameter("dataFim", fim).getResultList();
 		return lista;
 	}
 

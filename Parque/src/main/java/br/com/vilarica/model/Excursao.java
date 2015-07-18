@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -33,7 +34,7 @@ public class Excursao implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private MeioTransporteEnum MeioTransporte;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<TipoAtividadeExcursao> atividades = new ArrayList<TipoAtividadeExcursao>();
 	
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

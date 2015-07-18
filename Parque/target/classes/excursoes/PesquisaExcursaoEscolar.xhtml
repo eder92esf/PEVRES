@@ -13,13 +13,12 @@
 
 			<h1 style="margin-top: 20px;">Pesquisar Excursão Escolar</h1>
 
-			<!-- COLOCAR CAMPO DA EXCURSAO ESCOLAR -->
 			<h:panelGrid id="panel-list" columns="2"
 				columnClasses="rotulo, campo" styleClass="space-top">
 				<p:outputLabel value="Data da Excursão" />
 				<p:calendar pattern="dd-MM-yyyy" locale="pt_BR" mask="true"
 					value="#{pesquisaExcursaoEscolarBean.dataExcursao}"
-					maxdate="#{pesquisaExcursaoEscolarBean.controller.timeStamp}">
+					navigator="true">
 					<p:ajax event="dateSelect"
 						listener="#{pesquisaExcursaoEscolarBean.onDateSelect}"
 						update="dt-excursoes" />
@@ -34,40 +33,46 @@
 				value="#{pesquisaExcursaoEscolarBean.excursoes}" var="excursao"
 				rows="10" emptyMessage="Nenhuma excursão agendada.">
 
-				<p:column headerText="Instituicao">
+				<p:column headerText="Instituicao" style="width: 27%;">
 					<p:outputLabel value="#{excursao.instituicao.nome}" />
 				</p:column>
 
-				<p:column headerText="Município">
+				<p:column headerText="Município" style="width: 10%;">
 					<p:outputLabel value="#{excursao.instituicao.municipio.nome}" />
 				</p:column>
 
-				<p:column headerText="Telefone">
+				<p:column headerText="Telefone" style="text-align: center; width: 10%;">
 					<p:outputLabel value="#{excursao.instituicao.contato.telefone}" />
 				</p:column>
+				
+				<p:column headerText="Guia" style="width: 13%;">
+					<p:outputLabel value="#{excursao.guia.nome}" />
+				</p:column>
 
-				<p:column headerText="Data/Horário">
+				<p:column headerText="Data/Horário" style="text-align: center; width: 10%;">
 					<p:outputLabel value="#{excursao.dataExcursao}">
 						<f:convertDateTime pattern="dd-MM-yyyy HH:mm" locale="pt_BR" />
 					</p:outputLabel>
 				</p:column>
 
-				<p:column headerText="Total Visitantes">
-					<p:outputLabel value="#{excursao.acompanhantes.size() + 1}" />
+				<p:column headerText="Total" style="text-align: center; width: 7%;">
+					<p:outputLabel value="#{excursao.acompanhantes.size()}" /> visitante(s)
 				</p:column>
 
-				<p:column headerText="Atividades">
+				<p:column headerText="Atividades" style="text-align: center; width: 10%;">
 					<p:dataScroller value="#{excursao.atividades}" var="atividade">
 						<p:outputLabel value="#{atividade.atividadeEnum.atividade}" />
 					</p:dataScroller>
 				</p:column>
 
-				<p:column headerText="Status">
+				<p:column headerText="Status" style="text-align: center; width: 10%;">
 					<p:outputLabel value="#{excursao.status.status}" />
 				</p:column>
 
-				<p:column>
-					<p:button title="Editar" icon="ui-icon-pencil">
+				<p:column style="text-align: center; width: 5%;">
+					<p:button title="Editar" icon="ui-icon-pencil"
+						outcome="/excursoes/ExcursaoEscolar">
+						<f:param name="excursao" value="#{excursao.id}" />
 					</p:button>
 					<p:commandButton title="Informações adicionais" icon="ui-icon-info"
 						update=":frm-pesq-excursao:dt-info">

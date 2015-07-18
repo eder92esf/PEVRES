@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -39,6 +39,7 @@ public class AgendaExcursaoEscolarBean implements Serializable {
 	private UploadedFile file;
 	private boolean isAgendavel = false;
 	private List<Acompanhante> lista;
+	private Date dataHorario;
 
 	public ExcursaoService getController() {
 		return controller;
@@ -82,9 +83,16 @@ public class AgendaExcursaoEscolarBean implements Serializable {
 
 		this.controller.listExcursoesPorGuia(excursaoEscolar.getDataExcursao(),
 				excursaoEscolar.getGuia().getId());
-		
-		this.isAgendavel = this.controller.agendar(excursaoEscolar
-				.getDataExcursao());
+
+		/* ATUALIZANDO DATA/HORARIO EXCURSAO - VERIFICANDO DISPONIBILIDADE */
+		if (excursaoEscolar.getId() != null) {
+			this.isAgendavel = this.controller.agendar(
+					excursaoEscolar.getDataExcursao(), excursaoEscolar.getId());
+			/* CADASTRANDO NOVA EXCURSAO - VERIFICANDO DISPONIBILIDADE */
+		} else {
+			this.isAgendavel = this.controller.agendar(excursaoEscolar
+					.getDataExcursao());
+		}
 
 		if (this.isAgendavel) {
 			if (lista != null) {
@@ -93,7 +101,8 @@ public class AgendaExcursaoEscolarBean implements Serializable {
 							.getInstituicao().getMunicipio());
 				}
 			}
-			String retorno = this.controller.agendaExcursaoEscolar(excursaoEscolar);
+			String retorno = this.controller
+					.agendaExcursaoEscolar(excursaoEscolar);
 			if (retorno.equals("")) {
 				msg = new FacesMessage("Excursão escolar agendada com sucesso.");
 				msg.setDetail("");
@@ -102,7 +111,6 @@ public class AgendaExcursaoEscolarBean implements Serializable {
 				msg.setDetail(retorno);
 				msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 			}
-			System.out.println("\n\nEXCURSAO AO SALVAR\n" + excursaoEscolar);
 			excursaoEscolar = new ExcursaoEscolar();
 			excursaoEscolar.setAcompanhantes(new ArrayList<Acompanhante>());
 			excursaoEscolar.setGuia(new Guia());
@@ -121,14 +129,6 @@ public class AgendaExcursaoEscolarBean implements Serializable {
 
 		this.controller.listExcursoesEscolar(excursaoEscolar.getDataExcursao());
 		this.controller.desabilitaAtividade(excursaoEscolar.getDataExcursao());
-
-		/*
-		 * if (!this.isAgendavel) { msg = new
-		 * FacesMessage("Não é possível agendar a excursão!");
-		 * msg.setDetail("Selecione uma nova data e/ou horário para este guia."
-		 * ); msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-		 * context.addMessage(null, msg); }
-		 */
 	}
 
 	public List<Municipio> filtrarMunicipio(String consulta) {
@@ -171,6 +171,12 @@ public class AgendaExcursaoEscolarBean implements Serializable {
 				System.out.println(e.getMessage());
 			}
 		}
+	}
+
+	public boolean isEditando() {
+		if (excursaoEscolar != null && excursaoEscolar.getId() != null)
+			return true;
+		return false;
 	}
 
 }

@@ -98,8 +98,8 @@ public class ExcursaoService implements Serializable {
 	public List<Instituicao> getInstituicoes() {
 		return instituicoes;
 	}
-	
-	public List<Guia> getGuias(){
+
+	public List<Guia> getGuias() {
 		return guias;
 	}
 
@@ -113,8 +113,8 @@ public class ExcursaoService implements Serializable {
 		aux.setMinutes(15);
 		return aux;
 	}
-	
-	public Date getTimeStamp(){
+
+	public Date getTimeStamp() {
 		return Calendar.getInstance().getTime();
 	}
 
@@ -158,8 +158,8 @@ public class ExcursaoService implements Serializable {
 	public List<Municipio> filtarMunicipios(String consulta) {
 		return filterUtil.filtarMunicipios(consulta, null);
 	}
-	
-	public List<Guia> filtrarGuias(String consulta){
+
+	public List<Guia> filtrarGuias(String consulta) {
 		guias = filterUtil.filtarGuias(consulta);
 		return guias;
 	}
@@ -168,12 +168,12 @@ public class ExcursaoService implements Serializable {
 		instituicoes = filterUtil.filtrarInstituicoes(consulta);
 		return instituicoes;
 	}
-	
-	public List<ExcursaoTuristica> listExcursaoTuristica(Date data){
+
+	public List<ExcursaoTuristica> listExcursaoTuristica(Date data) {
 		return filterUtil.listExcursaoTuristica(data);
 	}
-	
-	public List<ExcursaoEscolar> listExcursaoEscolar(Date data){
+
+	public List<ExcursaoEscolar> listExcursaoEscolar(Date data) {
 		return filterUtil.listExcursaoEscolar(data);
 	}
 
@@ -218,7 +218,7 @@ public class ExcursaoService implements Serializable {
 				// Verificando se a lista ja possui a atividade
 				boolean existe = false;
 				for (TipoAtividadeExcursao aux : excursao.getAtividades()) {
-					if (aux.equals(t)) {
+					if (aux.getAtividadeEnum().equals(t.getAtividadeEnum())) {
 						existe = true;
 						break;
 					}
@@ -250,8 +250,8 @@ public class ExcursaoService implements Serializable {
 	public void listExcursoesEscolar(Date data) {
 		this.excursoes = this.filterUtil.listExcursaoEscolar(data);
 	}
-	
-	public void listExcursoesPorGuia(Date data, Long id){
+
+	public void listExcursoesPorGuia(Date data, Long id) {
 		this.excursoes = filterUtil.listExcursoesPorGuia(data, id);
 	}
 
@@ -260,6 +260,25 @@ public class ExcursaoService implements Serializable {
 			boolean agendavel = agendavel(e.getDataExcursao(), nova);
 			if (!agendavel)
 				return false;
+		}
+		return true;
+	}
+
+	/* CHECANDO SE EH POSSIVEL AGENDAR EXCURSAO APOS ATUALIZAR DATA E HORARIO */
+	public boolean agendar(Date nova, Long id) {
+		ExcursaoEscolar ee = excursaoEscolarPorId(id);
+		if (!ee.getDataExcursao().equals(nova)) {
+			// Procurando conflitos de horario entre de excursoes
+			for (ExcursaoEscolar e : this.excursoes) {
+				// Não a necessidade comparar o data excursao atualizada com ela mesma
+				if(!e.getId().equals(id)){
+					boolean agendavel = agendavel(e.getDataExcursao(), nova);
+					if (!agendavel) {
+						return false;
+					}
+				}
+			}
+			return true;
 		}
 		return true;
 	}
@@ -288,5 +307,14 @@ public class ExcursaoService implements Serializable {
 			return false;
 		}
 		return true;
+	}
+
+	public ExcursaoEscolar excursaoEscolarPorId(Long id) {
+		return (ExcursaoEscolar) filterUtil.porId(ExcursaoEscolar.class, id);
+	}
+
+	public ExcursaoTuristica excursaoTuristicaPorId(Long id) {
+		return (ExcursaoTuristica) filterUtil
+				.porId(ExcursaoTuristica.class, id);
 	}
 }
