@@ -1,0 +1,37 @@
+<ui:composition template="/WEB-INF/template/LayoutDefault.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">Relatório por Data</ui:define>
+
+	<ui:define name="corpo">
+	
+		<h1 style="margin-top:20px;">Gerar Relatório</h1>
+		
+		<h:form id="frm-rep-byData">
+			<p:messages autoUpdate="true" closable="true" />
+
+			<h:panelGrid id="grid-rep-byData" columns="5"
+				columnClasses="rotulo, campo, rotulo, campo, campo"
+				styleClass="space-top">
+
+				<p:outputLabel value="Data Incial" for="data-inicio" />
+				<p:calendar id="data-inicio" value="#{relatorioBean.inicio}"
+					mask="true" pattern="dd-MM-yyyy" locale="pt_BR" required="true"
+					requiredMessage="Informe uma data de inicío para gerar o relatório" />
+
+				<p:outputLabel value="Data Final" for="data-fim" />
+				<p:calendar id="data-fim" value="#{relatorioBean.fim}" mask="true"
+					pattern="dd-MM-yyyy" locale="pt_BR" required="true"
+					requiredMessage="Informe uma data de final para gerar o relatório" />
+
+				<p:commandButton value="Gerar" title="Gerar relatório por data."
+					action="#{relatorioBean.gerar}" update="grid-rep-byData" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

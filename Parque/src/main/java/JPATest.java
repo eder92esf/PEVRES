@@ -1,7 +1,10 @@
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -24,13 +27,14 @@ public class JPATest {
 	EntityManager manager;
 
 	public static void main(String[] args) {
-		new JPATest().createTables();
+		// new JPATest().createTables();
 		// new JPATest().insertInit();
 		// new JPATest().multiInsert();
 		// new JPATest().updateInstituicao();
 		// new JPATest().search("", EstadoEnum.PR);
 		// new JPATest().findAll();
-		 //new JPATest().listExcursoes();
+		//new JPATest().listExcursoes();
+		//new JPATest().hashMap();
 		
 		Date agendadaInicio = null;
 		Date novaInicio = null;
@@ -97,6 +101,20 @@ public class JPATest {
 			System.out.println("Não Agendavel");
 
 		System.exit(0);
+	}
+	
+	private void hashMap(){
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("Fênix", 10);
+		map.put("Quinta do Sol", 7);
+		map.put("Londrina", 8);
+		
+		Set s = map.keySet();
+		
+		for (Iterator iterator = s.iterator(); iterator.hasNext();) {
+			String aux = (String) iterator.next();
+			System.out.println(map.get(aux));
+		}
 	}
 
 	private boolean agendavel(Date agendadaInicio, Date novaInicio) {

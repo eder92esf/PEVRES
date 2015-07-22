@@ -15,6 +15,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import br.com.vilarica.model.EstadoEnum;
+import br.com.vilarica.model.Excursao;
 import br.com.vilarica.model.ExcursaoEscolar;
 import br.com.vilarica.model.ExcursaoTuristica;
 import br.com.vilarica.model.Guia;
@@ -46,23 +47,38 @@ public class FilterUtil implements Serializable {
 		fim.setMinutes(0);
 		return fim;
 	}
-
+	
+	public List<ExcursaoEscolar> relatorioExcursaoEscolar(Date inicio, Date fim){
+		List<ExcursaoEscolar> lista = new ArrayList<>();
+		
+		inicio = dataInicio(inicio);
+		fim = dataFim(fim);
+		
+		String sql = "SELECT e FROM ExcursaoEscolar e WHERE e.dataExcursao BETWEEN :dataInicio AND :dataFim";
+		lista = this.manager.createQuery(sql)
+				.setParameter("dataInicio", inicio)
+				.setParameter("dataFim", fim).getResultList();
+		
+		return lista;
+	}
+	
+	public List<ExcursaoTuristica> relatorioExcursaoTuristica(Date inicio, Date fim){
+		List<ExcursaoTuristica> lista = new ArrayList<>();
+		
+		inicio = dataInicio(inicio);
+		fim = dataFim(fim);
+		
+		String sql = "SELECT e FROM ExcursaoTuristica e WHERE e.dataExcursao BETWEEN :dataInicio AND :dataFim";
+		lista = this.manager.createQuery(sql)
+				.setParameter("dataInicio", inicio)
+				.setParameter("dataFim", fim).getResultList();
+		
+		return lista;
+	}
+	
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	public List<ExcursaoTuristica> listExcursaoTuristica(Date data) {
 		List<ExcursaoTuristica> lista = new ArrayList<ExcursaoTuristica>();
-		/*
-		Session s = manager.unwrap(Session.class);
-		Criteria c = s.createCriteria(ExcursaoTuristica.class);
-
-		if (data == null)
-			data = new Date();
-
-		Date inicio = dataInicio(data);
-		Date fim = dataFim(data);
-
-		lista = c.add(Restrictions.between("dataExcursao", inicio, fim))
-				.addOrder(Order.asc("dataExcursao")).list();
-		*/
 		Date inicio = dataInicio(data);
 		Date fim = dataFim(data);
 
@@ -76,17 +92,6 @@ public class FilterUtil implements Serializable {
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	public List<ExcursaoEscolar> listExcursaoEscolar(Date data) {
 		List<ExcursaoEscolar> lista = new ArrayList<ExcursaoEscolar>();
-		/*
-		 * Session s = manager.unwrap(Session.class); Criteria c =
-		 * s.createCriteria(ExcursaoEscolar.class);
-		 * 
-		 * if (data == null) data = new Date();
-		 * 
-		 * Date inicio = dataInicio(data); Date fim = dataFim(data);
-		 * 
-		 * lista = c.add(Restrictions.between("dataExcursao", inicio, fim))
-		 * .addOrder(Order.asc("dataExcursao")).list();
-		 */
 
 		Date inicio = dataInicio(data);
 		Date fim = dataFim(data);
