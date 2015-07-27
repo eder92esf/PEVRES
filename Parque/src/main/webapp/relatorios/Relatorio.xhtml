@@ -8,9 +8,9 @@
 	<ui:define name="titulo">Relatório por Data</ui:define>
 
 	<ui:define name="corpo">
-	
-		<h1 style="margin-top:20px;">Gerar Relatório</h1>
-		
+
+		<h1 style="margin-top: 20px;">Gerar Relatório</h1>
+
 		<h:form id="frm-rep-byData">
 			<p:messages autoUpdate="true" closable="true" />
 
@@ -27,11 +27,18 @@
 				<p:calendar id="data-fim" value="#{relatorioBean.fim}" mask="true"
 					pattern="dd-MM-yyyy" locale="pt_BR" required="true"
 					requiredMessage="Informe uma data de final para gerar o relatório" />
+				<h:panelGroup>
+					<p:commandButton icon="ui-icon-document" title="Gerar relatório por data."
+						action="#{relatorioBean.gerar}" update="grid-rep-byData" />
+					<p:commandButton title="Download do Relatório" ajax="false"
+						icon="ui-icon-circle-arrow-s">
+						<p:fileDownload value="#{relatorioBean.file}" />
+					</p:commandButton>
+				</h:panelGroup>
 
-				<p:commandButton value="Gerar" title="Gerar relatório por data."
-					action="#{relatorioBean.gerar}" update="grid-rep-byData" />
 			</h:panelGrid>
 		</h:form>
+
 	</ui:define>
 
 </ui:composition>
