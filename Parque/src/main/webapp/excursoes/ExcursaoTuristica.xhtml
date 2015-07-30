@@ -75,7 +75,7 @@
 					completeMethod="#{agendaExcursaoTuristicaBean.filtrarMunicipio}"
 					emptyMessage="Nenhum Muncípio Encontrado." var="municipio"
 					itemLabel="#{municipio.nome}" itemValue="#{municipio}"
-					maxResults="7" />
+					maxResults="7"/>
 
 				<p:outputLabel value="Logradouro" for="logradouro" />
 				<p:inputText id="logradouro" size="60"
@@ -145,7 +145,7 @@
 						action="#{agendaExcursaoTuristicaBean.removeAcompanhante}"
 						update="@form">
 						<f:setPropertyActionListener value="#{acompanhante}"
-							target="#{agendaExcursaoTuristicaBean.selecionado}" />
+							target="#{agendaExcursaoTuristicaBean.selecionado}"/>
 					</p:commandButton>
 				</p:column>
 			</p:dataTable>

@@ -234,6 +234,7 @@ public class ExcursaoService implements Serializable {
 		try {
 			System.out.println(excursaoEscolar);
 			ChecaTipoAtividadeExcursao(excursaoEscolar);
+			System.out.println("\n" + excursaoEscolar.getDataExcursao());
 			if (excursaoEscolar.getId() == null) {
 				this.manager.persist(excursaoEscolar);
 			} else {

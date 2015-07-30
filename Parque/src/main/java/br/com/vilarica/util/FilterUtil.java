@@ -15,12 +15,13 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import br.com.vilarica.model.EstadoEnum;
-import br.com.vilarica.model.Excursao;
 import br.com.vilarica.model.ExcursaoEscolar;
 import br.com.vilarica.model.ExcursaoTuristica;
+import br.com.vilarica.model.Grupo;
 import br.com.vilarica.model.Guia;
 import br.com.vilarica.model.Instituicao;
 import br.com.vilarica.model.Municipio;
+import br.com.vilarica.model.Usuario;
 
 public class FilterUtil implements Serializable {
 
@@ -47,35 +48,36 @@ public class FilterUtil implements Serializable {
 		fim.setMinutes(0);
 		return fim;
 	}
-	
-	public List<ExcursaoEscolar> relatorioExcursaoEscolar(Date inicio, Date fim){
+
+	public List<ExcursaoEscolar> relatorioExcursaoEscolar(Date inicio, Date fim) {
 		List<ExcursaoEscolar> lista = new ArrayList<>();
-		
+
 		inicio = dataInicio(inicio);
 		fim = dataFim(fim);
-		
+
 		String sql = "SELECT e FROM ExcursaoEscolar e WHERE e.dataExcursao BETWEEN :dataInicio AND :dataFim";
 		lista = this.manager.createQuery(sql)
 				.setParameter("dataInicio", inicio)
 				.setParameter("dataFim", fim).getResultList();
-		
+
 		return lista;
 	}
-	
-	public List<ExcursaoTuristica> relatorioExcursaoTuristica(Date inicio, Date fim){
+
+	public List<ExcursaoTuristica> relatorioExcursaoTuristica(Date inicio,
+			Date fim) {
 		List<ExcursaoTuristica> lista = new ArrayList<>();
-		
+
 		inicio = dataInicio(inicio);
 		fim = dataFim(fim);
-		
+
 		String sql = "SELECT e FROM ExcursaoTuristica e WHERE e.dataExcursao BETWEEN :dataInicio AND :dataFim";
 		lista = this.manager.createQuery(sql)
 				.setParameter("dataInicio", inicio)
 				.setParameter("dataFim", fim).getResultList();
-		
+
 		return lista;
 	}
-	
+
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	public List<ExcursaoTuristica> listExcursaoTuristica(Date data) {
 		List<ExcursaoTuristica> lista = new ArrayList<ExcursaoTuristica>();
@@ -184,6 +186,59 @@ public class FilterUtil implements Serializable {
 		return instituicoes;
 	}
 
+	public List<Usuario> filtrarUsuarios(String nome) {
+		List<Usuario> lista = new ArrayList<Usuario>();
+
+		Session s = this.manager.unwrap(Session.class);
+		Criteria c = s.createCriteria(Usuario.class);
+
+		if (nome == null)
+			nome = "";
+
+		lista = c.add(Restrictions.ilike("nome", nome, MatchMode.ANYWHERE))
+				.addOrder(Order.asc("nome")).list();
+		return lista;
+	}
+	
+	public Usuario getUser(String nome) {
+		Usuario u = null;
+		Session s = this.manager.unwrap(Session.class);
+		Criteria c = s.createCriteria(Usuario.class);
+
+		if (nome == null)
+			nome = "";
+		
+		u = (Usuario) c.add(Restrictions.ilike("nome", nome, MatchMode.ANYWHERE)).uniqueResult();
+		return u;
+	}
+	
+	/*
+	public Usuario getUserByLogin(String login){
+		Usuario u = null;
+		Session s = this.manager.unwrap(Session.class);
+		Criteria c = s.createCriteria(Usuario.class);
+		
+		u = (Usuario) c.add(Restrictions.ilike("login", login)).uniqueResult();
+		
+		return u;
+	}
+	*/
+	
+	@SuppressWarnings("unchecked")
+	public List<Grupo> filtrarGrupos(){
+		List<Grupo> lista = new ArrayList<>();
+		Session s = this.manager.unwrap(Session.class);
+		Criteria c = s.createCriteria(Grupo.class);
+		
+		lista = c.addOrder(Order.asc("nome")).list();
+		return lista;
+	}
+	
+	public boolean usersExits(){
+		return getUser("") != null ;
+	}
+
+	@SuppressWarnings("unchecked")
 	public Object porId(Class classe, Long id) {
 		return this.manager.find(classe, id);
 	}

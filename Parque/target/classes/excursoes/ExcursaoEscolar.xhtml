@@ -54,9 +54,9 @@
 					minMinute="15" maxHour="15" maxMinute="55" required="true"
 					mindate="#{agendaExcursaoEscolarBean.controller.dataAtual}"
 					requiredMessage="Informe o data e horário para a excursao."
-					pattern="dd-MM-yyyy HH:mm" mask="true"
+					pattern="dd-MM-yyyy HH:mm" mask="true" timeZone="America/Sao_Paulo"
 					value="#{agendaExcursaoEscolarBean.excursaoEscolar.dataExcursao}">
-					<f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+					<f:convertDateTime pattern="dd-MM-yyyy HH:mm" locale="pt_BR" timeZone="America/Sao_Paulo"/>
 					<p:ajax event="dateSelect"
 						listener="#{agendaExcursaoEscolarBean.onDateSelect}"
 						update="atividades dt-excursoes" />
@@ -110,7 +110,7 @@
 				<p:column headerText="Data/Horário"
 					style="width:20%; text-align:center;">
 					<p:outputLabel value="#{excursao.dataExcursao}">
-						<f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm" locale="pt_BR" timeZone="America/Sao_Paulo"/>
 					</p:outputLabel>
 				</p:column>
 				<p:column headerText="Status" style="width:15%; text-align:center;">

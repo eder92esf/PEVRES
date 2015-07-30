@@ -17,7 +17,7 @@
 <h:body>
 
 	<p:ajaxStatus styleClass="ajax-status">
-		
+
 		<f:facet name="start">
 			<h:graphicImage library="images" name="loading.gif" />
 		</f:facet>
@@ -27,24 +27,35 @@
 	</p:ajaxStatus>
 
 	<header>
-		<div style="float: left">
-			<h:link outcome="/Home">
-				<h:graphicImage library="images" name="logo.png" />
-			</h:link>
-		</div>
-	</header>
+	<div style="float: left">
+		<h:link outcome="/Home">
+			<h:graphicImage library="images" name="logo.png" />
+		</h:link>
+	</div>
 	
+	<div id="user-div">
+		<span style="float: left; height: 30px; line-height: 30px; margin-right: 60px">
+			Olá #{seguranca.nomeUsuario}!
+		</span>
+		<ui:include src="/WEB-INF/template/MenuBar.xhtml"></ui:include>
+	</div>
+	<div style="clear: both;"> </div>
+	</header>
+
+	<!-- 
 	<div id="menu-bar">
 		<ui:include src="/WEB-INF/template/MenuBar.xhtml"></ui:include>
 	</div>
+	 -->
 
 	<div id="conteudo">
 		<ui:insert name="corpo"></ui:insert>
 	</div>
-	
+
 	<p:separator style="margin-top:20px" />
 
-	<footer>Parque Estadual Vila Rica do Espírito Santo - All Rights Reserved &reg; </footer>
+	<footer>Parque Estadual Vila Rica do Espírito Santo - All
+	Rights Reserved &reg; </footer>
 
 </h:body>
 </html>

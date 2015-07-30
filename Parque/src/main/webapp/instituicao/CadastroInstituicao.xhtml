@@ -43,7 +43,8 @@
 						completeMethod="#{cadastroInstituicaoBean.filtrarMunicipio}"
 						var="municipio" itemLabel="#{municipio.nome}"
 						itemValue="#{municipio}"
-						forceSelection="true" maxResults="7" />
+						forceSelection="true" maxResults="7">
+					</p:autoComplete>
 
 					<p:button value="Adicionar" style="margin-left: 10px;"
 						outcome="/municipio/CadastroMunicipio" />

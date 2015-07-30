@@ -18,9 +18,11 @@ import br.com.vilarica.model.Contato;
 import br.com.vilarica.model.Endereco;
 import br.com.vilarica.model.EstadoEnum;
 import br.com.vilarica.model.ExcursaoEscolar;
+import br.com.vilarica.model.Grupo;
 import br.com.vilarica.model.Instituicao;
 import br.com.vilarica.model.Municipio;
 import br.com.vilarica.model.PaisEnum;
+import br.com.vilarica.model.Usuario;
 
 public class JPATest {
 
@@ -33,9 +35,12 @@ public class JPATest {
 		// new JPATest().updateInstituicao();
 		// new JPATest().search("", EstadoEnum.PR);
 		// new JPATest().findAll();
-		//new JPATest().listExcursoes();
-		//new JPATest().hashMap();
+		// new JPATest().listExcursoes();
+		// new JPATest().hashMap();
+		// new JPATest().insertUser();
+		 new JPATest().getGrupo();
 		
+		/*
 		Date agendadaInicio = null;
 		Date novaInicio = null;
 		boolean temp = false;
@@ -99,8 +104,41 @@ public class JPATest {
 			System.out.println("Agendavel");
 		else 
 			System.out.println("Não Agendavel");
+		*/
 
 		System.exit(0);
+	}
+	
+	private void getGrupo(){
+		manager = JpaUtil.getEntityManager();
+		Usuario u = this.manager.find(Usuario.class, 2L);
+		System.out.println(u);
+		
+		EntityTransaction t = manager.getTransaction();
+		t.begin();
+		u.setGrupo(null);
+		//manager.merge(u);
+		manager.remove(u);
+		t.commit();
+	}
+	
+	private void insertUser(){
+		Grupo g = new Grupo();
+		g.setNome("ADMINISTRADORES");
+		g.setDescricao("Administradores do Sistema");
+		
+		Usuario u = new Usuario();
+		u.setEmail("eder@email.com");
+		u.setNome("Eder");
+		u.setSenha("123456");
+		u.setGrupo(g);
+		
+		manager = JpaUtil.getEntityManager();
+		EntityTransaction t = manager.getTransaction();
+		t.begin();
+		manager.persist(g);
+		manager.persist(u);
+		t.commit();
 	}
 	
 	private void hashMap(){

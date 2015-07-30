@@ -5,16 +5,17 @@ body {
 	font-family: Arial, Helvetica, sans-serif;
 	margin: 0px;
 	font-weight: normal;
+	background-color: #fdfdfd;
 }
 
-h1{
+h1 {
 	font-size: 24px;
 	font-weight: 400;
 	padding: 0px;
-	margin: 0px;	
+	margin: 0px;
 }
 
-header{
+header {
 	padding: 5px 0px;
 	margin-bottom: 20px;
 	height: 50px;
@@ -23,26 +24,44 @@ header{
 	box-shadow: 0px 2px 2px #ccc;
 }
 
-header > div {
+header>div {
 	margin-left: 8px;
 }
 
-#menu-bar{
+#menu-bar {
 	padding: 0px 8px;
 	margin-top: 30px;
 }
 
-#conteudo{
+#conteudo {
 	padding: 0px 8px;
 }
 
-footer{
+#user-div {
+	/*
+	color: white;
+	margin-top: 20px;
+	margin-right: 200px;
+	float: right;
+	*/
+	float: right;
+	margin-right: 40px;
+	margin-top: 10px;
+	font-size: 15px;
+}
+
+header>div>form>.ui-commandlink {
+	color: white !important;
+	text-decoration: none !important;
+}
+
+footer {
 	/*padding: 0px 8px;*/
 	text-align: center;
 	margin-bottom: 10px;
 }
 
-#login-dialog{
+#login-dialog {
 	width: 320px;
 	margin: auto;
 	margin-top: 150px;
@@ -53,30 +72,29 @@ footer{
 	padding: 0px !important;
 }
 
-.ui-datascroller > .ui-widget-content {
+.ui-datascroller>.ui-widget-content {
 	border: 0px solid #A8A8A8 !important;
 	background: none !important;
 }
 
-.ui-datascroller > .ui-datascroller-loader {
+.ui-datascroller>.ui-datascroller-loader {
 	padding: 0px !important;
 }
 /* Customizaçao dataScroller - Fim*/
-
-.space-top{
+.space-top {
 	margin-top: 10px;
 }
 
-.descricao{
+.descricao {
 	margin-top: 25px;
 }
 
-#painel{
+#painel {
 	width: 100%;
 	margin-top: 20px;
 }
 
-.grid-login{
+.grid-login {
 	background-color: #f2f2f2;
 	border-radius: 8px;
 	border: 1px solid #ccc;
@@ -84,25 +102,25 @@ footer{
 	padding: 10px;
 }
 
-.rotulo{
+.rotulo {
 	width: 150px;
 	margin-right: 10px;
 	/*background-color: blue;*/
 }
 
-.ui-panelgrid td{
+.ui-panelgrid td {
 	height: 34px;
 }
 
-.ui-selectmanycheckbox td{
+.ui-selectmanycheckbox td {
 	padding: 0 !important;
 }
 
-.ui-selectmanycheckbox td label{
+.ui-selectmanycheckbox td label {
 	margin-right: 10px;
 }
 
-.ajax-status{
+.ajax-status {
 	position: fixed;
 	top: 65px;
 	right: 180px;
@@ -110,39 +128,41 @@ footer{
 	height: 35px;
 }
 
-.produto-tabela input{
+.produto-tabela input {
 	width: 99%;
 }
 
 /*Customiza MenuBar do Sistema - Inicio*/
-.menu-sistema{
+.menu-sistema {
 	border: 0px !important;
 	padding: 0px !important;
 	background: none !important;
 }
 
-.menu-sistema .ui-menu-parent > a .ui-menuitem-text, .menu-sistema > .ui-menu-list > .ui-menuitem > a > .ui-menuitem{
-	color: #ffffff !important;
+.menu-sistema .ui-menu-parent > a .ui-menuitem-text, .menu-sistema > .ui-menu-list > .ui-menuitem > a > .ui-menuitem-text {
+    color: #ffffff !important;
 }
 
 .menu-sistema .ui-icon-triangule-1-s {
-	background-color:  url(#{resource['images:seta-para-baixo-png']}) no-repeat;
+	background-color: url(#{ resource [ 'images:seta-para-baixo-png' ]}) no-repeat;
 }
 
 /*Customiza MenuBar do Sistema - Fim*/
 
 /*Customiza TabView - Inicio*/
-.ui-tabs .ui-tabs-panel{
-	padding: 0.5em 0.2em !important;	
+.ui-tabs .ui-tabs-panel {
+	padding: 0.5em 0.2em !important;
 }
 
-.ui-tabs{
+.ui-tabs {
 	padding: 0px !important;
 }
+
 .ui-tabs .ui-tabs-nav {
 	margin: -1px !important;
 }
-.ui-tabs.ui-tabs-top > .ui-tabs-nav{
+
+.ui-tabs.ui-tabs-top>.ui-tabs-nav {
 	padding: 0px !important;
 }
 /*Customiza TabView - Fim*/

@@ -41,6 +41,14 @@ public class AgendaExcursaoEscolarBean implements Serializable {
 	private List<Acompanhante> lista;
 	private Date dataHorario;
 
+	public Date getDataHorario() {
+		return dataHorario;
+	}
+
+	public void setDataHorario(Date dataHorario) {
+		this.dataHorario = dataHorario;
+	}
+
 	public ExcursaoService getController() {
 		return controller;
 	}
@@ -80,6 +88,8 @@ public class AgendaExcursaoEscolarBean implements Serializable {
 	public void agendar() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		FacesMessage msg = null;
+		
+		System.out.println("\nBEAN DATA EXCURSAO " + excursaoEscolar.getDataExcursao());
 
 		this.controller.listExcursoesPorGuia(excursaoEscolar.getDataExcursao(),
 				excursaoEscolar.getGuia().getId());
