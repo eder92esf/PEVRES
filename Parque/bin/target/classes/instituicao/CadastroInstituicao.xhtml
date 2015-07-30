@@ -1,0 +1,90 @@
+<ui:composition template="/WEB-INF/template/LayoutDefault.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="instituicao"
+			value="#{cadastroInstituicaoBean.instituicao}" />
+	</f:metadata>
+
+	<ui:define name="titulo">#{cadastroInstituicaoBean.editando ? "Editar Instituição" : "Cadastrar Instituição"}</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frm-cad-inst">
+		
+		<h1 class="descricao">#{cadastroInstituicaoBean.editando ? "Editar
+			Instituição" : "Cadastrar Instituição"}</h1>
+
+			<p:toolbar styleClass="space-top">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/instituicao/CadastroInstituicao" />
+					<p:commandButton value="Salvar"
+						action="#{cadastroInstituicaoBean.salvar}" process="@form" update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisar" outcome="/instituicao/PesquisaInstituicao" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg-cad-inst" autoUpdate="false" closable="true" showDetail="true"/>
+
+			<h:panelGrid columns="2" columnClasses="rotulo, campo"
+				styleClass="space-top">
+
+				<p:outputLabel value="Município" for="municipio" />
+				<h:panelGroup>
+					<p:autoComplete id="municipio"
+						emptyMessage="Nenhuma Município Encontrado."
+						value="#{cadastroInstituicaoBean.instituicao.municipio}"
+						completeMethod="#{cadastroInstituicaoBean.filtrarMunicipio}"
+						var="municipio" itemLabel="#{municipio.nome}"
+						itemValue="#{municipio}"
+						forceSelection="true" maxResults="7" />
+
+					<p:button value="Adicionar" style="margin-left: 10px;"
+						outcome="/municipio/CadastroMunicipio" />
+				</h:panelGroup>
+
+				<p:outputLabel value="Sigla" for="sigla" />
+				<p:inputText id="sigla" maxlength="10" size="20"
+					value="#{cadastroInstituicaoBean.instituicao.sigla}" />
+
+				<p:outputLabel value="Nome" for="nome" />
+				<p:inputText id="nome"
+					value="#{cadastroInstituicaoBean.instituicao.nome}"
+					size="100" maxlength="100" />
+
+				<p:outputLabel value="Logradouro" for="logradouro" />
+				<p:inputText id="logradouro"
+					value="#{cadastroInstituicaoBean.instituicao.endereco.logradouro}"
+					size="60" maxlength="50" />
+
+				<p:outputLabel value="Bairro" for="bairro" />
+				<p:inputText id="bairro"
+					value="#{cadastroInstituicaoBean.instituicao.endereco.bairro}"
+					size="60" maxlength="50" />
+
+				<p:outputLabel value="Número" for="numero" />
+				<p:inputText id="numero"
+					value="#{cadastroInstituicaoBean.instituicao.endereco.numero}"
+					size="20" maxlength="4" />
+
+				<p:outputLabel value="Telefone" for="telefone" />
+				<p:inputMask id="telefone" mask="99 9999-9999?9"
+					value="#{cadastroInstituicaoBean.instituicao.contato.telefone}"
+					maxlength="11" size="20">
+				</p:inputMask>
+
+				<p:outputLabel value="E-mail" for="email" />
+				<p:inputText id="email"
+					value="#{cadastroInstituicaoBean.instituicao.contato.email}" />
+			</h:panelGrid>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

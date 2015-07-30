@@ -1,0 +1,213 @@
+<ui:composition template="/WEB-INF/template/LayoutDefault.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Check-in Excursão Turística</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frm-agd-excursao">
+
+			<h1 style="margin-top: 20px;">Check-in Excursão Turística</h1>
+
+			<p:toolbar styleClass="space-top">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/excursoes/ExcursaoTuristica" />
+					<p:commandButton value="Salvar"
+						action="#{agendaExcursaoTuristicaBean.checkin}" process="@form"
+						update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisar" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg-agd-excursao" closable="true" autoUpdate="true" showDetail="true"/>
+
+			<h:panelGrid columnClasses="rotulo, campo, rotulo, campo" columns="4"
+				styleClass="space-top">
+
+				<p:outputLabel value="Nome" for="nome" />
+				<p:inputText id="nome" size="60" maxlength="100"
+					value="#{agendaExcursaoTuristicaBean.excursao.visitanteMaster.nome}" />
+
+				<p:outputLabel value="Data de Nascimento" for="data-nascimento" />
+				<p:calendar id="data-nascimento" pattern="dd-MM-yyyy"
+					mask="true" maxdate="#{agendaExcursaoTuristicaBean.controller.dataAtual}"
+					value="#{agendaExcursaoTuristicaBean.excursao.visitanteMaster.dataNascimento}"
+					required="true"
+					requiredMessage="Data de Nascimento - Deve ser informado.">
+					<f:convertDateTime pattern="dd-MM-yyyy" />
+					<p:ajax event="dateSelect"
+						listener="#{agendaExcursaoTuristicaBean.onDateSelect}" update="atividades" />
+				</p:calendar>
+
+				<p:outputLabel value="Sexo" for="sexo" />
+				<p:selectOneMenu id="sexo"
+					value="#{agendaExcursaoTuristicaBean.excursao.visitanteMaster.sexo}">
+					<f:selectItems value="#{agendaExcursaoTuristicaBean.controller.sexos}"
+						var="sexo" itemValue="#{sexo}" itemLabel="#{sexo.sexo}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Escolaridade" for="escolaridade" />
+				<p:selectOneMenu id="escolaridade"
+					value="#{agendaExcursaoTuristicaBean.excursao.visitanteMaster.escolaridade}">
+					<f:selectItems
+						value="#{agendaExcursaoTuristicaBean.controller.escolaridades}"
+						var="escolaridade" itemValue="#{escolaridade}"
+						itemLabel="#{escolaridade.escolaridade}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="E-mail" for="email" />
+				<p:inputText id="email" size="60"
+					value="#{agendaExcursaoTuristicaBean.excursao.visitanteMaster.contato.email}" />
+
+				<p:outputLabel value="Telefone" for="telefone" />
+				<p:inputMask mask="99 9999-9999?9" id="telefone"
+					value="#{agendaExcursaoTuristicaBean.excursao.visitanteMaster.contato.telefone}" />
+
+				<p:outputLabel value="Município" for="municipio" />
+				<p:autoComplete id="municipio" size="60" forceSelection="true"
+					value="#{agendaExcursaoTuristicaBean.excursao.visitanteMaster.municipio}"
+					completeMethod="#{agendaExcursaoTuristicaBean.filtrarMunicipio}"
+					emptyMessage="Nenhum Muncípio Encontrado." var="municipio"
+					itemLabel="#{municipio.nome}" itemValue="#{municipio}"
+					maxResults="7" />
+
+				<p:outputLabel value="Logradouro" for="logradouro" />
+				<p:inputText id="logradouro" size="60"
+					value="#{agendaExcursaoTuristicaBean.excursao.visitanteMaster.endereco.logradouro}" />
+
+				<p:outputLabel value="Bairro" for="bairro" />
+				<p:inputText id="bairro" size="60"
+					value="#{agendaExcursaoTuristicaBean.excursao.visitanteMaster.endereco.bairro}" />
+
+				<p:outputLabel value="Número" for="numero" />
+				<p:inputText id="numero" maxlength="4"
+					value="#{agendaExcursaoTuristicaBean.excursao.visitanteMaster.endereco.numero}" />
+
+				<p:outputLabel value="Meio de Transporte" for="meio-transporte" />
+				<p:selectOneMenu id="meio-transporte"
+					value="#{agendaExcursaoTuristicaBean.excursao.meioTransporte}">
+					<f:selectItems
+						value="#{agendaExcursaoTuristicaBean.controller.meiosTransporte}"
+						var="meio" itemValue="#{meio}" itemLabel="#{meio.meioTransporte}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Atividades" for="atividades" />
+				<p:selectManyCheckbox id="atividades" required="true"
+					requiredMessage="Atividades - Selecione uma atividade."
+					value="#{agendaExcursaoTuristicaBean.controller.atividadesValue}">
+					<f:selectItem itemLabel="Vídeo" itemValue="Vídeo" />
+					<f:selectItem itemLabel="Museu" itemValue="Museu" />
+					<f:selectItem itemLabel="Trilha do Lago" itemValue="Trilha do Lago"
+						itemDisabled="#{agendaExcursaoTuristicaBean.controller.imputavel}" />
+				</p:selectManyCheckbox>
+
+			</h:panelGrid>
+
+			<p:commandButton value="Adicionar" title="Adicionar Acompanhantes"
+				styleClass="space-top" onclick="showDialog('dlg-acompanhantes');" />
+
+		</h:form>
+		
+		<!-- FORM PARA DATA TABLE -->
+		<h:form id="frm-dt-acomp">
+			<p:dataTable id="dt-acompanhantes" widgetVar="wv-dt-acompanhantes"
+				emptyMessage="Nenhum acompanhante encontrado" paginator="true"
+				value="#{agendaExcursaoTuristicaBean.excursao.acompanhantes}"
+				var="acompanhante" paginatorAlwaysVisible="false" rows="10"
+				paginatorPosition="bottom" styleClass="space-top">
+				<p:column headerText="Nome" style="width: 35%;">
+					<p:outputLabel value="#{acompanhante.nome}" />
+				</p:column>
+				<p:column headerText="Sexo" style="width:10%; text-align:center;">
+					<p:outputLabel value="#{acompanhante.sexo.sexo}" />
+				</p:column>
+				<p:column headerText="Escolaridade" style="width:10%; text-align:center;">
+					<p:outputLabel value="#{acompanhante.escolaridade.escolaridade}" />
+				</p:column>
+				<p:column headerText="Data de Nascimento" style="width:10%; text-align:center;">
+					<p:outputLabel value="#{acompanhante.dataNascimento}">
+						<f:convertDateTime pattern="dd - MM - yyyy" locale="pt_BR" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Município" style="width:32%;">
+					<p:outputLabel value="#{acompanhante.municipio.nome}" />
+					-
+					<p:outputLabel value="#{acompanhante.municipio.estado.uf}"/>
+				</p:column>
+				<p:column style="width:3%;">
+					<p:commandButton icon="ui-icon-trash"
+						action="#{agendaExcursaoTuristicaBean.removeAcompanhante}"
+						update="@form">
+						<f:setPropertyActionListener value="#{acompanhante}"
+							target="#{agendaExcursaoTuristicaBean.selecionado}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+		<!-- FORM PARA DIALOG -->		
+		<h:form id="frm-add-acomp">
+			<p:dialog widgetVar="dlg-acompanhantes" modal="true"
+				closeOnEscape="true" resizable="false">
+
+				<h1>Adicionar Acompanhantes</h1>
+
+				<p:messages id="dlg-msg-add-acomp" autoUpdate="false"
+					closable="true" />
+
+				<h:panelGrid columns="2" columnClasses="rotulo, campo">
+					<p:outputLabel value="Nome" for="a-nome" />
+					<p:inputText id="a-nome" maxlength="100" size="60"
+						value="#{agendaExcursaoTuristicaBean.acompanhante.nome}" />
+
+					<p:outputLabel value="Sexo" for="a-sexo" />
+					<p:selectOneMenu id="a-sexo"
+						value="#{agendaExcursaoTuristicaBean.acompanhante.sexo}">
+						<f:selectItems value="#{agendaExcursaoTuristicaBean.controller.sexos}"
+							var="sexo" itemValue="#{sexo}" itemLabel="#{sexo.sexo}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Escolaridade" for="a-escolaridade" />
+					<p:selectOneMenu id="a-escolaridade"
+						value="#{agendaExcursaoTuristicaBean.acompanhante.escolaridade}">
+						<f:selectItems
+							value="#{agendaExcursaoTuristicaBean.controller.escolaridades}"
+							var="escolaridade" itemValue="#{escolaridade}"
+							itemLabel="#{escolaridade.escolaridade}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="Data de Nascimento" for="a-nascimento" />
+					<p:calendar id="a-nascimento" pattern="dd-MM-yyyy" mask="true"
+						maxdate="#{agendaExcursaoTuristicaBean.controller.dataAtual}"
+						locale="pt_BR"
+						value="#{agendaExcursaoTuristicaBean.acompanhante.dataNascimento}"
+						required="true"
+						requiredMessage="Data de nascimento - Deve ser informado.">
+						<f:convertDateTime pattern="dd-MM-yyyy" />
+					</p:calendar>
+
+					<p:outputLabel value="Município" for="a-municipio" />
+					<p:autoComplete id="a-municipio" size="60" forceSelection="true"
+						value="#{agendaExcursaoTuristicaBean.acompanhante.municipio}"
+						completeMethod="#{agendaExcursaoTuristicaBean.filtrarMunicipio}"
+						emptyMessage="Nenhum Muncípio Encontrado." var="municipio"
+						itemLabel="#{municipio.nome}" itemValue="#{municipio}"
+						maxResults="7" />
+
+					<p:commandButton value="Salvar"
+						title="Adicionar Acompanhante a excursão" update="@form"
+						action="#{agendaExcursaoTuristicaBean.addAcompanhante}" process="@form"
+						onclick="validate('dlg-acompanhantes', args);" />
+
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

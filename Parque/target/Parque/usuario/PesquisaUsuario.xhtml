@@ -1,0 +1,57 @@
+<ui:composition template="/WEB-INF/template/LayoutDefault.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Pesquisar Usuário</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frm-pes-inst" styleClass="space-top">
+
+			<p:messages autoUpdate="true" id="msg-info" />
+
+			<h1 class="descricao">Pesquisar Usuário</h1>
+
+			<h:panelGrid columns="2" columnClasses="rotulo, campo"
+				styleClass="space-top">
+
+				<p:outputLabel value="Nome" for="nome" />
+				<p:inputText id="nome" size="60" title="Informe um nome."
+					value="#{pesquisaUsuarioBean.username}" />
+				<p:commandButton value="Pesquisar" update="@all"
+					action="#{pesquisaUsuarioBean.filter}" />
+
+			</h:panelGrid>
+
+			<p:dataTable id="dt-user" paginator="true" paginatorPosition="bottom"
+				paginatorAlwaysVisible="false"
+				value="#{pesquisaUsuarioBean.controller.usuarios}" var="user"
+				emptyMessage="Nenhum registro encontrado." rows="10"
+				widgetVar="dt-guia" styleClass="space-top">
+
+				<p:column headerText="Nome" style="width: 60%">
+					<p:outputLabel value="#{user.nome}" />
+				</p:column>
+
+				<p:column headerText="Grupo" style="width: 30%; text-align: center;">
+					<p:outputLabel value="#{user.grupo.nome}" />
+				</p:column>
+
+				<p:column style="width: 3%">
+					<p:button title="Editar" icon="ui-icon-pencil"
+						outcome="/usuario/CadastroUsuario">
+						<f:param name="usuario" value="#{user.id}" />
+					</p:button>
+					<p:commandButton icon="ui-icon-trash" title="Remover"
+						action="#{pesquisaUsuarioBean.remover}">
+						<f:setPropertyActionListener value="#{user}"
+							target="#{pesquisaUsuarioBean.selecionado}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

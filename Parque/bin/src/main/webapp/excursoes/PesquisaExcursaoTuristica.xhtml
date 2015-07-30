@@ -1,0 +1,110 @@
+<ui:composition template="/WEB-INF/template/LayoutDefault.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Pesquisar Excursão Turística</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frm-pesq-excursao">
+
+			<h1 style="margin-top: 20px;">Pesquisar Excursão Turística</h1>
+
+			<h:panelGrid id="panel-list" columns="2"
+				columnClasses="rotulo, campo" styleClass="space-top">
+				<p:outputLabel value="Data da Excursão" />
+				<p:calendar pattern="dd-MM-yyyy" locale="pt_BR" mask="true"
+					value="#{pesquisaExcursaoTuristicaBean.dataExcursao}"
+					maxdate="#{pesquisaExcursaoTuristicaBean.controller.timeStamp}">
+					<p:ajax event="dateSelect"
+						listener="#{pesquisaExcursaoTuristicaBean.onDateSelect}"
+						update="dt-excursoes" />
+				</p:calendar>
+			</h:panelGrid>
+
+			<p:separator styleClass="space-top" />
+
+			<p:dataTable widgetVar="dt-excursoes" id="dt-excursoes"
+				paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom" styleClass="space-top"
+				value="#{pesquisaExcursaoTuristicaBean.excursoes}" var="excursao"
+				rows="10" emptyMessage="Nenhuma excursão agendada.">
+
+				<p:column headerText="Data/Horário"
+					style="width: 10%; text-align: center;">
+					<p:outputLabel value="#{excursao.dataExcursao}">
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm" locale="pt_BR" />
+					</p:outputLabel>
+				</p:column>
+
+				<p:column headerText="Atividades" style="width: 10%;">
+					<p:dataScroller value="#{excursao.atividades}" var="atividade">
+						<p:outputLabel value="#{atividade.atividadeEnum.atividade}" />
+					</p:dataScroller>
+				</p:column>
+
+				<p:column headerText="Total" style="width: 10%; text-align: center;">
+					<p:outputLabel value="#{excursao.acompanhantes.size() + 1}" /> visitante(s)
+				</p:column>
+
+				<p:column headerText="Nome" style="width: 47%;">
+					<p:outputLabel value="#{excursao.visitanteMaster.nome}" />
+				</p:column>
+
+				<p:column headerText="Data de Nascimento"
+					style="width: 10%; text-align: center;">
+					<p:outputLabel value="#{excursao.visitanteMaster.dataNascimento}">
+						<f:convertDateTime pattern="dd-MM-yyyy" locale="pt_BR" />
+					</p:outputLabel>
+				</p:column>
+
+				<p:column headerText="Telefone"
+					style="width: 10%; text-align: center;">
+					<p:outputLabel value="#{excursao.visitanteMaster.contato.telefone}" />
+				</p:column>
+
+				<p:column style="width: 3%;">
+					<p:commandButton title="Visualizar" icon="ui-icon-info"
+						update=":frm-pesq-excursao:dt-info">
+						<f:setPropertyActionListener value="#{excursao}"
+							target="#{pesquisaExcursaoTuristicaBean.excursaoTuristica}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+			<p:separator styleClass="space-top" />
+
+			<!-- DATA TABLE INFO -->
+			<h1 style="margin-top: 5px;">Acompanhantes da Excursão</h1>
+			<p:dataTable widgetVar="dt-info" id="dt-info" paginator="true"
+				paginatorAlwaysVisible="false" paginatorPosition="bottom"
+				styleClass="space-top" var="acompanhante" rows="10"
+				value="#{pesquisaExcursaoTuristicaBean.acompanhantes}"
+				emptyMessage="Nenhum acompanhante encontrado.">
+
+				<p:column headerText="Nome" style="width: 40%;">
+					<p:outputLabel value="#{acompanhante.nome}" />
+				</p:column>
+
+				<p:column headerText="Sexo" style="width: 15%; text-align: center;">
+					<p:outputLabel value="#{acompanhante.sexo.sexo}" />
+				</p:column>
+
+				<p:column headerText="Data de Nascimento"
+					style="width: 15%; text-align: center;">
+					<p:outputLabel value="#{acompanhante.dataNascimento}" />
+				</p:column>
+
+				<p:column headerText="Escolaridade"
+					style="width: 15%; text-align: center;">
+					<p:outputLabel value="#{acompanhante.escolaridade.escolaridade}" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

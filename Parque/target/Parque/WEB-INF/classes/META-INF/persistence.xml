@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	
+		<persistence-unit name="VilaRica">
+			<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		
+		<class>br.com.vilarica.model.Contato</class>
+		<class>br.com.vilarica.model.Endereco</class>
+		<class>br.com.vilarica.model.ExcursaoTuristica</class>
+		<class>br.com.vilarica.model.ExcursaoEscolar</class>
+		<class>br.com.vilarica.model.Municipio</class>
+		<class>br.com.vilarica.model.Pesquisa</class>
+		<class>br.com.vilarica.model.VisitanteMaster</class>
+		<class>br.com.vilarica.model.Instituicao</class>
+		<class>br.com.vilarica.model.Acompanhante</class>
+		<class>br.com.vilarica.model.TipoAtividadeExcursao</class>
+		<class>br.com.vilarica.model.Excursao</class>
+		<class>br.com.vilarica.model.Guia</class>
+		<class>br.com.vilarica.model.Usuario</class>
+		
+		<properties>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/vilarica" />
+			<property name="javax.persistence.jdbc.user" value="eder" />
+			<property name="javax.persistence.jdbc.password" value="toor" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+		</properties>
+	</persistence-unit>
+	
+</persistence>

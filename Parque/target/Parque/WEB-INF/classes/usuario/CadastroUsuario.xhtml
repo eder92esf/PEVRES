@@ -1,0 +1,65 @@
+<ui:composition template="/WEB-INF/template/LayoutDefault.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<f:metadata>
+		<o:viewParam name="usuario" value="#{cadastroUsuarioBean.usuario}" />
+	</f:metadata>
+
+	<ui:define name="titulo">#{cadastroUsuarioBean.editando ? "Editar Usuário" : "Cadastrar Usuário"}</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frm-agd-excursao">
+			<h1 style="margin-top: 20px;">#{cadastroUsuarioBean.editando ?
+				"Editar Usuário" : "Cadastrar Usuário"}</h1>
+
+			<p:toolbar styleClass="space-top">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/usuario/CadastroUsuario" />
+					<p:commandButton value="Salvar"
+						action="#{cadastroUsuarioBean.salvar}" process="@form"
+						update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisar" outcome="/usuario/PesquisaUsuario"/>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:messages id="msg-add-user" closable="true" autoUpdate="true"
+				showDetail="false" />
+
+			<h:panelGrid columnClasses="rotulo, campo" columns="2"
+				styleClass="space-top">
+
+				<p:outputLabel value="Nome" for="nome" />
+				<p:inputText id="nome" size="60" maxlength="100"
+					value="#{cadastroUsuarioBean.usuario.nome}" />
+
+				<p:outputLabel value="E-mail" for="login" />
+				<p:inputText id="login" maxlength="60"
+					value="#{cadastroUsuarioBean.usuario.email}" />
+
+				<p:outputLabel value="Grupo" for="grupo" />
+				<p:selectOneMenu value="#{cadastroUsuarioBean.usuario.grupo}"
+					id="grupo" converter="omnifaces.SelectItemsConverter">
+					<f:selectItems value="#{cadastroUsuarioBean.grupos}" var="grupo"
+						itemLabel="#{grupo.nome}" itemValue="#{grupo}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Senha" for="senha" />
+				<p:password id="senha" value="#{cadastroUsuarioBean.usuario.senha}"
+					maxlength="10" />
+
+				<p:outputLabel value="Confirme Senha" for="c-senha" />
+				<p:password id="c-senha" maxlength="10"
+					value="#{cadastroUsuarioBean.confirmaSenha}" />
+
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

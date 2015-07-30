@@ -1,0 +1,169 @@
+@CHARSET "UTF-8";
+
+body {
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0px;
+	font-weight: normal;
+}
+
+h1 {
+	font-size: 24px;
+	font-weight: 400;
+	padding: 0px;
+	margin: 0px;
+}
+
+header {
+	padding: 5px 0px;
+	margin-bottom: 20px;
+	height: 50px;
+	background-color: #545454;
+	color: #fff;
+	box-shadow: 0px 2px 2px #ccc;
+}
+
+header>div {
+	margin-left: 8px;
+}
+
+#menu-bar {
+	padding: 0px 8px;
+	margin-top: 30px;
+}
+
+#conteudo {
+	padding: 0px 8px;
+}
+
+#user-div {
+	color: white;
+	margin-top: 20px;
+	margin-right: 200px;
+	float: right;
+}
+
+header > div > form > .ui-commandlink{
+	color: white !important;
+	text-decoration: none !important;
+}
+
+footer {
+	/*padding: 0px 8px;*/
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+#login-dialog {
+	width: 320px;
+	margin: auto;
+	margin-top: 150px;
+}
+
+/* Customizaçao dataScroller - Inicio*/
+.ui-datascroller .ui-datascroller-content {
+	padding: 0px !important;
+}
+
+.ui-datascroller>.ui-widget-content {
+	border: 0px solid #A8A8A8 !important;
+	background: none !important;
+}
+
+.ui-datascroller>.ui-datascroller-loader {
+	padding: 0px !important;
+}
+/* Customizaçao dataScroller - Fim*/
+.space-top {
+	margin-top: 10px;
+}
+
+.descricao {
+	margin-top: 25px;
+}
+
+#painel {
+	width: 100%;
+	margin-top: 20px;
+}
+
+.grid-login {
+	background-color: #f2f2f2;
+	border-radius: 8px;
+	border: 1px solid #ccc;
+	margin-top: 8px;
+	padding: 10px;
+}
+
+.rotulo {
+	width: 150px;
+	margin-right: 10px;
+	/*background-color: blue;*/
+}
+
+.ui-panelgrid td {
+	height: 34px;
+}
+
+.ui-selectmanycheckbox td {
+	padding: 0 !important;
+}
+
+.ui-selectmanycheckbox td label {
+	margin-right: 10px;
+}
+
+.ajax-status {
+	position: fixed;
+	top: 65px;
+	right: 180px;
+	width: 35px;
+	height: 35px;
+}
+
+.produto-tabela input {
+	width: 99%;
+}
+
+/*Customiza MenuBar do Sistema - Inicio*/
+.menu-sistema {
+	border: 0px !important;
+	padding: 0px !important;
+	background: none !important;
+}
+
+.menu-sistema .ui-menu-parent>a .ui-menuitem-text, .menu-sistema>.ui-menu-list>.ui-menuitem>a>.ui-menuitem
+	{
+	color: #ffffff !important;
+}
+
+.menu-sistema .ui-icon-triangule-1-s {
+	background-color: url(#{ resource [ 'images:seta-para-baixo-png' ]
+}
+
+)
+no-repeat
+;
+
+
+}
+
+/*Customiza MenuBar do Sistema - Fim*/
+
+/*Customiza TabView - Inicio*/
+.ui-tabs .ui-tabs-panel {
+	padding: 0.5em 0.2em !important;
+}
+
+.ui-tabs {
+	padding: 0px !important;
+}
+
+.ui-tabs .ui-tabs-nav {
+	margin: -1px !important;
+}
+
+.ui-tabs.ui-tabs-top>.ui-tabs-nav {
+	padding: 0px !important;
+}
+/*Customiza TabView - Fim*/

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<!-- <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />  -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UFT-8" />
+	<title><ui:insert name="titulo">Login</ui:insert></title>
+	<h:outputStylesheet library="css" name="sistema.css"></h:outputStylesheet>
+
+</h:head>
+<h:body>
+
+
+	<div id="login-dialog">
+		<h1>Login</h1>
+		<h:form id="frm">
+			<p:messages autoUpdate="true" closable="true"/>
+
+			<h:panelGrid columns="2" styleClass="grid-login">
+				<p:outputLabel value="Login" for="usuario" />
+				<p:inputText id="usuario" size="30" />
+
+				<p:outputLabel value="Senha" for="senha" />
+				<p:password id="senha" size="30" />
+
+				<p:outputLabel />
+				<p:commandButton value="Acessar" />
+			</h:panelGrid>
+		</h:form>
+	</div>
+</h:body>
+</html>
