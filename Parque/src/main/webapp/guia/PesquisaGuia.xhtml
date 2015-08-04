@@ -19,38 +19,42 @@
 				styleClass="space-top">
 
 				<p:outputLabel value="Nome" for="nome" />
-				<p:inputText id="nome" size="60" title="Informe um nome."
-					value="#{pesquisaGuiaBean.nome}" />
-				<p:commandButton value="Pesquisar" update="@all"
-					action="#{pesquisaGuiaBean.filter}" />
+				<h:panelGroup>
+					<p:inputText id="nome" size="60" title="Informe um nome."
+						value="#{pesquisaGuiaBean.nome}" />
+					<p:commandButton value="Pesquisar" update="@all"
+						action="#{pesquisaGuiaBean.filter}" style="margin-left: 15px;"/>
+				</h:panelGroup>
 
 			</h:panelGrid>
 
-			<p:dataTable id="dt-guia" paginator="true"
-				paginatorPosition="bottom" paginatorAlwaysVisible="false"
-				value="#{pesquisaGuiaBean.controller.guias}"
-				var="guia" emptyMessage="Nenhum registro encontrado." rows="10"
+			<p:dataTable id="dt-guia" paginator="true" paginatorPosition="bottom"
+				paginatorAlwaysVisible="false"
+				value="#{pesquisaGuiaBean.controller.guias}" var="guia"
+				emptyMessage="Nenhum registro encontrado." rows="10"
 				widgetVar="dt-guia" styleClass="space-top">
 
-				<p:column headerText="Nome" style="width: 60%">
+				<p:column headerText="Nome" style="width: 50%">
 					<p:outputLabel value="#{guia.nome}" />
 				</p:column>
-				
+
 				<p:column headerText="Sexo" style="width: 10%; text-align: center;">
-					<p:outputLabel value="#{guia.sexo.sexo}"/>
+					<p:outputLabel value="#{guia.sexo.sexo}" />
 				</p:column>
 
-				<p:column headerText="Data de Admisão" style="width: 10%; text-align: center;">
+				<p:column headerText="Data de Admisão"
+					style="width: 10%; text-align: center;">
 					<p:outputLabel value="#{guia.dataAdmissao}">
-						<f:convertDateTime pattern="dd-MM-yyyy" locale="pt_BR"/>
+						<f:convertDateTime pattern="dd-MM-yyyy" locale="pt_BR" />
 					</p:outputLabel>
 				</p:column>
-				
-				<p:column headerText="Telefone" style="width: 17%; text-align: center;">
-					<p:outputLabel value="#{guia.contato.telefone}"/>
+
+				<p:column headerText="Telefone"
+					style="width: 20%; text-align: center;">
+					<p:outputLabel value="#{guia.contato.telefone}" />
 				</p:column>
-				
-				<p:column style="width: 3%">
+
+				<p:column style="width: 4%; text-align: center;">
 					<p:button title="Editar" icon="ui-icon-pencil"
 						outcome="/guia/CadastroGuia">
 						<f:param name="guia" value="#{guia.id}" />

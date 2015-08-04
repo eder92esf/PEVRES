@@ -43,7 +43,6 @@ public class AppUserDetailsService implements UserDetailsService {
 	private Collection<? extends GrantedAuthority> getGrupo(Usuario usuario) {
 		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority(usuario.getGrupo().getNome().toUpperCase()));
-		System.out.println(authorities.get(0).getAuthority().toString());
 		return authorities;
 	}
 

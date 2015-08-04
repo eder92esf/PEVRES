@@ -23,12 +23,29 @@ public class UsuarioService implements Serializable{
 	}
 
 	@Transactional
+	public String updatePassword(Usuario u){
+		try {
+			this.manager.merge(u);
+			return "";
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			return e.getMessage();
+		}
+	}
+	
+	@Transactional
 	public String saveOrUpdate(Usuario usuario){
 		try {
+			Usuario aux = filterUtil.getUserByEmail(usuario.getEmail()); 
+			if(aux != null && !usuario.getId().equals(aux.getId())){
+				return "Endereço de e-mail já está sendo utilizado!";
+			}
 			if(usuario.getId() == null){
 				this.manager.persist(usuario);
 			}else{
 				this.manager.merge(usuario);
+				this.manager.flush();
 			}
 			return "";
 		} catch (Exception e) {
@@ -41,8 +58,9 @@ public class UsuarioService implements Serializable{
 	@Transactional
 	public String remove(Usuario usuario){
 		try {
-			usuario.setGrupo(null);
-			this.manager.remove(usuario);
+			Usuario u = this.manager.getReference(Usuario.class, usuario.getId());
+			u.setGrupo(null);
+			this.manager.remove(u);
 			return "";
 		} catch (Exception e) {
 			e.printStackTrace();

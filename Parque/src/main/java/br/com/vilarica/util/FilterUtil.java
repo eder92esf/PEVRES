@@ -200,6 +200,7 @@ public class FilterUtil implements Serializable {
 		return lista;
 	}
 	
+	/*
 	public Usuario getUser(String nome) {
 		Usuario u = null;
 		Session s = this.manager.unwrap(Session.class);
@@ -211,18 +212,17 @@ public class FilterUtil implements Serializable {
 		u = (Usuario) c.add(Restrictions.ilike("nome", nome, MatchMode.ANYWHERE)).uniqueResult();
 		return u;
 	}
+	*/
 	
-	/*
-	public Usuario getUserByLogin(String login){
+	public Usuario getUserByEmail(String email){
 		Usuario u = null;
 		Session s = this.manager.unwrap(Session.class);
 		Criteria c = s.createCriteria(Usuario.class);
 		
-		u = (Usuario) c.add(Restrictions.ilike("login", login)).uniqueResult();
+		u = (Usuario) c.add(Restrictions.eq("email", email)).uniqueResult();
 		
 		return u;
 	}
-	*/
 	
 	@SuppressWarnings("unchecked")
 	public List<Grupo> filtrarGrupos(){
@@ -234,9 +234,11 @@ public class FilterUtil implements Serializable {
 		return lista;
 	}
 	
+	/*
 	public boolean usersExits(){
 		return getUser("") != null ;
 	}
+	*/
 
 	@SuppressWarnings("unchecked")
 	public Object porId(Class classe, Long id) {

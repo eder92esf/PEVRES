@@ -6,15 +6,14 @@
 
 	<h:form style="display: inline-block">
 		<p:menubar styleClass="menu-sistema">
-		
 			<p:submenu label="Cadastrar">
 				<p:menuitem value="Guia" outcome="/guia/CadastroGuia" />
 				<p:menuitem value="Instituição"
 					outcome="/instituicao/CadastroInstituicao" />
 				<p:menuitem value="Município" outcome="/municipio/CadastroMunicipio" />
-				<p:menuitem value="Usuário" outcome="/usuario/CadastroUsuario"/>
+				<p:menuitem value="Usuário" outcome="/usuario/CadastroUsuario" />
 			</p:submenu>
-			
+
 			<p:submenu label="Pesquisar">
 				<p:submenu label="Excursão" style="color: black;">
 					<p:menuitem value="Excursão Escolar"
@@ -26,9 +25,9 @@
 				<p:menuitem value="Instituição"
 					outcome="/instituicao/PesquisaInstituicao" />
 				<p:menuitem value="Município" outcome="/municipio/PesquisaMunicipio" />
-				<p:menuitem value="Usuário" outcome="/usuario/PesquisaUsuario"/>
+				<p:menuitem value="Usuário" outcome="/usuario/PesquisaUsuario" />
 			</p:submenu>
-			
+
 			<p:submenu label="Agendar">
 				<p:menuitem value="Excursão Escolar"
 					outcome="/excursoes/ExcursaoEscolar" />
@@ -36,11 +35,14 @@
 					outcome="/excursoes/ExcursaoTuristica" />
 				<p:menuitem value="Pesquisa" />
 			</p:submenu>
-			
+
 			<p:submenu label="Relatórios">
-				<p:menuitem value="Por Data" outcome="/relatorios/Relatorio"/>
+				<p:menuitem value="Por Data" outcome="/relatorios/Relatorio" />
 			</p:submenu>
-			<p:menuitem value="Sair" url="/j_spring_security_logout"/>
+			<p:submenu label="#{seguranca.nomeUsuario}">
+				<p:menuitem value="Minha Conta" outcome="/MinhaConta"/>
+				<p:menuitem value="Sair" url="/j_spring_security_logout" />
+			</p:submenu>
 		</p:menubar>
 	</h:form>
 

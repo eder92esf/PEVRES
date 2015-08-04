@@ -18,11 +18,12 @@
 			<h:panelGrid columns="2" columnClasses="rotulo, campo"
 				styleClass="space-top">
 
-				<p:outputLabel value="Instituicao" for="nome" />
+				<p:outputLabel value="Instituição" for="nome" />
 				<p:inputText id="nome" size="60" title="Informe um nome."
 					value="#{pesquisaInstituicaoBean.nomeInstituicao}" />
 
 				<p:outputLabel for="estado" value="Estado" />
+
 				<p:selectOneMenu id="estado"
 					value="#{pesquisaInstituicaoBean.estadoSelecionado}">
 					<f:selectItems value="#{pesquisaInstituicaoBean.estados}"
@@ -30,9 +31,7 @@
 				</p:selectOneMenu>
 
 				<p:commandButton value="Pesquisar" process="@form" update="@form"
-					style="margin-left: 10px;"
 					action="#{pesquisaInstituicaoBean.filtrar}" />
-
 			</h:panelGrid>
 
 			<p:dataTable id="dt-instituicoes" paginator="true"
@@ -63,9 +62,9 @@
 					<p:outputLabel value="#{instituicao.contato.email}" />
 				</p:column>
 
-				<p:column style="width: 5%">
+				<p:column style="width: 5%; text-align: center;">
 					<p:button title="Editar" icon="ui-icon-pencil"
-						outcome="/instituicao/CadastroInstituicao" >
+						outcome="/instituicao/CadastroInstituicao">
 						<f:param name="instituicao" value="#{instituicao.id}" />
 					</p:button>
 				</p:column>

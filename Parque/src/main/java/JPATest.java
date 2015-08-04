@@ -1,9 +1,11 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -38,75 +40,19 @@ public class JPATest {
 		// new JPATest().listExcursoes();
 		// new JPATest().hashMap();
 		// new JPATest().insertUser();
-		 new JPATest().getGrupo();
-		
-		/*
-		Date agendadaInicio = null;
-		Date novaInicio = null;
-		boolean temp = false;
-		
-		agendadaInicio = new Date();
-		agendadaInicio.setHours(8);
-		agendadaInicio.setMinutes(0);
-		novaInicio = new Date();
-		novaInicio.setHours(9);
-		novaInicio.setMinutes(30);
-		temp = new JPATest().agendavel(agendadaInicio, novaInicio);
-		if (temp == true)
-			System.out.println("Agendavel");
-		else 
-			System.out.println("Não Agendavel");
-
-		agendadaInicio = new Date();
-		agendadaInicio.setHours(8);
-		agendadaInicio.setMinutes(0);
-		novaInicio = new Date();
-		novaInicio.setHours(8);
-		novaInicio.setMinutes(30);
-		temp = new JPATest().agendavel(agendadaInicio, novaInicio);
-		if (temp == true)
-			System.out.println("Agendavel");
-		else 
-			System.out.println("Não Agendavel");
-
-		agendadaInicio = new Date();
-		agendadaInicio.setHours(9);
-		agendadaInicio.setMinutes(30);
-		novaInicio = new Date();
-		novaInicio.setHours(8);
-		novaInicio.setMinutes(0);
-		temp = new JPATest().agendavel(agendadaInicio, novaInicio);
-		if (temp == true)
-			System.out.println("Agendavel");
-		else 
-			System.out.println("Não Agendavel");
-
-		agendadaInicio = new Date();
-		agendadaInicio.setHours(10);
-		agendadaInicio.setMinutes(0);
-		novaInicio = new Date();
-		novaInicio.setHours(8);
-		novaInicio.setMinutes(0);
-		temp = new JPATest().agendavel(agendadaInicio, novaInicio);
-		if (temp == true)
-			System.out.println("Agendavel");
-		else 
-			System.out.println("Não Agendavel");
-		
-		agendadaInicio = new Date();
-		agendadaInicio.setHours(13);
-		agendadaInicio.setMinutes(0);
-		novaInicio = new Date();
-		novaInicio.setHours(10);
-		novaInicio.setMinutes(0);
-		temp = new JPATest().agendavel(agendadaInicio, novaInicio);
-		if (temp == true)
-			System.out.println("Agendavel");
-		else 
-			System.out.println("Não Agendavel");
-		*/
-
+		// new JPATest().getGrupo();
+		new JPATest().readProperties();
 		System.exit(0);
+	}
+	
+	private void readProperties(){
+		try {
+			File f = new File("Parque/data/Modelo_Lista.xlsx");
+			System.out.println(f.getAbsolutePath());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 	
 	private void getGrupo(){
@@ -124,12 +70,12 @@ public class JPATest {
 	
 	private void insertUser(){
 		Grupo g = new Grupo();
-		g.setNome("ADMINISTRADORES");
-		g.setDescricao("Administradores do Sistema");
+		g.setNome("USERS");
+		g.setDescricao("Usuáiros do Sistema");
 		
 		Usuario u = new Usuario();
-		u.setEmail("eder@email.com");
-		u.setNome("Eder");
+		u.setEmail("joao@email.com");
+		u.setNome("Joao");
 		u.setSenha("123456");
 		u.setGrupo(g);
 		

@@ -50,6 +50,20 @@ header>div {
 	font-size: 15px;
 }
 
+.frm-user-account{
+	width: 620px !important;
+	margin: 0 auto;
+	margin-top: 20px;
+	background-color: #f5f5f5;
+	border-radius: 10px;
+}
+
+#login-dialog {
+	width: 320px;
+	margin: auto;
+	margin-top: 150px;
+}
+
 header>div>form>.ui-commandlink {
 	color: white !important;
 	text-decoration: none !important;
@@ -59,12 +73,6 @@ footer {
 	/*padding: 0px 8px;*/
 	text-align: center;
 	margin-bottom: 10px;
-}
-
-#login-dialog {
-	width: 320px;
-	margin: auto;
-	margin-top: 150px;
 }
 
 /* Customizaçao dataScroller - Inicio*/

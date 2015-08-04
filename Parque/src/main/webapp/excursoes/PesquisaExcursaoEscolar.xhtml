@@ -51,7 +51,7 @@
 
 				<p:column headerText="Data/Horário" style="text-align: center; width: 10%;">
 					<p:outputLabel value="#{excursao.dataExcursao}">
-						<f:convertDateTime pattern="dd-MM-yyyy HH:mm" locale="pt_BR" />
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm" locale="pt_BR" timeZone="America/Sao_Paulo"/>
 					</p:outputLabel>
 				</p:column>
 

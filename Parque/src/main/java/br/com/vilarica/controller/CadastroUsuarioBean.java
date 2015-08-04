@@ -61,12 +61,12 @@ public class CadastroUsuarioBean implements Serializable {
 			boolean editando = isEditando();
 			String retorno = this.controller.saveOrUpdate(usuario);
 			if (retorno.equals("")) {
-				if (editando)
+				if (!editando)
 					msg = new FacesMessage("Usuário cadastrado com sucesso!");
 				else
 					msg = new FacesMessage("Usuário atualizado com sucesso!");
 			} else {
-				if (editando)
+				if (!editando)
 					msg = new FacesMessage("Erro ao cadastrar usuário!");
 				else
 					msg = new FacesMessage("Erro ao atualizar usuário!");

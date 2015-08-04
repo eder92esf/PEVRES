@@ -9,6 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import com.outjected.email.api.MailMessage;
+
 import br.com.vilarica.jpa.Transactional;
 import br.com.vilarica.model.EscolaridadeEnum;
 import br.com.vilarica.model.Excursao;
@@ -23,6 +25,7 @@ import br.com.vilarica.model.StatusExcursao;
 import br.com.vilarica.model.TipoAtividadeEnum;
 import br.com.vilarica.model.TipoAtividadeExcursao;
 import br.com.vilarica.util.FilterUtil;
+import br.com.vilarica.util.mail.Mailer;
 
 public class ExcursaoService implements Serializable {
 
@@ -30,6 +33,7 @@ public class ExcursaoService implements Serializable {
 
 	private @Inject EntityManager manager;
 	private @Inject FilterUtil filterUtil;
+	private @Inject Mailer mailer;
 
 	private List<MeioTransporteEnum> meiosTransporte;
 	private List<SexoEnum> sexos;
@@ -53,6 +57,14 @@ public class ExcursaoService implements Serializable {
 			this.escolaridades = EscolaridadeEnum.getEscolaridades();
 		if (statusExcursao == null)
 			this.statusExcursao = StatusExcursao.getStatusExcursao();
+	}
+
+	private void sendEmail(String email, Date agendamento) {
+		MailMessage message = mailer.novaMensagem();
+		message.to(email);
+		message.subject("Comprovante de Agendamento de Excursão");
+		message.bodyHtml("Excursao Agendada para o dia " + agendamento);
+		message.send();
 	}
 
 	public String[] getAtividadesValue() {
@@ -186,17 +198,13 @@ public class ExcursaoService implements Serializable {
 			System.out.println(excursaoTuristica);
 
 			if (excursaoTuristica.getId() == null) {
-				this.manager.persist(excursaoTuristica.getVisitanteMaster()
-						.getContato());
-				this.manager.persist(excursaoTuristica.getVisitanteMaster()
-						.getEndereco());
+				this.manager.persist(excursaoTuristica.getVisitanteMaster().getContato());
+				this.manager.persist(excursaoTuristica.getVisitanteMaster().getEndereco());
 				this.manager.persist(excursaoTuristica.getVisitanteMaster());
 				this.manager.persist(excursaoTuristica);
 			} else {
-				this.manager.merge(excursaoTuristica.getVisitanteMaster()
-						.getContato());
-				this.manager.merge(excursaoTuristica.getVisitanteMaster()
-						.getEndereco());
+				this.manager.merge(excursaoTuristica.getVisitanteMaster().getContato());
+				this.manager.merge(excursaoTuristica.getVisitanteMaster().getEndereco());
 				this.manager.merge(excursaoTuristica.getVisitanteMaster());
 				this.manager.merge(excursaoTuristica);
 			}
@@ -232,14 +240,14 @@ public class ExcursaoService implements Serializable {
 	@Transactional
 	public String agendaExcursaoEscolar(ExcursaoEscolar excursaoEscolar) {
 		try {
-			System.out.println(excursaoEscolar);
 			ChecaTipoAtividadeExcursao(excursaoEscolar);
-			System.out.println("\n" + excursaoEscolar.getDataExcursao());
 			if (excursaoEscolar.getId() == null) {
 				this.manager.persist(excursaoEscolar);
 			} else {
 				this.manager.merge(excursaoEscolar);
 			}
+			sendEmail(excursaoEscolar.getInstituicao().getContato().getEmail(),
+					excursaoEscolar.getDataExcursao());
 			return "";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -271,8 +279,9 @@ public class ExcursaoService implements Serializable {
 		if (!ee.getDataExcursao().equals(nova)) {
 			// Procurando conflitos de horario entre de excursoes
 			for (ExcursaoEscolar e : this.excursoes) {
-				// Não a necessidade comparar o data excursao atualizada com ela mesma
-				if(!e.getId().equals(id)){
+				// Não a necessidade comparar o data excursao atualizada com ela
+				// mesma
+				if (!e.getId().equals(id)) {
 					boolean agendavel = agendavel(e.getDataExcursao(), nova);
 					if (!agendavel) {
 						return false;
@@ -293,18 +302,16 @@ public class ExcursaoService implements Serializable {
 		novaFim.setHours(novaInicio.getHours() + 2);
 		novaFim.setMinutes(novaInicio.getMinutes());
 
-		if ((novaInicio.getHours() >= agendadaInicio.getHours())
-				&& (novaInicio.getHours() < agendadaFim.getHours())) {
+		if ((novaInicio.getHours() >= agendadaInicio.getHours()) && (novaInicio.getHours() < agendadaFim.getHours())) {
 			return false;
 		} else if (novaInicio.getHours() == agendadaFim.getHours()) {
 			if (novaInicio.getMinutes() < agendadaFim.getMinutes())
 				return false;
-		} else if (novaFim.getHours() >= agendadaInicio.getHours()
-				&& novaFim.getHours() < agendadaFim.getHours()) {
+		} else if (novaFim.getHours() >= agendadaInicio.getHours() && novaFim.getHours() < agendadaFim.getHours()) {
 			if (novaFim.getMinutes() != agendadaInicio.getMinutes())
 				return false;
-		} else if (novaFim.getHours() == agendadaInicio.getHours()
-				&& novaFim.getMinutes() > agendadaInicio.getMinutes()) {
+		} else
+			if (novaFim.getHours() == agendadaInicio.getHours() && novaFim.getMinutes() > agendadaInicio.getMinutes()) {
 			return false;
 		}
 		return true;
@@ -315,7 +322,6 @@ public class ExcursaoService implements Serializable {
 	}
 
 	public ExcursaoTuristica excursaoTuristicaPorId(Long id) {
-		return (ExcursaoTuristica) filterUtil
-				.porId(ExcursaoTuristica.class, id);
+		return (ExcursaoTuristica) filterUtil.porId(ExcursaoTuristica.class, id);
 	}
 }

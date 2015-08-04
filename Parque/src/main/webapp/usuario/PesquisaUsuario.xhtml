@@ -19,11 +19,12 @@
 				styleClass="space-top">
 
 				<p:outputLabel value="Nome" for="nome" />
-				<p:inputText id="nome" size="60" title="Informe um nome."
-					value="#{pesquisaUsuarioBean.username}" />
-				<p:commandButton value="Pesquisar" update="@all"
-					action="#{pesquisaUsuarioBean.filter}" />
-
+				<h:panelGroup>
+					<p:inputText id="nome" size="60" title="Informe um nome."
+						value="#{pesquisaUsuarioBean.username}" />
+					<p:commandButton value="Pesquisar" update="@all"
+						action="#{pesquisaUsuarioBean.filter}" style="margin-left: 15px;"/>
+				</h:panelGroup>
 			</h:panelGrid>
 
 			<p:dataTable id="dt-user" paginator="true" paginatorPosition="bottom"
@@ -40,7 +41,7 @@
 					<p:outputLabel value="#{user.grupo.nome}" />
 				</p:column>
 
-				<p:column style="width: 3%">
+				<p:column style="width: 5%; text-align: center;">
 					<p:button title="Editar" icon="ui-icon-pencil"
 						outcome="/usuario/CadastroUsuario">
 						<f:param name="usuario" value="#{user.id}" />

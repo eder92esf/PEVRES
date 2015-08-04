@@ -23,6 +23,7 @@ import br.com.vilarica.model.Instituicao;
 import br.com.vilarica.model.Municipio;
 import br.com.vilarica.service.ExcursaoService;
 import br.com.vilarica.util.LeitorCSV;
+import br.com.vilarica.util.mail.Mailer;
 
 @Named
 @ViewScoped

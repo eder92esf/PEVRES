@@ -40,6 +40,8 @@ public class InstituicaoService implements Serializable {
 
 				this.manager.persist(instituicao);
 			} else {
+				this.manager.merge(instituicao.getContato());
+				this.manager.merge(instituicao.getEndereco());
 				this.manager.merge(instituicao);
 			}
 			instituicao = new Instituicao();

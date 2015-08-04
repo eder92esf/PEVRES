@@ -1,0 +1,61 @@
+<ui:composition template="/WEB-INF/template/LayoutDefault.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Minha Conta</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frm-user-data" styleClass="frm-user-account">
+			<p:messages id="msg" closable="true" autoUpdate="false" />
+
+			<h:panelGrid columns="2" columnClasses="rotulo, campo">
+				<h3>Dados do Usuário</h3>
+				<p:spacer />
+
+				<p:outputLabel value="Nome" for="nome" />
+				<p:inputText id="nome" size="60" maxlength="100"
+					value="#{seguranca.usuarioLogado.usuario.nome}" />
+
+				<p:outputLabel value="E-mail" for="email" />
+				<p:inputText id="email" size="60" maxlength="60"
+					value="#{seguranca.usuarioLogado.usuario.email}" />
+
+				<p:commandButton value="Atualizar" update="@form"
+					title="Atualizar dados do usuário" action="#{seguranca.updateData}" />
+			</h:panelGrid>
+		</h:form>
+
+		<h:form id="frm-user-password" styleClass="frm-user-account">
+			<p:messages id="msg" closable="true" />
+
+			<h:panelGrid columns="2" columnClasses="rotulo, campo">
+				<h3>Alterar Senha</h3>
+				<p:spacer />
+
+				<p:outputLabel value="Senha Atual" for="senha" />
+				<p:password id="senha" size="20" maxlength="10"
+					value="#{seguranca.senhaAtual}" required="true"
+					requiredMessage="Senha atual não deve estar em branco!" />
+
+				<p:outputLabel value="Senha Nova" for="n-senha" />
+				<p:password id="n-senha" size="20" maxlength="10"
+					value="#{seguranca.senhaNova}" required="true"
+					requiredMessage="Senha nova não pode estar em branco!" />
+
+				<p:outputLabel value="Confirme Senha" for="c-senha" />
+				<p:password id="c-senha" size="20" maxlength="10"
+					value="#{seguranca.confirmaSenhaNova}" required="true"
+					requiredMessage="Confirme a nova senha!" />
+
+				<p:commandButton value="Atualizar" update="@form"
+					title="Atualizar dados do usuário"
+					action="#{seguranca.updatePassword}" />
+			</h:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
