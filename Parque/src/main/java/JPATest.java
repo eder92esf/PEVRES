@@ -1,5 +1,8 @@
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,9 +50,10 @@ public class JPATest {
 	
 	private void readProperties(){
 		try {
-			File f = new File("Parque/data/Modelo_Lista.xlsx");
-			System.out.println(f.getAbsolutePath());
-		} catch (Exception e) {
+			URL mail = getClass().getResource("/data/Modelo_Lista.xlsx");
+			System.out.println(mail.toURI());
+			System.out.println(mail.toString());
+		} catch (URISyntaxException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}

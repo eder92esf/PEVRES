@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import com.outjected.email.api.ContentDisposition;
 import com.outjected.email.api.MailMessage;
 import com.outjected.email.impl.templating.velocity.VelocityTemplate;
 
@@ -68,14 +69,17 @@ public class ExcursaoService implements Serializable {
 		
 		message.bodyHtml(new VelocityTemplate(getClass().getResourceAsStream("/emails/excursao.template")));
 		message.put("instituicao", excursao.getInstituicao().getNome());
-		message.put("data", new SimpleDateFormat("dd-MM-yyyy HH:mm").format(excursao.getDataExcursao()));
+		message.put("data", new SimpleDateFormat("dd-MMMM-yyyy HH:mm").format(excursao.getDataExcursao()));
 		message.put("guia", excursao.getGuia().getNome());
 		
 		StringBuilder sb = new StringBuilder();
 		for (TipoAtividadeExcursao t : excursao.getAtividades()) {
-			sb.append(t.getAtividadeEnum().getAtividade()).append("\n");
+			sb.append(t.getAtividadeEnum().getAtividade()).append(", ");
 		}
 		message.put("atividade", sb.toString());
+		message.charset("UTF-8");
+		message.addAttachment("lista_visitantes.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+				ContentDisposition.ATTACHMENT, getClass().getResourceAsStream("/data/Modelo_Lista.xlsx"));
 		
 		message.send();
 	}
