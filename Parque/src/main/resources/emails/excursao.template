@@ -1,0 +1,25 @@
+<html>
+	<body>
+		
+		<table>
+			<tr>
+				<td colspan="4">Excursão ao Parque Vila Rica</td>
+			</tr>
+			<tr>
+				<td>Instituição</td>
+				<td colspan="3">$instituicao</td>
+			</tr>
+			<tr>
+				<td>Data/Horário</td>
+				<td colspan="3">$data</td>
+			</tr>
+			<tr>
+				<td>Guia</td>
+				<td>$guia</td>
+				<td>Atividades</td>
+				<td>$atividade</td>
+			</tr>
+		</table>
+		
+	</body>
+</html>

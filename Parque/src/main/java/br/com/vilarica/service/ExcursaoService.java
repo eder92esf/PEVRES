@@ -1,6 +1,7 @@
 package br.com.vilarica.service;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import com.outjected.email.api.MailMessage;
+import com.outjected.email.impl.templating.velocity.VelocityTemplate;
 
 import br.com.vilarica.jpa.Transactional;
 import br.com.vilarica.model.EscolaridadeEnum;
@@ -59,11 +61,22 @@ public class ExcursaoService implements Serializable {
 			this.statusExcursao = StatusExcursao.getStatusExcursao();
 	}
 
-	private void sendEmail(String email, Date agendamento) {
+	private void sendEmail(ExcursaoEscolar excursao) {
 		MailMessage message = mailer.novaMensagem();
-		message.to(email);
+		message.to(excursao.getInstituicao().getContato().getEmail());
 		message.subject("Comprovante de Agendamento de Excursão");
-		message.bodyHtml("Excursao Agendada para o dia " + agendamento);
+		
+		message.bodyHtml(new VelocityTemplate(getClass().getResourceAsStream("/emails/excursao.template")));
+		message.put("instituicao", excursao.getInstituicao().getNome());
+		message.put("data", new SimpleDateFormat("dd-MM-yyyy HH:mm").format(excursao.getDataExcursao()));
+		message.put("guia", excursao.getGuia().getNome());
+		
+		StringBuilder sb = new StringBuilder();
+		for (TipoAtividadeExcursao t : excursao.getAtividades()) {
+			sb.append(t.getAtividadeEnum().getAtividade()).append("\n");
+		}
+		message.put("atividade", sb.toString());
+		
 		message.send();
 	}
 
@@ -246,8 +259,7 @@ public class ExcursaoService implements Serializable {
 			} else {
 				this.manager.merge(excursaoEscolar);
 			}
-			sendEmail(excursaoEscolar.getInstituicao().getContato().getEmail(),
-					excursaoEscolar.getDataExcursao());
+			sendEmail(excursaoEscolar);
 			return "";
 		} catch (Exception e) {
 			e.printStackTrace();
