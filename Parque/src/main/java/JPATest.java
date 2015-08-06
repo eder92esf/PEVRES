@@ -34,7 +34,7 @@ public class JPATest {
 	EntityManager manager;
 
 	public static void main(String[] args) {
-		// new JPATest().createTables();
+		 new JPATest().createTables();
 		// new JPATest().insertInit();
 		// new JPATest().multiInsert();
 		// new JPATest().updateInstituicao();
@@ -44,7 +44,7 @@ public class JPATest {
 		// new JPATest().hashMap();
 		// new JPATest().insertUser();
 		// new JPATest().getGrupo();
-		new JPATest().readProperties();
+		//new JPATest().readProperties();
 		System.exit(0);
 	}
 	
