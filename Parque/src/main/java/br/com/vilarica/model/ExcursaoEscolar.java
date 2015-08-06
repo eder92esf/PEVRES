@@ -19,6 +19,9 @@ public class ExcursaoEscolar extends Excursao implements Serializable {
 	private @Inject Instituicao instituicao;
 	
 	@NotNull
+	private Integer totalVisitantes;
+	
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	private StatusExcursao status;
 	
@@ -32,6 +35,14 @@ public class ExcursaoEscolar extends Excursao implements Serializable {
 
 	public void setInstituicao(Instituicao instituicao) {
 		this.instituicao = instituicao;
+	}
+
+	public Integer getTotalVisitantes() {
+		return totalVisitantes;
+	}
+
+	public void setTotalVisitantes(Integer totalVisitantes) {
+		this.totalVisitantes = totalVisitantes;
 	}
 
 	public StatusExcursao getStatus() {

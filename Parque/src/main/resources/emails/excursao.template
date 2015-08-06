@@ -1,59 +1,51 @@
 <html>
 	<head>
 		<meta charset="UFT-8">
-		
-		<style type="text/css">
-		  table
-	      {
-	        font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
-	        width:100%;
-	        border-collapse:collapse;
-	      }
-	      table td, th
-	      {
-	        border:1px solid #2424FF;
-	        padding:3px 7px 2px 7px;
-	      }
-	      table th
-	      {
-	        font-size:1.2em;
-	        text-align:left;
-	        padding-top:5px;
-	        padding-bottom:4px;
-	        background-color:#2E82FF;
-	        color:#fff;
-	      }
-	      table tr.alt td
-	      {
-	        color:#000;
-	        background-color:#D6EDFF;
-	      }
-		</style>
-		
 	</head>
 
 	<body>
-		<table>
+		<table style="font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+		 	width:100%; border-collapse:collapse;">
 			<tr>
-				<td colspan="4">Excursão ao Parque Vila Rica</td>
+				<th colspan="4" 
+					style="font-size:1.2em;
+			        text-align:left;
+			        padding-top:5px;
+			        padding-bottom:4px;
+			        background-color:#2E82FF;
+			        color:#fff;">
+				Excursão ao Parque Vila Rica</th>
 			</tr>
-			<tr  class="alt">
+			<tr style="color:#000; background-color:#D6EDFF;">
 				<td>Instituição</td>
 				<td colspan="3">$instituicao</td>
 			</tr>
 			<tr>
+				<td>Total de Visitantes</td>
+				<td>$total</td>
+			</tr>
+			<tr style="color:#000; background-color:#D6EDFF;">
 				<td>Data e Horário</td>
 				<td colspan="3">$data</td>
 			</tr>
-			<tr  class="alt">
+			<tr>
 				<td>Guia</td>
 				<td>$guia</td>
 			</tr>
-			<tr>
+			<tr style="color:#000; background-color:#D6EDFF;">
 				<td>Atividades</td>
 				<td>$atividade</td>
 			</tr>
 		</table>
+		
+		<br />
+		<br />
+		
+		<p>Atenção: E-mail gerado automáticamente, não será necessário o envio de resposta.</p>
+		
+		<br />
+		<p style="text-align: center;">Parque Estadual Vila Rica do Espírito Santo - Estrada Porto Velho Fênix - PR</p>
+		<p style="text-align: center;">Fone: (44) 3272-1352</p>
 		
 	</body>
 </html>

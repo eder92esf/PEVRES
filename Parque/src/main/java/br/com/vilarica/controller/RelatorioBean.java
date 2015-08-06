@@ -79,8 +79,19 @@ public class RelatorioBean implements Serializable {
 	}
 
 	public void gerar() {
+		FacesContext fc = FacesContext.getCurrentInstance();
+		FacesMessage msg = null;
 		try {
 			this.download = this.controller.gerar(this.inicio, this.fim);
+			if(this.download != null){
+				
+				msg = new FacesMessage("Relatório criado com sucesso!");
+			}else{
+				msg = new FacesMessage("Erro ao gerar relatório!");
+				msg.setDetail("");
+				msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+			}
+			fc.addMessage(null, msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());

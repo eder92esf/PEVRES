@@ -3,12 +3,11 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:o="http://omnifaces.org/ui">
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
 
 	<f:metadata>
-		<o:viewParam name="excursao"
-			value="#{agendaExcursaoEscolarBean.excursaoEscolar}" />
+		<o:viewParam name="excursao" value="#{agendaExcursaoEscolarBean.excursaoEscolar}" />
+		<o:viewParam name="excursaoEmail" value="#{enviaEmailBean.selecionado}" />
 	</f:metadata>
 
 	<ui:define name="titulo">Agendar Excursão Escolar</ui:define>
@@ -23,9 +22,14 @@
 					<p:button value="Novo" outcome="/excursoes/ExcursaoEscolar" />
 					<p:commandButton value="Salvar" process="@form" update="@form"
 						action="#{agendaExcursaoEscolarBean.agendar}" />
+					<p:commandButton value="Enviar E-mail"
+						title="Enviar um compravante de agendamento e lista de visitantes da excursão."
+						disabled="#{enviaEmailBean.enviavel == false}" 
+						action="#{enviaEmailBean.enviar}"/>
 				</p:toolbarGroup>
 				<p:toolbarGroup align="right">
-					<p:button value="Pesquisar" outcome="/excursoes/PesquisaExcursaoEscolar"/>
+					<p:button value="Pesquisar"
+						outcome="/excursoes/PesquisaExcursaoEscolar" />
 				</p:toolbarGroup>
 			</p:toolbar>
 
@@ -42,12 +46,16 @@
 					var="instituicao" itemLabel="#{instituicao.nome}"
 					itemValue="#{instituicao}" forceSelection="true" maxResults="10" />
 
+				<p:outputLabel value="Total de Visitantes" for="total-visitante" />
+				<p:inputText id="total-visitante"
+					value="#{agendaExcursaoEscolarBean.excursaoEscolar.totalVisitantes}" />
+
 				<p:outputLabel value="Guia" for="guia" />
 				<p:autoComplete id="guia" emptyMessage="Nenhum guia encontrado."
 					value="#{agendaExcursaoEscolarBean.excursaoEscolar.guia}"
 					completeMethod="#{agendaExcursaoEscolarBean.filtrarGuia}"
 					var="guia" itemLabel="#{guia.nome}" itemValue="#{guia}"
-					forceSelection="true" maxResults="5" size="75"/>
+					forceSelection="true" maxResults="5" size="75" />
 
 				<p:outputLabel value="Data da Excursão" for="data-excursao" />
 				<p:calendar id="data-excursao" locale="pt_BR" minHour="8"
@@ -56,7 +64,8 @@
 					requiredMessage="Informe o data e horário para a excursao."
 					pattern="dd-MM-yyyy HH:mm" mask="true" timeZone="America/Sao_Paulo"
 					value="#{agendaExcursaoEscolarBean.excursaoEscolar.dataExcursao}">
-					<f:convertDateTime pattern="dd-MM-yyyy HH:mm" locale="pt_BR" timeZone="America/Sao_Paulo"/>
+					<f:convertDateTime pattern="dd-MM-yyyy HH:mm" locale="pt_BR"
+						timeZone="America/Sao_Paulo" />
 					<p:ajax event="dateSelect"
 						listener="#{agendaExcursaoEscolarBean.onDateSelect}"
 						update="atividades dt-excursoes" />
@@ -96,7 +105,7 @@
 				value="#{agendaExcursaoEscolarBean.controller.excursoes}"
 				var="excursao" paginator="true" paginatorPosition="bottom"
 				paginatorTemplate="true" paginatorAlwaysVisible="false" rows="40">
-				
+
 				<p:column headerText="Guia" style="width:20%">
 					<p:outputLabel value="#{excursao.guia.nome}" />
 				</p:column>
@@ -110,7 +119,8 @@
 				<p:column headerText="Data/Horário"
 					style="width:20%; text-align:center;">
 					<p:outputLabel value="#{excursao.dataExcursao}">
-						<f:convertDateTime pattern="dd-MM-yyyy HH:mm" locale="pt_BR" timeZone="America/Sao_Paulo"/>
+						<f:convertDateTime pattern="dd-MM-yyyy HH:mm" locale="pt_BR"
+							timeZone="America/Sao_Paulo" />
 					</p:outputLabel>
 				</p:column>
 				<p:column headerText="Status" style="width:15%; text-align:center;">
@@ -146,7 +156,7 @@
 				value="#{agendaExcursaoEscolarBean.excursaoEscolar.acompanhantes}"
 				var="acompanhante" paginator="true" paginatorPosition="bottom"
 				paginatorTemplate="true" paginatorAlwaysVisible="false" rows="40">
-				
+
 				<p:column headerText="Nome" style="width:50%;">
 					<p:outputLabel value="#{acompanhante.nome}" />
 				</p:column>

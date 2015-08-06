@@ -86,8 +86,8 @@ public class RelatorioService implements Serializable {
 	private int bicicletaTotal;
 	private int a_peTotal;
 	private int outroTotal;
-	
-	//ATIVIDADES
+
+	// ATIVIDADES
 	private int video;
 	private int museu;
 	private int trilha_lago;
@@ -117,12 +117,10 @@ public class RelatorioService implements Serializable {
 
 	public File gerar(Date inicio, Date fim) throws Exception {
 		if (sb.toString().equals("")) {
-			sb.append(
-					"Data Excursao;Visitantes;;Idade;;;;;;Escolaridade;;;;;Atividades;Transporte;;;;;;\n")
+			sb.append("Data Excursao;Visitantes;;Idade;;;;;;Escolaridade;;;;;Atividades;Transporte;;;;;;\n")
 					.append(";Homens;Mulheres;0-5 anos;6-12 anos;13-20 anos;21-30 anos;31-50 anos;acima de 50 anos;")
 					.append("Sem Escolaridade;Educação Infantil;Ensino Fundamental;Ensino Médio;Ensino Superior;")
-					.append(";Ônibus Escolar;Ônibus Turismo;Carro;Motocicleta;Bicicleta;A Pé;Outro")
-					.append("\n");
+					.append(";Ônibus Escolar;Ônibus Turismo;Carro;Motocicleta;Bicicleta;A Pé;Outro").append("\n");
 		}
 
 		File diretorio = null;
@@ -136,26 +134,25 @@ public class RelatorioService implements Serializable {
 
 		SimpleDateFormat s = new SimpleDateFormat("dd-MMMM-yyyy");
 		String dataCriacao = s.format(new Date());
-		relatorio = new File(diretorio.getAbsolutePath() + File.separator
-				+ "relatorio-"+ dataCriacao +".csv");
+		relatorio = new File(diretorio.getAbsolutePath() + File.separator + "relatorio-" + dataCriacao + ".csv");
 
 		if (!relatorio.exists())
 			relatorio.createNewFile();
 
 		this.escolars = filterUtil.relatorioExcursaoEscolar(inicio, fim);
 		this.turisticas = filterUtil.relatorioExcursaoTuristica(inicio, fim);
-		
+
 		criarRelatorioEscolar(this.escolars);
 		criarRelatorioTuristico(this.turisticas);
 		writeRodape();
 		writeByAtividade();
 		writeByMunicipio();
-		
+
 		fw = new FileWriter(relatorio);
 		bw = new BufferedWriter(fw);
 		bw.write(sb.toString());
 		bw.flush();
-		
+
 		fw = null;
 		bw = null;
 		cleanVariaveisTotal();
@@ -163,18 +160,17 @@ public class RelatorioService implements Serializable {
 		return relatorio;
 	}
 
-	private void criarRelatorioEscolar(List<ExcursaoEscolar> lista)
-			throws IOException {
+	private void criarRelatorioEscolar(List<ExcursaoEscolar> lista) throws IOException {
 		for (Object o : lista) {
 			Excursao e = (Excursao) o;
 			preparaRelatorio(e);
 		}
 	}
 
-	private void criarRelatorioTuristico(List<ExcursaoTuristica> lista)
-			throws IOException {
+	private void criarRelatorioTuristico(List<ExcursaoTuristica> lista) throws IOException {
 		for (Object o : lista) {
 			Excursao e = (Excursao) o;
+			totalVisitante++;
 			preparaRelatorio(e);
 		}
 	}
@@ -196,70 +192,50 @@ public class RelatorioService implements Serializable {
 		clean();
 	}
 
-	private void writeByAtividade(){
-		sb.append("\nAtividades Realizadas por Visitantes\n")
-		.append("Vídeo;").append(video).append("\n")
-		.append("Museu;").append(museu).append("\n")
-		.append("Trilha do Lago;").append(trilha_lago).append("\n");
+	private void writeByAtividade() {
+		sb.append("\nAtividades Realizadas por Visitantes\n").append("Vídeo;").append(video).append("\n")
+				.append("Museu;").append(museu).append("\n").append("Trilha do Lago;").append(trilha_lago).append("\n");
 	}
-	
-	private void writeByMunicipio(){
+
+	private void writeByMunicipio() {
 		sb.append("\nVisitantes por Município\n");
 		Set s = municipios.keySet();
-		
+
 		for (Iterator iterator = s.iterator(); iterator.hasNext();) {
 			String aux = (String) iterator.next();
 			sb.append(aux).append(";").append(municipios.get(aux)).append("\n");
 		}
-		
+
 		/*
-		sb.append("\n");
-		for (Iterator iterator = s.iterator(); iterator.hasNext();) {
-			String aux = (String) iterator.next();
-			sb.append(municipios.get(aux)).append(";");//.append(municipios.get(aux)).append("\n");
-		}
-		*/
+		 * sb.append("\n"); for (Iterator iterator = s.iterator();
+		 * iterator.hasNext();) { String aux = (String) iterator.next();
+		 * sb.append(municipios.get(aux)).append(";");//.append(municipios.get(
+		 * aux)).append("\n"); }
+		 */
 	}
-	
+
 	private void writeRelatorio(SimpleDateFormat format, Excursao e) {
-		sb.append(format.format(e.getDataExcursao())).append(";")
-				.append(homens).append(";").append(mulheres).append(";")
-				.append(visitante0_5anos).append(";").append(visitante6_12anos)
-				.append(";").append(visitante13_20anos).append(";")
-				.append(visitante21_30anos).append(";")
-				.append(visitante31_50anos).append(";")
-				.append(visitante51_100anos).append(";")
-				.append(sem_escolaridade).append(";").append(educacao_infantil)
-				.append(";").append(ensino_fundamental).append(";")
-				.append(ensino_medio).append(";").append(ensino_superior)
-				.append(";").append(porTipoAtividade(e.getAtividades()))
-				.append(";").append(onibus_escolar).append(";")
-				.append(onibus_turismo).append(";").append(carro).append(";")
-				.append(motocicleta).append(";").append(bicicleta).append(";")
-				.append(a_pe).append(";").append(outro).append("\n");
+		sb.append(format.format(e.getDataExcursao())).append(";").append(homens).append(";").append(mulheres)
+				.append(";").append(visitante0_5anos).append(";").append(visitante6_12anos).append(";")
+				.append(visitante13_20anos).append(";").append(visitante21_30anos).append(";")
+				.append(visitante31_50anos).append(";").append(visitante51_100anos).append(";").append(sem_escolaridade)
+				.append(";").append(educacao_infantil).append(";").append(ensino_fundamental).append(";")
+				.append(ensino_medio).append(";").append(ensino_superior).append(";")
+				.append(porTipoAtividade(e.getAtividades())).append(";").append(onibus_escolar).append(";")
+				.append(onibus_turismo).append(";").append(carro).append(";").append(motocicleta).append(";")
+				.append(bicicleta).append(";").append(a_pe).append(";").append(outro).append("\n");
 	}
-	
-	private void writeRodape(){
-		sb
-		.append("\nTotal;").append(totalVisitante)
-		.append(";;")
-		.append(visitante0_5total).append(";").append(visitante6_12anos)
-		.append(";").append(visitante13_20total).append(";")
-		.append(visitante21_30total).append(";")
-		.append(visitante31_50total).append(";")
-		.append(visitante51_100total).append(";")
-		.append(sem_escolaridadeTotal).append(";")
-		.append(educacao_infantilTotal).append(";")
-		.append(ensino_fundamentalTotal).append(";")
-		.append(ensino_medioTotal).append(";")
-		.append(ensino_superiorTotal).append(";")
-		.append(";").append(onibus_escolarTotal)
-		.append(";").append(onibus_turismoTotal)
-		.append(";").append(carroTotal)
-		.append(";").append(motocicletaTotal)
-		.append(";").append(bicicletaTotal)
-		.append(";").append(a_peTotal)
-		.append(";").append(outroTotal).append("\n");
+
+	private void writeRodape() {
+		sb.append("\nTotal;").append(totalVisitante).append(";;").append(visitante0_5total).append(";")
+				.append(visitante6_12anos).append(";").append(visitante13_20total).append(";")
+				.append(visitante21_30total).append(";").append(visitante31_50total).append(";")
+				.append(visitante51_100total).append(";").append(sem_escolaridadeTotal).append(";")
+				.append(educacao_infantilTotal).append(";").append(ensino_fundamentalTotal).append(";")
+				.append(ensino_medioTotal).append(";").append(ensino_superiorTotal).append(";").append(";")
+				.append(onibus_escolarTotal).append(";").append(onibus_turismoTotal).append(";").append(carroTotal)
+				.append(";").append(motocicletaTotal).append(";").append(bicicletaTotal).append(";").append(a_peTotal)
+				.append(";").append(outroTotal).append("\n");
 	}
 
 	private String porTipoAtividade(List<TipoAtividadeExcursao> atividades) {
@@ -272,15 +248,17 @@ public class RelatorioService implements Serializable {
 		}
 		return aux.toString();
 	}
-	
-	private void porAtividade(Excursao e){
+
+	private void porAtividade(Excursao e) {
 		for (TipoAtividadeExcursao atividade : e.getAtividades()) {
-			if(atividade.getAtividadeEnum().getAtividade().equals("Vídeo"))
+			if (atividade.getAtividadeEnum().getAtividade().equals("Vídeo")) {
 				video += e.getAcompanhantes().size();
-			else if(atividade.getAtividadeEnum().getAtividade().equals("Museu"))
+			} else if (atividade.getAtividadeEnum().getAtividade().equals("Museu")){
 				museu += e.getAcompanhantes().size();
-			else if(atividade.getAtividadeEnum().getAtividade().equals("Trilha do Lago"))
+			}
+			else if (atividade.getAtividadeEnum().getAtividade().equals("Trilha do Lago")){
 				trilha_lago += e.getAcompanhantes().size();
+			}
 		}
 	}
 
@@ -288,8 +266,7 @@ public class RelatorioService implements Serializable {
 		if (e.getMeioTransporte().equals(MeioTransporteEnum.ONIBUS_ESCOLAR)) {
 			onibus_escolar = e.getAcompanhantes().size();
 			onibus_escolarTotal += e.getAcompanhantes().size();
-		} else if (e.getMeioTransporte().equals(
-				MeioTransporteEnum.ONIBUS_TURISMO)) {
+		} else if (e.getMeioTransporte().equals(MeioTransporteEnum.ONIBUS_TURISMO)) {
 			onibus_turismo = e.getAcompanhantes().size();
 			onibus_turismoTotal += e.getAcompanhantes().size();
 		} else if (e.getMeioTransporte().equals(MeioTransporteEnum.CARRO)) {
@@ -347,20 +324,15 @@ public class RelatorioService implements Serializable {
 		if (a.getEscolaridade().equals(EscolaridadeEnum.SEM_ESCOLARIDADE)) {
 			sem_escolaridade++;
 			sem_escolaridadeTotal++;
-		} else if (a.getEscolaridade().equals(
-				EscolaridadeEnum.EDUCACAO_INFANTIL)) {
+		} else if (a.getEscolaridade().equals(EscolaridadeEnum.EDUCACAO_INFANTIL)) {
 			educacao_infantil++;
 			educacao_infantilTotal++;
-		} else if (a.getEscolaridade().equals(
-				EscolaridadeEnum.ENSINO_FUNDAMENTAL_COMPLETO)
-				|| a.getEscolaridade().equals(
-						EscolaridadeEnum.ENSINO_FUNDAMENTAL_INCOMPLETO)) {
+		} else if (a.getEscolaridade().equals(EscolaridadeEnum.ENSINO_FUNDAMENTAL_COMPLETO)
+				|| a.getEscolaridade().equals(EscolaridadeEnum.ENSINO_FUNDAMENTAL_INCOMPLETO)) {
 			ensino_fundamental++;
 			ensino_fundamentalTotal++;
-		} else if (a.getEscolaridade().equals(
-				EscolaridadeEnum.ENSINO_MEDIO_COMPLETO)
-				|| a.getEscolaridade().equals(
-						EscolaridadeEnum.ENSINO_MEDIO_INCOMPLETO)) {
+		} else if (a.getEscolaridade().equals(EscolaridadeEnum.ENSINO_MEDIO_COMPLETO)
+				|| a.getEscolaridade().equals(EscolaridadeEnum.ENSINO_MEDIO_INCOMPLETO)) {
 			ensino_medio++;
 			ensino_medioTotal++;
 		} else {
@@ -382,8 +354,7 @@ public class RelatorioService implements Serializable {
 
 		if (nascimento.getMonth() < atual.getMonth())
 			ano++;
-		else if (nascimento.getMonth() == atual.getMonth()
-				&& nascimento.getDate() <= atual.getDate())
+		else if (nascimento.getMonth() == atual.getMonth() && nascimento.getDate() <= atual.getDate())
 			ano++;
 
 		return ano;
@@ -415,8 +386,8 @@ public class RelatorioService implements Serializable {
 		homens = 0;
 		mulheres = 0;
 	}
-	
-	private void cleanVariaveisTotal(){
+
+	private void cleanVariaveisTotal() {
 		sb = new StringBuilder();
 		municipios = new HashMap<String, Integer>();
 		// ESCOLARIDADE RELATORIO FINAL
@@ -434,8 +405,8 @@ public class RelatorioService implements Serializable {
 		bicicletaTotal = 0;
 		a_peTotal = 0;
 		outroTotal = 0;
-		
-		//ATIVIDADES
+
+		// ATIVIDADES
 		video = 0;
 		museu = 0;
 		trilha_lago = 0;
