@@ -58,6 +58,8 @@ public class GuiaService implements Serializable{
 				manager.persist(guia.getContato());
 				manager.persist(guia);
 			}else{
+				manager.merge(guia.getEndereco());
+				manager.merge(guia.getContato());
 				manager.merge(guia);
 			}
 			return "";
