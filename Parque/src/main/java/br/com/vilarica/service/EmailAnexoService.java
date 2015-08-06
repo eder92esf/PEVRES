@@ -23,7 +23,7 @@ public class EmailAnexoService implements Serializable{
 		try {
 			MailMessage message = mailer.novaMensagem();
 			message.to(excursao.getInstituicao().getContato().getEmail());
-			message.cc(excursao.getGuia().getContato().getEmail());
+			message.bcc(excursao.getGuia().getContato().getEmail());
 			message.subject("Comprovante de Agendamento de Excursão");
 			
 			message.bodyHtml(new VelocityTemplate(getClass().getResourceAsStream("/emails/excursao.template")));
@@ -31,13 +31,14 @@ public class EmailAnexoService implements Serializable{
 			message.put("data", new SimpleDateFormat("dd-MMMM-yyyy HH:mm").format(excursao.getDataExcursao()));
 			message.put("guia", excursao.getGuia().getNome());
 			message.put("total", excursao.getTotalVisitantes());
+			message.put("municipio", excursao.getInstituicao().getMunicipio().getNome());
 			
 			StringBuilder sb = new StringBuilder();
 			for (TipoAtividadeExcursao t : excursao.getAtividades()) {
 				sb.append(t.getAtividadeEnum().getAtividade()).append(", ");
 			}
 			message.put("atividade", sb.toString());
-			message.charset("UTF-8");
+			message.charset("UTF-8"); // UTF-8 ou ISO-8859-1
 			message.addAttachment("lista_visitantes.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 					ContentDisposition.ATTACHMENT, getClass().getResourceAsStream("/data/Modelo_Lista.xlsx"));
 			

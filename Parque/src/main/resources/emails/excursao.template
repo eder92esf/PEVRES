@@ -1,11 +1,7 @@
 <html>
-	<head>
-		<meta charset="UFT-8">
-	</head>
-
 	<body>
 		<table style="font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
-		 	width:100%; border-collapse:collapse;">
+		 	width:400px; border-collapse:collapse;">
 			<tr>
 				<th colspan="4" 
 					style="font-size:1.2em;
@@ -16,32 +12,51 @@
 			        color:#fff;">
 				Excursão ao Parque Vila Rica</th>
 			</tr>
+			
 			<tr style="color:#000; background-color:#D6EDFF;">
-				<td>Instituição</td>
-				<td colspan="3">$instituicao</td>
+				<td style="width: 150px;">Instituição</td>
+				<td style="width: 250px;" colspan="3">$instituicao</td>
 			</tr>
+			
 			<tr>
-				<td>Total de Visitantes</td>
-				<td>$total</td>
+				<td style="width: 150px;">Total de Visitantes</td>
+				<td style="width: 250px;">$total</td>
 			</tr>
+			
 			<tr style="color:#000; background-color:#D6EDFF;">
-				<td>Data e Horário</td>
-				<td colspan="3">$data</td>
+				<td style="width: 150px;">Município</td>
+				<td style="width: 250px;">$municipio</td>
 			</tr>
+			
 			<tr>
-				<td>Guia</td>
-				<td>$guia</td>
+				<td style="width: 150px;">Data e Horário</td>
+				<td colspan="3" style="width: 250px;">$data</td>
 			</tr>
+			
 			<tr style="color:#000; background-color:#D6EDFF;">
-				<td>Atividades</td>
-				<td>$atividade</td>
+				<td style="width: 150px;">Guia</td>
+				<td style="width: 250px;">$guia</td>
+			</tr>
+			
+			<tr>
+				<td style="width: 150px;">Atividades</td>
+				<td style="width: 250px;">$atividade</td>
 			</tr>
 		</table>
 		
 		<br />
-		<br />
 		
-		<p>Atenção: E-mail gerado automáticamente, não será necessário o envio de resposta.</p>
+		<p>Recomendamos que todos os integrantes da excursão:</p>
+		<ul>
+			<li>Utilizem calça jean;</li>
+			<li>Utilizem calçado fechado;</li>
+			<li>Utilizem repelente;</li>
+		</ul>
+		
+		<p>Para maior comodidade preencha a lista de visitantes em anexo, informando o nome de todos integrantes da excursão.</p>
+		
+		<br />
+		<p>Atenção: E-mail gerado automáticamente, não deve ser respondido.</p>
 		
 		<br />
 		<p style="text-align: center;">Parque Estadual Vila Rica do Espírito Santo - Estrada Porto Velho Fênix - PR</p>
