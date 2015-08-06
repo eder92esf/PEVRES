@@ -145,6 +145,7 @@ footer {
 	border: 0px !important;
 	padding: 0px !important;
 	background: none !important;
+	margin-right: 110px;
 }
 
 .menu-sistema .ui-menu-parent > a .ui-menuitem-text, .menu-sistema > .ui-menu-list > .ui-menuitem > a > .ui-menuitem-text {

@@ -169,8 +169,12 @@ public class RelatorioService implements Serializable {
 
 	private void criarRelatorioTuristico(List<ExcursaoTuristica> lista) throws IOException {
 		for (Object o : lista) {
-			Excursao e = (Excursao) o;
+			ExcursaoTuristica e = (ExcursaoTuristica) o;
 			totalVisitante++;
+			porIdade(checaIdade(e.getVisitanteMaster().getDataNascimento()));
+			porEscolaridade(e.getVisitanteMaster().getEscolaridade());
+			porSexo(e.getVisitanteMaster().getSexo());
+			porMunicipio(e.getVisitanteMaster().getMunicipio().getNome());
 			preparaRelatorio(e);
 		}
 	}
@@ -184,8 +188,8 @@ public class RelatorioService implements Serializable {
 		for (Acompanhante a : e.getAcompanhantes()) {
 			int aux = checaIdade(a.getDataNascimento());
 			porIdade(aux);
-			porEscolaridade(a);
-			porSexo(a);
+			porEscolaridade(a.getEscolaridade());
+			porSexo(a.getSexo());
 			porMunicipio(a.getMunicipio().getNome());
 		}
 		writeRelatorio(format, e);
@@ -253,11 +257,17 @@ public class RelatorioService implements Serializable {
 		for (TipoAtividadeExcursao atividade : e.getAtividades()) {
 			if (atividade.getAtividadeEnum().getAtividade().equals("Vídeo")) {
 				video += e.getAcompanhantes().size();
-			} else if (atividade.getAtividadeEnum().getAtividade().equals("Museu")){
+				if (e instanceof ExcursaoTuristica) {
+					video++;
+				}
+			} else if (atividade.getAtividadeEnum().getAtividade().equals("Museu")) {
 				museu += e.getAcompanhantes().size();
-			}
-			else if (atividade.getAtividadeEnum().getAtividade().equals("Trilha do Lago")){
+				if (e instanceof ExcursaoTuristica) {
+					museu++;
+				}
+			} else if (atividade.getAtividadeEnum().getAtividade().equals("Trilha do Lago")) {
 				trilha_lago += e.getAcompanhantes().size();
+				trilha_lago++;
 			}
 		}
 	}
@@ -266,24 +276,52 @@ public class RelatorioService implements Serializable {
 		if (e.getMeioTransporte().equals(MeioTransporteEnum.ONIBUS_ESCOLAR)) {
 			onibus_escolar = e.getAcompanhantes().size();
 			onibus_escolarTotal += e.getAcompanhantes().size();
+			if (e instanceof ExcursaoTuristica) {
+				onibus_escolar++;
+				onibus_escolarTotal++;
+			}
 		} else if (e.getMeioTransporte().equals(MeioTransporteEnum.ONIBUS_TURISMO)) {
 			onibus_turismo = e.getAcompanhantes().size();
 			onibus_turismoTotal += e.getAcompanhantes().size();
+			if (e instanceof ExcursaoTuristica) {
+				onibus_turismo++;
+				onibus_escolarTotal++;
+			}
 		} else if (e.getMeioTransporte().equals(MeioTransporteEnum.CARRO)) {
 			carro = e.getAcompanhantes().size();
 			carroTotal += e.getAcompanhantes().size();
+			if (e instanceof ExcursaoTuristica) {
+				carro++;
+				carroTotal++;
+			}
 		} else if (e.getMeioTransporte().equals(MeioTransporteEnum.MOTOCICLETA)) {
 			motocicleta = e.getAcompanhantes().size();
 			motocicletaTotal += e.getAcompanhantes().size();
+			if (e instanceof ExcursaoTuristica) {
+				motocicleta++;
+				motocicletaTotal++;
+			}
 		} else if (e.getMeioTransporte().equals(MeioTransporteEnum.BICICLETA)) {
 			bicicleta = e.getAcompanhantes().size();
 			bicicletaTotal += e.getAcompanhantes().size();
+			if (e instanceof ExcursaoTuristica) {
+				bicicleta++;
+				bicicletaTotal++;
+			}
 		} else if (e.getMeioTransporte().equals(MeioTransporteEnum.A_PE)) {
 			a_pe = e.getAcompanhantes().size();
 			a_peTotal += e.getAcompanhantes().size();
+			if (e instanceof ExcursaoTuristica) {
+				a_pe++;
+				a_peTotal++;
+			}
 		} else {
 			outro = e.getAcompanhantes().size();
 			outroTotal += e.getAcompanhantes().size();
+			if (e instanceof ExcursaoTuristica) {
+				outro++;
+				outroTotal++;
+			}
 		}
 	}
 
@@ -319,20 +357,20 @@ public class RelatorioService implements Serializable {
 		}
 	}
 
-	private void porEscolaridade(Acompanhante a) {
+	private void porEscolaridade(EscolaridadeEnum escolaridade) {
 		// VERIFICANDO ESCOLARIDADE
-		if (a.getEscolaridade().equals(EscolaridadeEnum.SEM_ESCOLARIDADE)) {
+		if (escolaridade.equals(EscolaridadeEnum.SEM_ESCOLARIDADE)) {
 			sem_escolaridade++;
 			sem_escolaridadeTotal++;
-		} else if (a.getEscolaridade().equals(EscolaridadeEnum.EDUCACAO_INFANTIL)) {
+		} else if (escolaridade.equals(EscolaridadeEnum.EDUCACAO_INFANTIL)) {
 			educacao_infantil++;
 			educacao_infantilTotal++;
-		} else if (a.getEscolaridade().equals(EscolaridadeEnum.ENSINO_FUNDAMENTAL_COMPLETO)
-				|| a.getEscolaridade().equals(EscolaridadeEnum.ENSINO_FUNDAMENTAL_INCOMPLETO)) {
+		} else if (escolaridade.equals(EscolaridadeEnum.ENSINO_FUNDAMENTAL_COMPLETO)
+				|| escolaridade.equals(EscolaridadeEnum.ENSINO_FUNDAMENTAL_INCOMPLETO)) {
 			ensino_fundamental++;
 			ensino_fundamentalTotal++;
-		} else if (a.getEscolaridade().equals(EscolaridadeEnum.ENSINO_MEDIO_COMPLETO)
-				|| a.getEscolaridade().equals(EscolaridadeEnum.ENSINO_MEDIO_INCOMPLETO)) {
+		} else if (escolaridade.equals(EscolaridadeEnum.ENSINO_MEDIO_COMPLETO)
+				|| escolaridade.equals(EscolaridadeEnum.ENSINO_MEDIO_INCOMPLETO)) {
 			ensino_medio++;
 			ensino_medioTotal++;
 		} else {
@@ -341,8 +379,8 @@ public class RelatorioService implements Serializable {
 		}
 	}
 
-	private void porSexo(Acompanhante a) {
-		if (a.getSexo().equals(SexoEnum.FEMININO))
+	private void porSexo(SexoEnum sexo) {
+		if (sexo.equals(SexoEnum.FEMININO))
 			mulheres++;
 		else
 			homens++;
