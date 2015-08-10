@@ -161,15 +161,15 @@ public class RelatorioService implements Serializable {
 	}
 
 	private void criarRelatorioEscolar(List<ExcursaoEscolar> lista) throws IOException {
-		for (Object o : lista) {
-			Excursao e = (Excursao) o;
+		for (Excursao e : lista) {
+			//Excursao e = (Excursao) o;
 			preparaRelatorio(e);
 		}
 	}
 
 	private void criarRelatorioTuristico(List<ExcursaoTuristica> lista) throws IOException {
-		for (Object o : lista) {
-			ExcursaoTuristica e = (ExcursaoTuristica) o;
+		for (ExcursaoTuristica e : lista) {
+			//ExcursaoTuristica e = (ExcursaoTuristica) o;
 			totalVisitante++;
 			porIdade(checaIdade(e.getVisitanteMaster().getDataNascimento()));
 			porEscolaridade(e.getVisitanteMaster().getEscolaridade());
@@ -232,7 +232,7 @@ public class RelatorioService implements Serializable {
 
 	private void writeRodape() {
 		sb.append("\nTotal;").append(totalVisitante).append(";;").append(visitante0_5total).append(";")
-				.append(visitante6_12anos).append(";").append(visitante13_20total).append(";")
+				.append(visitante6_12total).append(";").append(visitante13_20total).append(";")
 				.append(visitante21_30total).append(";").append(visitante31_50total).append(";")
 				.append(visitante51_100total).append(";").append(sem_escolaridadeTotal).append(";")
 				.append(educacao_infantilTotal).append(";").append(ensino_fundamentalTotal).append(";")

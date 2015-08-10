@@ -7,8 +7,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "tipo_atividade_excursao")
 public class TipoAtividadeExcursao implements Serializable{
 
 	private static final long serialVersionUID = 1L;
