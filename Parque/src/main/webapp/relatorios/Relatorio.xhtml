@@ -12,6 +12,18 @@
 		<h1 style="margin-top: 20px;">Gerar Relatório</h1>
 
 		<h:form id="frm-rep-byData">
+
+			<p:toolbar styleClass="space-top">
+				<p:toolbarGroup>
+					<p:commandButton icon="ui-icon-document" value="Gerar" title="Gerar relatório por data."
+						action="#{relatorioBean.gerar}" update="grid-rep-byData" />
+					<p:commandButton title="Download do Relatório" ajax="false"
+						icon="ui-icon-circle-arrow-s" value="Download">
+						<p:fileDownload value="#{relatorioBean.file}" />
+					</p:commandButton>
+				</p:toolbarGroup>
+			</p:toolbar>
+
 			<p:messages autoUpdate="true" closable="true" />
 
 			<h:panelGrid id="grid-rep-byData" columns="5"
@@ -21,21 +33,14 @@
 				<p:outputLabel value="Data Incial" for="data-inicio" />
 				<p:calendar id="data-inicio" value="#{relatorioBean.inicio}"
 					mask="true" pattern="dd-MM-yyyy" locale="pt_BR" required="true"
+					placeholder="dd-mm-aaaa"
 					requiredMessage="Informe uma data de inicío para gerar o relatório" />
 
 				<p:outputLabel value="Data Final" for="data-fim" />
 				<p:calendar id="data-fim" value="#{relatorioBean.fim}" mask="true"
 					pattern="dd-MM-yyyy" locale="pt_BR" required="true"
+					placeholder="dd-mm-aaaa"
 					requiredMessage="Informe uma data de final para gerar o relatório" />
-				<h:panelGroup>
-					<p:commandButton icon="ui-icon-document" title="Gerar relatório por data."
-						action="#{relatorioBean.gerar}" update="grid-rep-byData" />
-					<p:commandButton title="Download do Relatório" ajax="false"
-						icon="ui-icon-circle-arrow-s">
-						<p:fileDownload value="#{relatorioBean.file}" />
-					</p:commandButton>
-				</h:panelGroup>
-
 			</h:panelGrid>
 		</h:form>
 

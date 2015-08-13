@@ -1,7 +1,6 @@
 package br.com.vilarica.service;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -9,10 +8,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-
-import com.outjected.email.api.ContentDisposition;
-import com.outjected.email.api.MailMessage;
-import com.outjected.email.impl.templating.velocity.VelocityTemplate;
 
 import br.com.vilarica.jpa.Transactional;
 import br.com.vilarica.model.EscolaridadeEnum;
@@ -27,8 +22,9 @@ import br.com.vilarica.model.SexoEnum;
 import br.com.vilarica.model.StatusExcursao;
 import br.com.vilarica.model.TipoAtividadeEnum;
 import br.com.vilarica.model.TipoAtividadeExcursao;
+import br.com.vilarica.model.VisitanteMaster;
 import br.com.vilarica.util.FilterUtil;
-import br.com.vilarica.util.mail.Mailer;
+import br.com.vilarica.util.Temporizador;
 
 public class ExcursaoService implements Serializable {
 
@@ -183,6 +179,14 @@ public class ExcursaoService implements Serializable {
 		return filterUtil.listExcursaoEscolar(data);
 	}
 
+	public void listExcursoesEscolar(Date data) {
+		this.excursoes = this.filterUtil.listExcursaoEscolar(data);
+	}
+
+	public void listExcursoesPorGuia(Date data, Long id) {
+		this.excursoes = filterUtil.listExcursoesPorGuia(data, id);
+	}
+	
 	@Transactional
 	public String checkinExcursaoTuristica(ExcursaoTuristica excursaoTuristica) {
 		try {
@@ -190,11 +194,16 @@ public class ExcursaoService implements Serializable {
 			excursaoTuristica.setDataExcursao(new Date());
 
 			System.out.println(excursaoTuristica);
-
 			if (excursaoTuristica.getId() == null) {
-				this.manager.persist(excursaoTuristica.getVisitanteMaster().getContato());
-				this.manager.persist(excursaoTuristica.getVisitanteMaster().getEndereco());
-				this.manager.persist(excursaoTuristica.getVisitanteMaster());
+				if (excursaoTuristica.getVisitanteMaster().getId() == null) {
+					this.manager.persist(excursaoTuristica.getVisitanteMaster().getContato());
+					this.manager.persist(excursaoTuristica.getVisitanteMaster().getEndereco());
+					this.manager.persist(excursaoTuristica.getVisitanteMaster());
+				} else {
+					this.manager.merge(excursaoTuristica.getVisitanteMaster().getContato());
+					this.manager.merge(excursaoTuristica.getVisitanteMaster().getEndereco());
+					this.manager.merge(excursaoTuristica.getVisitanteMaster());
+				}
 				this.manager.persist(excursaoTuristica);
 			} else {
 				this.manager.merge(excursaoTuristica.getVisitanteMaster().getContato());
@@ -240,21 +249,13 @@ public class ExcursaoService implements Serializable {
 			} else {
 				this.manager.merge(excursaoEscolar);
 			}
-			//sendEmail(excursaoEscolar);
+			// sendEmail(excursaoEscolar);
 			return "";
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 			return e.getMessage();
 		}
-	}
-
-	public void listExcursoesEscolar(Date data) {
-		this.excursoes = this.filterUtil.listExcursaoEscolar(data);
-	}
-
-	public void listExcursoesPorGuia(Date data, Long id) {
-		this.excursoes = filterUtil.listExcursoesPorGuia(data, id);
 	}
 
 	public boolean agendar(Date nova) {
@@ -316,5 +317,53 @@ public class ExcursaoService implements Serializable {
 
 	public ExcursaoTuristica excursaoTuristicaPorId(Long id) {
 		return (ExcursaoTuristica) filterUtil.porId(ExcursaoTuristica.class, id);
+	}
+
+	public boolean isCPFValido(String cpf) {
+		if (cpf.equals("11111111111") || cpf.equals("22222222222") || cpf.equals("33333333333")
+				|| cpf.equals("44444444444") || cpf.equals("55555555555") || cpf.equals("66666666666")
+				|| cpf.equals("77777777777") || cpf.equals("88888888888") || cpf.equals("99999999999")
+				|| cpf.equals("00000000000")) {
+			return false;
+		}
+
+		// char[] string = cpf.toCharArray();
+		int[] inteiros = new int[11];
+		int mult = 10;
+		int d1 = 0;
+		int d2 = 0;
+
+		for (int i = 0; i < inteiros.length; i++) {
+			inteiros[i] = Integer.valueOf(cpf.charAt(i)) - 48;
+		}
+
+		for (int i = 0; i < inteiros.length - 2; i++) {
+			d1 += inteiros[i] * mult;
+			mult--;
+		}
+
+		mult = 11;
+
+		for (int i = 0; i < inteiros.length - 1; i++) {
+			d2 += inteiros[i] * mult;
+			mult--;
+		}
+		d1 = (d1 * 10) % 11;
+		d2 = (d2 * 10) % 11;
+
+		if (d1 == 10)
+			d1 = 0;
+		if (d2 == 10)
+			d2 = 0;
+
+		if (d1 != inteiros[9])
+			return false;
+		if (d2 != inteiros[10])
+			return false;
+		return true;
+	}
+
+	public VisitanteMaster getVisitanteMasterByCPF(String cpf) {
+		return filterUtil.getVisitanteMasterByCPF(cpf);
 	}
 }

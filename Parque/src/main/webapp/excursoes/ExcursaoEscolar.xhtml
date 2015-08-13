@@ -6,8 +6,10 @@
 	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
 
 	<f:metadata>
-		<o:viewParam name="excursao" value="#{agendaExcursaoEscolarBean.excursaoEscolar}" />
-		<o:viewParam name="excursaoEmail" value="#{enviaEmailBean.selecionado}" />
+		<o:viewParam name="excursao"
+			value="#{agendaExcursaoEscolarBean.excursaoEscolar}" />
+		<o:viewParam name="excursaoEmail"
+			value="#{enviaEmailBean.selecionado}" />
 	</f:metadata>
 
 	<ui:define name="titulo">Agendar Excursão Escolar</ui:define>
@@ -20,12 +22,13 @@
 			<p:toolbar styleClass="space-top">
 				<p:toolbarGroup>
 					<p:button value="Novo" outcome="/excursoes/ExcursaoEscolar" />
-					<p:commandButton value="Salvar" process="@form" update="@form"
+					<p:commandButton value="Salvar" process="@form"
+						update="@all"
 						action="#{agendaExcursaoEscolarBean.agendar}" />
 					<p:commandButton value="Enviar E-mail"
 						title="Enviar um compravante de agendamento e lista de visitantes da excursão."
-						disabled="#{enviaEmailBean.enviavel == false}" 
-						action="#{enviaEmailBean.enviar}"/>
+						disabled="#{enviaEmailBean.enviavel == false}"
+						action="#{enviaEmailBean.enviar}" />
 				</p:toolbarGroup>
 				<p:toolbarGroup align="right">
 					<p:button value="Pesquisar"
@@ -36,10 +39,12 @@
 			<p:messages id="msg-agd-excursao" closable="true" autoUpdate="true"
 				showDetail="true" />
 
-			<h:panelGrid columns="2" columnClasses="rotulo, campo" styleClass="space-top">
+			<h:panelGrid columns="2" columnClasses="rotulo, campo"
+				styleClass="space-top">
 
 				<p:outputLabel value="Instituição" for="instituicao" />
 				<p:autoComplete id="instituicao" size="75"
+					placeholder="Nome da Instituição"
 					emptyMessage="Nenhuma Instituição Encontrada."
 					value="#{agendaExcursaoEscolarBean.excursaoEscolar.instituicao}"
 					completeMethod="#{agendaExcursaoEscolarBean.filtrarInstituicoes}"
@@ -47,11 +52,12 @@
 					itemValue="#{instituicao}" forceSelection="true" maxResults="10" />
 
 				<p:outputLabel value="Total de Visitantes" for="total-visitante" />
-				<p:inputText id="total-visitante"
+				<p:inputText id="total-visitante" placeholder="1"
 					value="#{agendaExcursaoEscolarBean.excursaoEscolar.totalVisitantes}" />
 
 				<p:outputLabel value="Guia" for="guia" />
 				<p:autoComplete id="guia" emptyMessage="Nenhum guia encontrado."
+					placeholder="Nome do Guia"
 					value="#{agendaExcursaoEscolarBean.excursaoEscolar.guia}"
 					completeMethod="#{agendaExcursaoEscolarBean.filtrarGuia}"
 					var="guia" itemLabel="#{guia.nome}" itemValue="#{guia}"
@@ -62,7 +68,8 @@
 					minMinute="15" maxHour="15" maxMinute="55" required="true"
 					mindate="#{agendaExcursaoEscolarBean.controller.dataAtual}"
 					requiredMessage="Informe o data e horário para a excursao."
-					pattern="dd-MM-yyyy HH:mm" mask="true" timeZone="America/Sao_Paulo"
+					placeholder="dd-mm-aaaa" pattern="dd-MM-yyyy HH:mm" mask="true"
+					timeZone="America/Sao_Paulo"
 					value="#{agendaExcursaoEscolarBean.excursaoEscolar.dataExcursao}">
 					<f:convertDateTime pattern="dd-MM-yyyy HH:mm" locale="pt_BR"
 						timeZone="America/Sao_Paulo" />

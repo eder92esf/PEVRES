@@ -20,8 +20,6 @@ public class ExcursaoTuristica extends Excursao implements Serializable {
 	@JoinColumn(name = "visitante_master", nullable = false)
 	private @Inject VisitanteMaster visitanteMaster;
 	
-
-
 	public VisitanteMaster getVisitanteMaster() {
 		return visitanteMaster;
 	}

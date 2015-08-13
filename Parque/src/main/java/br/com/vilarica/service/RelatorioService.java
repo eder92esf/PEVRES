@@ -127,7 +127,7 @@ public class RelatorioService implements Serializable {
 		if (File.separator.equals("\\"))
 			diretorio = new File("C:\\PEVRES\\");
 		else
-			diretorio = new File("/home/PEVRES/");
+			diretorio = new File("/home/.PEVRES/");
 
 		if (!diretorio.exists())
 			diretorio.mkdirs();

@@ -34,7 +34,7 @@ public class JPATest {
 	EntityManager manager;
 
 	public static void main(String[] args) {
-		 new JPATest().createTables();
+		 //new JPATest().createTables();
 		// new JPATest().insertInit();
 		// new JPATest().multiInsert();
 		// new JPATest().updateInstituicao();
@@ -45,7 +45,86 @@ public class JPATest {
 		// new JPATest().insertUser();
 		// new JPATest().getGrupo();
 		//new JPATest().readProperties();
+		//new JPATest().isCPFValido("52998224725");
+		//new JPATest().replaceString("529.982.247-25");
+		Date agendada;
+		Date nova;
+		boolean agendavel;
+		
+		agendada = new Date(115, 7, 13, 8, 0);
+		nova = new Date(115, 7, 13, 10, 0);
+		agendavel = new JPATest().agendavel(agendada, nova);
+		System.out.println(agendavel);
+		
+		agendada = new Date(115, 7, 13, 8, 0);
+		nova = new Date(115, 7, 13, 9, 0);
+		agendavel = new JPATest().agendavel(agendada, nova);
+		System.out.println(agendavel);
+		
+		agendada = new Date(115, 7, 13, 8, 15);
+		nova = new Date(115, 7, 13, 9, 45);
+		agendavel = new JPATest().agendavel(agendada, nova);
+		System.out.println(agendavel);
+		
+		agendada = new Date(115, 7, 13, 10, 0);
+		nova = new Date(115, 7, 13, 8, 30);
+		agendavel = new JPATest().agendavel(agendada, nova);
+		System.out.println(agendavel);
+		
+		agendada = new Date(115, 7, 13, 10, 0);
+		nova = new Date(115, 7, 13, 8, 0);
+		agendavel = new JPATest().agendavel(agendada, nova);
+		System.out.println(agendavel);
+		
+		agendada = new Date(115, 7, 13, 14, 15);
+		nova = new Date(115, 7, 13, 13, 15);
+		agendavel = new JPATest().agendavel(agendada, nova);
+		System.out.println(agendavel);
+		
 		System.exit(0);
+	}
+	
+	private void replaceString(String cpf){
+		StringBuilder sb = new StringBuilder(cpf.replace(".", "").replaceAll("-", ""));
+		System.out.println(sb.toString());
+	}
+	
+	public boolean isCPFValido(String cpf) {
+		if (cpf.equals("11111111111") || cpf.equals("22222222222") || cpf.equals("33333333333")
+				|| cpf.equals("44444444444") || cpf.equals("55555555555") || cpf.equals("66666666666")
+				|| cpf.equals("77777777777") || cpf.equals("88888888888") || cpf.equals("99999999999") || cpf.equals("00000000000")) {
+			return false;
+		}
+
+		char[] string = cpf.toCharArray();
+		int mult = 10;
+		int d1 = 0;
+		int d2 = 0;
+
+		for (int i = 0; i < string.length - 2; i++) {
+			d1 += (string[i] - 48) * mult;
+			mult--;
+		}
+
+		mult = 11;
+
+		for (int i = 0; i < string.length - 1; i++) {
+			d2 += (string[i] - 48) * mult;
+			mult--;
+		}
+		d1 = (d1 * 10) % 11;
+		d2 = (d2 * 10) % 11;
+
+		if (d1 == 10)
+			d1 = 0;
+		if (d2 == 10)
+			d2 = 0;
+
+		if (d1 != string[9])
+			return false;
+		if (d2 != string[10])
+			return false;
+		return true;
 	}
 	
 	private void readProperties(){
@@ -120,9 +199,10 @@ public class JPATest {
 		} else if (novaInicio.getHours() == agendadaFim.getHours()) {
 			if (novaInicio.getMinutes() < agendadaFim.getMinutes()) 
 				return false;
-		} else if (novaFim.getHours() >= agendadaInicio.getHours()
+		}
+		else if (novaFim.getHours() > agendadaInicio.getHours()
 				&& novaFim.getHours() < agendadaFim.getHours()) {
-			if (novaFim.getMinutes() != agendadaInicio.getMinutes())
+			//if (novaFim.getMinutes() != agendadaInicio.getMinutes())
 				return false;
 		} else if (novaFim.getHours() == agendadaInicio.getHours()
 				&& novaFim.getMinutes() > agendadaInicio.getMinutes()) {

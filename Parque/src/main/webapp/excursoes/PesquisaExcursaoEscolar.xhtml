@@ -18,7 +18,7 @@
 				<p:outputLabel value="Data da Excursão" />
 				<p:calendar pattern="dd-MM-yyyy" locale="pt_BR" mask="true"
 					value="#{pesquisaExcursaoEscolarBean.dataExcursao}"
-					navigator="true">
+					navigator="true" placeholder="dd-mm-aaaa">
 					<p:ajax event="dateSelect"
 						listener="#{pesquisaExcursaoEscolarBean.onDateSelect}"
 						update="dt-excursoes" />

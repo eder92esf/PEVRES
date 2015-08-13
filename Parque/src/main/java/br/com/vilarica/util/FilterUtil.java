@@ -21,7 +21,9 @@ import br.com.vilarica.model.Grupo;
 import br.com.vilarica.model.Guia;
 import br.com.vilarica.model.Instituicao;
 import br.com.vilarica.model.Municipio;
+import br.com.vilarica.model.StatusExcursao;
 import br.com.vilarica.model.Usuario;
+import br.com.vilarica.model.VisitanteMaster;
 
 public class FilterUtil implements Serializable {
 
@@ -55,8 +57,9 @@ public class FilterUtil implements Serializable {
 		inicio = dataInicio(inicio);
 		fim = dataFim(fim);
 
-		String sql = "SELECT e FROM ExcursaoEscolar e WHERE e.dataExcursao BETWEEN :dataInicio AND :dataFim";
+		String sql = "SELECT e FROM ExcursaoEscolar e WHERE e.status = :status AND e.dataExcursao BETWEEN :dataInicio AND :dataFim";
 		lista = this.manager.createQuery(sql)
+				.setParameter("status", StatusExcursao.REALIZADA)
 				.setParameter("dataInicio", inicio)
 				.setParameter("dataFim", fim).getResultList();
 
@@ -116,8 +119,9 @@ public class FilterUtil implements Serializable {
 		Date inicio = dataInicio(data);
 		Date fim = dataFim(data);
 
-		String sql = "SELECT e FROM ExcursaoEscolar e JOIN e.guia WHERE e.guia.id = :id AND e.dataExcursao BETWEEN :dataInicio AND :dataFim";
+		String sql = "SELECT e FROM ExcursaoEscolar e JOIN e.guia WHERE e.status = :status AND e.guia.id = :id AND e.dataExcursao BETWEEN :dataInicio AND :dataFim";
 		lista = this.manager.createQuery(sql).setParameter("id", id)
+				.setParameter("status", StatusExcursao.AGENDADA)
 				.setParameter("dataInicio", inicio)
 				.setParameter("dataFim", fim).getResultList();
 		return lista;
@@ -243,5 +247,15 @@ public class FilterUtil implements Serializable {
 	@SuppressWarnings("unchecked")
 	public Object porId(Class classe, Long id) {
 		return this.manager.find(classe, id);
+	}
+
+	public VisitanteMaster getVisitanteMasterByCPF(String cpf) {
+		Session s = this.manager.unwrap(Session.class);
+		Criteria c = s.createCriteria(VisitanteMaster.class);
+		
+		if(cpf == null)
+			cpf = "";
+		
+		return (VisitanteMaster) c.add(Restrictions.eq("cpf", cpf)).uniqueResult();
 	}
 }

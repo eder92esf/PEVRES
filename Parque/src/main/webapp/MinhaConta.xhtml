@@ -37,19 +37,19 @@
 				<p:spacer />
 
 				<p:outputLabel value="Senha Atual" for="senha" />
-				<p:password id="senha" size="20" maxlength="10"
+				<p:password id="senha" size="20" maxlength="10" placeholder="******"
 					value="#{seguranca.senhaAtual}" required="true"
 					requiredMessage="Senha atual não deve estar em branco!" />
 
 				<p:outputLabel value="Senha Nova" for="n-senha" />
 				<p:password id="n-senha" size="20" maxlength="10"
-					value="#{seguranca.senhaNova}" required="true"
+					placeholder="******" value="#{seguranca.senhaNova}" required="true"
 					requiredMessage="Senha nova não pode estar em branco!" />
 
 				<p:outputLabel value="Confirme Senha" for="c-senha" />
 				<p:password id="c-senha" size="20" maxlength="10"
-					value="#{seguranca.confirmaSenhaNova}" required="true"
-					requiredMessage="Confirme a nova senha!" />
+					placeholder="******" value="#{seguranca.confirmaSenhaNova}"
+					required="true" requiredMessage="Confirme a nova senha!" />
 
 				<p:commandButton value="Atualizar" update="@form"
 					title="Atualizar dados do usuário"

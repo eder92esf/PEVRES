@@ -29,6 +29,10 @@ public class VisitanteMaster implements Serializable{
 	private Long id;
 	
 	@NotBlank
+	@Column(length = 11, unique = true)
+	private String cpf;
+	
+	@NotBlank
 	@Column(length = 100, nullable = false)
 	private String nome;
 	
@@ -62,6 +66,14 @@ public class VisitanteMaster implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 	public String getNome() {

@@ -36,13 +36,13 @@
 				styleClass="space-top" id="grid-cad-mun">
 
 				<p:outputLabel value="Município" for="municipio" />
-				<p:inputText id="municipio"
+				<p:inputText id="municipio" placeholder="Nome Município"
 					value="#{cadastroMunicipioBean.municipio.nome}"
 					size="60" maxlength="50" />
 
 				<p:outputLabel value="CEP" for="cep" />
 				<p:inputMask id="cep" mask="99.999-999" maxlength="8" size="20"
-					value="#{cadastroMunicipioBean.municipio.cep}" />
+					value="#{cadastroMunicipioBean.municipio.cep}" placeholder="##.###-###"/>
 				
 				<p:outputLabel value="Estado" for="estado" />
 				<p:selectOneMenu id="estado"

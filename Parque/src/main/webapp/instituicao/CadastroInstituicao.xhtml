@@ -41,7 +41,7 @@
 						emptyMessage="Nenhuma Município Encontrado."
 						value="#{cadastroInstituicaoBean.instituicao.municipio}"
 						completeMethod="#{cadastroInstituicaoBean.filtrarMunicipio}"
-						var="municipio" itemLabel="#{municipio.nome}"
+						var="municipio" itemLabel="#{municipio.nome} - #{municipio.estado}"
 						itemValue="#{municipio}"
 						forceSelection="true" maxResults="7">
 					</p:autoComplete>
@@ -50,38 +50,38 @@
 						outcome="/municipio/CadastroMunicipio" />
 				</h:panelGroup>
 
+				<p:outputLabel value="Nome" for="nome" />
+				<p:inputText id="nome" placeholder="Nome Instituição"
+					value="#{cadastroInstituicaoBean.instituicao.nome}"
+					size="60" maxlength="100" />
+					
 				<p:outputLabel value="Sigla" for="sigla" />
-				<p:inputText id="sigla" maxlength="10" size="20"
+				<p:inputText id="sigla" maxlength="10" size="20" placeholder="aaaa"
 					value="#{cadastroInstituicaoBean.instituicao.sigla}" />
 
-				<p:outputLabel value="Nome" for="nome" />
-				<p:inputText id="nome"
-					value="#{cadastroInstituicaoBean.instituicao.nome}"
-					size="100" maxlength="100" />
-
-				<p:outputLabel value="Logradouro" for="logradouro" />
-				<p:inputText id="logradouro"
+				<p:outputLabel value="Endereço" for="logradouro" />
+				<p:inputText id="logradouro" placeholder="Rua das ruas"
 					value="#{cadastroInstituicaoBean.instituicao.endereco.logradouro}"
 					size="60" maxlength="50" />
-
-				<p:outputLabel value="Bairro" for="bairro" />
-				<p:inputText id="bairro"
-					value="#{cadastroInstituicaoBean.instituicao.endereco.bairro}"
-					size="60" maxlength="50" />
-
+				
 				<p:outputLabel value="Número" for="numero" />
-				<p:inputText id="numero"
+				<p:inputText id="numero" placeholder="1"
 					value="#{cadastroInstituicaoBean.instituicao.endereco.numero}"
 					size="20" maxlength="4" />
+
+				<p:outputLabel value="Bairro" for="bairro" />
+				<p:inputText id="bairro" placeholder="Bairro"
+					value="#{cadastroInstituicaoBean.instituicao.endereco.bairro}"
+					size="60" maxlength="50" />
 
 				<p:outputLabel value="Telefone" for="telefone" />
 				<p:inputMask id="telefone" mask="99 9999-9999?9"
 					value="#{cadastroInstituicaoBean.instituicao.contato.telefone}"
-					maxlength="11" size="20">
+					maxlength="11" size="20" placeholder="(##) ####-####">
 				</p:inputMask>
 
 				<p:outputLabel value="E-mail" for="email" />
-				<p:inputText id="email"
+				<p:inputText id="email" placeholder="email@email.com"
 					value="#{cadastroInstituicaoBean.instituicao.contato.email}" />
 			</h:panelGrid>
 		</h:form>

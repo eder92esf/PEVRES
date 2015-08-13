@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 import br.com.vilarica.model.Usuario;
 import br.com.vilarica.service.UsuarioService;
+import br.com.vilarica.util.Temporizador;
 
 @Named
 @RequestScoped
@@ -19,6 +20,7 @@ public class Seguranca {
 
 	private @Inject UsuarioService controller;
 	
+	private static boolean temporizador = false;
 	private String senhaAtual;
 	private String senhaNova;
 	private String confirmaSenhaNova;
@@ -72,8 +74,12 @@ public class Seguranca {
 
 		if (auth != null && auth.getPrincipal() != null) {
 			usuario = (UsuarioSistema) auth.getPrincipal();
+			if(!temporizador){
+				Temporizador t = new Temporizador();
+				t.createTemporizador();
+				temporizador = true;
+			}
 		}
-
 		return usuario;
 	}
 

@@ -45,6 +45,9 @@ public class Acompanhante implements Serializable{
 	@Column(name = "data_nascimento", nullable = false)
 	private Date dataNascimento;
 	
+	@Column(name = "cpf_rg", length = 11)
+	private String CPF_RG;
+	
 	@NotNull
 	@OneToOne
 	private @Inject Municipio municipio;
@@ -87,6 +90,14 @@ public class Acompanhante implements Serializable{
 
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
+	}
+
+	public String getCPF_RG() {
+		return CPF_RG;
+	}
+
+	public void setCPF_RG(String cPF_RG) {
+		CPF_RG = cPF_RG;
 	}
 
 	public Municipio getMunicipio() {

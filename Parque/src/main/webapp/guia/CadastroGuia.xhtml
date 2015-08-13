@@ -26,7 +26,7 @@
 						process="@form" update="@form" />
 				</p:toolbarGroup>
 				<p:toolbarGroup align="right">
-					<p:button value="Pesquisar" outcome="/guia/CadastroGuia"/>
+					<p:button value="Pesquisar" outcome="/guia/PesquisaGuia"/>
 				</p:toolbarGroup>
 			</p:toolbar>
 
@@ -37,11 +37,11 @@
 
 				<p:outputLabel value="Nome" for="nome" />
 				<p:inputText id="nome" size="60" maxlength="100"
-					value="#{cadastroGuiaBean.guia.nome}" />
+					value="#{cadastroGuiaBean.guia.nome}" placeholder="Nome Completo"/>
 
 				<p:outputLabel value="Data de Nascimento" for="data-nascimento" />
 				<p:calendar id="data-nascimento" pattern="dd-MM-yyyy" mask="true"
-					maxdate="#{cadastroGuiaBean.controller.dataAtual}"
+					maxdate="#{cadastroGuiaBean.controller.dataAtual}" placeholder="dd-mm-aaaa"
 					value="#{cadastroGuiaBean.guia.dataNascimento}" required="true"
 					requiredMessage="Data de Nascimento - Deve ser informado.">
 					<f:convertDateTime pattern="dd-MM-yyyy" />
@@ -49,7 +49,7 @@
 
 				<p:outputLabel value="Data de Admissão" for="data-admissao" />
 				<p:calendar id="data-admissao" pattern="dd-MM-yyyy" mask="true"
-					maxdate="#{cadastroGuiaBean.controller.dataAtual}"
+					maxdate="#{cadastroGuiaBean.controller.dataAtual}" placeholder="dd-mm-aaaa"
 					value="#{cadastroGuiaBean.guia.dataAdmissao}" required="true"
 					requiredMessage="Data de Nascimento - Deve ser informado.">
 					<f:convertDateTime pattern="dd-MM-yyyy" />
@@ -69,11 +69,11 @@
 				</p:selectOneMenu>
 
 				<p:outputLabel value="E-mail" for="email" />
-				<p:inputText id="email" size="60"
+				<p:inputText id="email" size="60" placeholder="email@email.com"
 					value="#{cadastroGuiaBean.guia.contato.email}" />
 
 				<p:outputLabel value="Telefone" for="telefone" />
-				<p:inputMask mask="99 9999-9999?9" id="telefone"
+				<p:inputMask mask="99 9999-9999?9" id="telefone" placeholder="(##) ####-####"
 					value="#{cadastroGuiaBean.guia.contato.telefone}" />
 
 				<p:outputLabel value="Município" for="municipio" />
@@ -81,19 +81,19 @@
 					value="#{cadastroGuiaBean.guia.municipio}"
 					completeMethod="#{cadastroGuiaBean.filtarMunicipios}"
 					emptyMessage="Nenhum Muncípio Encontrado." var="municipio"
-					itemLabel="#{municipio.nome}" itemValue="#{municipio}"
+					itemLabel="#{municipio.nome} - #{municipio.estado}" itemValue="#{municipio}"
 					maxResults="7" />
 
-				<p:outputLabel value="Logradouro" for="logradouro" />
-				<p:inputText id="logradouro" size="60"
+				<p:outputLabel value="Endereço" for="logradouro" />
+				<p:inputText id="logradouro" size="60" placeholder="Rua das Ruas" 
 					value="#{cadastroGuiaBean.guia.endereco.logradouro}" />
 
 				<p:outputLabel value="Bairro" for="bairro" />
-				<p:inputText id="bairro" size="60"
+				<p:inputText id="bairro" size="60" placeholder="Bairro"
 					value="#{cadastroGuiaBean.guia.endereco.bairro}" />
 
 				<p:outputLabel value="Número" for="numero" />
-				<p:inputText id="numero" maxlength="4"
+				<p:inputText id="numero" maxlength="4" placeholder="1"
 					value="#{cadastroGuiaBean.guia.endereco.numero}" />
 			</h:panelGrid>
 		</h:form>

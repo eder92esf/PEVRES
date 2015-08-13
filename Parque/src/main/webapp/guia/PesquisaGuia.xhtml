@@ -21,7 +21,7 @@
 				<p:outputLabel value="Nome" for="nome" />
 				<h:panelGroup>
 					<p:inputText id="nome" size="60" title="Informe um nome."
-						value="#{pesquisaGuiaBean.nome}" />
+						value="#{pesquisaGuiaBean.nome}" placeholder="Nome do Guia"/>
 					<p:commandButton value="Pesquisar" update="@all"
 						action="#{pesquisaGuiaBean.filter}" style="margin-left: 15px;"/>
 				</h:panelGroup>

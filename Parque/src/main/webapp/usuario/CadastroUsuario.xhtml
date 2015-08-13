@@ -25,7 +25,7 @@
 						update="@form" />
 				</p:toolbarGroup>
 				<p:toolbarGroup align="right">
-					<p:button value="Pesquisar" outcome="/usuario/PesquisaUsuario"/>
+					<p:button value="Pesquisar" outcome="/usuario/PesquisaUsuario" />
 				</p:toolbarGroup>
 			</p:toolbar>
 
@@ -37,10 +37,11 @@
 
 				<p:outputLabel value="Nome" for="nome" />
 				<p:inputText id="nome" size="60" maxlength="100"
+					placeholder="Nome Completo"
 					value="#{cadastroUsuarioBean.usuario.nome}" />
 
 				<p:outputLabel value="E-mail" for="login" />
-				<p:inputText id="login" maxlength="60"
+				<p:inputText id="login" maxlength="60" placeholder="Login"
 					value="#{cadastroUsuarioBean.usuario.email}" />
 
 				<p:outputLabel value="Grupo" for="grupo" />
@@ -52,10 +53,10 @@
 
 				<p:outputLabel value="Senha" for="senha" />
 				<p:password id="senha" value="#{cadastroUsuarioBean.usuario.senha}"
-					maxlength="10" />
+					maxlength="10" placeholder="******" />
 
 				<p:outputLabel value="Confirme Senha" for="c-senha" />
-				<p:password id="c-senha" maxlength="10"
+				<p:password id="c-senha" maxlength="10" placeholder="******"
 					value="#{cadastroUsuarioBean.confirmaSenha}" />
 
 			</h:panelGrid>

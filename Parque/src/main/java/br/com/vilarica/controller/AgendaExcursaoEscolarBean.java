@@ -86,11 +86,10 @@ public class AgendaExcursaoEscolarBean implements Serializable {
 	}
 
 	public void agendar() {
+		
 		FacesContext context = FacesContext.getCurrentInstance();
 		FacesMessage msg = null;
 		
-		System.out.println("\nBEAN DATA EXCURSAO " + excursaoEscolar.getDataExcursao());
-
 		this.controller.listExcursoesPorGuia(excursaoEscolar.getDataExcursao(),
 				excursaoEscolar.getGuia().getId());
 
@@ -98,7 +97,7 @@ public class AgendaExcursaoEscolarBean implements Serializable {
 		if (excursaoEscolar.getId() != null) {
 			this.isAgendavel = this.controller.agendar(
 					excursaoEscolar.getDataExcursao(), excursaoEscolar.getId());
-			/* CADASTRANDO NOVA EXCURSAO - VERIFICANDO DISPONIBILIDADE */
+		/* CADASTRANDO NOVA EXCURSAO - VERIFICANDO DISPONIBILIDADE */
 		} else {
 			this.isAgendavel = this.controller.agendar(excursaoEscolar
 					.getDataExcursao());
@@ -134,9 +133,6 @@ public class AgendaExcursaoEscolarBean implements Serializable {
 	}
 
 	public void onDateSelect(SelectEvent event) {
-		FacesContext context = FacesContext.getCurrentInstance();
-		FacesMessage msg = null;
-
 		this.controller.listExcursoesEscolar(excursaoEscolar.getDataExcursao());
 		this.controller.desabilitaAtividade(excursaoEscolar.getDataExcursao());
 	}
