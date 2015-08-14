@@ -22,8 +22,7 @@
 			<p:toolbar styleClass="space-top">
 				<p:toolbarGroup>
 					<p:button value="Novo" outcome="/excursoes/ExcursaoEscolar" />
-					<p:commandButton value="Salvar" process="@form"
-						update="@all"
+					<p:commandButton value="Salvar" process="@form" update="@all"
 						action="#{agendaExcursaoEscolarBean.agendar}" />
 					<p:commandButton value="Enviar E-mail"
 						title="Enviar um compravante de agendamento e lista de visitantes da excursão."
@@ -227,9 +226,9 @@
 						maxdate="#{agendaExcursaoEscolarBean.controller.dataAtual}"
 						locale="pt_BR"
 						value="#{agendaExcursaoEscolarBean.acompanhante.dataNascimento}"
-						required="true"
+						required="true" timeZone="Ameria/Sao_Paulo"
 						requiredMessage="Data de nascimento - Deve ser informado.">
-						<f:convertDateTime pattern="dd-MM-yyyy" />
+						<f:convertDateTime pattern="dd-MM-yyyy" timeZone="Ameria/Sao_Paulo"/>
 					</p:calendar>
 
 					<p:outputLabel value="Município" for="a-municipio" />
@@ -237,8 +236,8 @@
 						value="#{agendaExcursaoEscolarBean.acompanhante.municipio}"
 						completeMethod="#{agendaExcursaoEscolarBean.filtrarMunicipio}"
 						emptyMessage="Nenhum Muncípio Encontrado." var="municipio"
-						itemLabel="#{municipio.nome}" itemValue="#{municipio}"
-						maxResults="7" />
+						itemLabel="#{municipio.nome} - #{municipio.estado}"
+						itemValue="#{municipio}" maxResults="7" />
 
 					<p:commandButton value="Salvar"
 						title="Adicionar Acompanhante a excursão" update="@form"

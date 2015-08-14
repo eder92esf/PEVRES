@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum EstadoEnum {
+	PR("Paraná"), //
+	SC("Santa Catarina"), //
+	RS("Rio Grande do Sul"), //
+	MT("Mato Grosso"), // 
+    MS("Mato Grosso do Sul"), // 
+    MG("Minas Gerais"), //
+    SP("São Paulo"), //
+    RJ("Rio de Janeiro"), //
     AC("Acre"), // 
     AL("Alagoas"), // 
     AP("Amapá"), // 
@@ -14,21 +22,13 @@ public enum EstadoEnum {
     ES("Espírito Santo"), // 
     GO("Goiás"), // 
     MA("Maranhão"), // 
-    MT("Mato Grosso"), // 
-    MS("Mato Grosso do Sul"), // 
-    MG("Minas Gerais"), // 
     PA("Pará"), // 
     PB("Paraíba"), // 
-    PR("Paraná"), // 
     PE("Pernambuco"), // 
     PI("Piauí"), // 
     RR("Roraima"), // 
     RO("Rondônia"), // 
-    RJ("Rio de Janeiro"), // 
     RN("Rio Grande do Norte"), // 
-    RS("Rio Grande do Sul"), // 
-    SC("Santa Catarina"), // 
-    SP("São Paulo"), // 
     SE("Sergipe"), // 
     TO("Tocantins"),
     OUTRO("Outro"); //    

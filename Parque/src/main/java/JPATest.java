@@ -1,22 +1,22 @@
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import br.com.vilarica.jpa.JpaUtil;
 import br.com.vilarica.model.Contato;
@@ -34,7 +34,7 @@ public class JPATest {
 	EntityManager manager;
 
 	public static void main(String[] args) {
-		 //new JPATest().createTables();
+		// new JPATest().createTables();
 		// new JPATest().insertInit();
 		// new JPATest().multiInsert();
 		// new JPATest().updateInstituicao();
@@ -44,55 +44,43 @@ public class JPATest {
 		// new JPATest().hashMap();
 		// new JPATest().insertUser();
 		// new JPATest().getGrupo();
-		//new JPATest().readProperties();
-		//new JPATest().isCPFValido("52998224725");
-		//new JPATest().replaceString("529.982.247-25");
-		Date agendada;
-		Date nova;
-		boolean agendavel;
-		
-		agendada = new Date(115, 7, 13, 8, 0);
-		nova = new Date(115, 7, 13, 10, 0);
-		agendavel = new JPATest().agendavel(agendada, nova);
-		System.out.println(agendavel);
-		
-		agendada = new Date(115, 7, 13, 8, 0);
-		nova = new Date(115, 7, 13, 9, 0);
-		agendavel = new JPATest().agendavel(agendada, nova);
-		System.out.println(agendavel);
-		
-		agendada = new Date(115, 7, 13, 8, 15);
-		nova = new Date(115, 7, 13, 9, 45);
-		agendavel = new JPATest().agendavel(agendada, nova);
-		System.out.println(agendavel);
-		
-		agendada = new Date(115, 7, 13, 10, 0);
-		nova = new Date(115, 7, 13, 8, 30);
-		agendavel = new JPATest().agendavel(agendada, nova);
-		System.out.println(agendavel);
-		
-		agendada = new Date(115, 7, 13, 10, 0);
-		nova = new Date(115, 7, 13, 8, 0);
-		agendavel = new JPATest().agendavel(agendada, nova);
-		System.out.println(agendavel);
-		
-		agendada = new Date(115, 7, 13, 14, 15);
-		nova = new Date(115, 7, 13, 13, 15);
-		agendavel = new JPATest().agendavel(agendada, nova);
-		System.out.println(agendavel);
-		
+		// new JPATest().readProperties();
+		// new JPATest().isCPFValido("52998224725");
+		// new JPATest().replaceString("529.982.247-25");
+		new JPATest().graficos(15);
 		System.exit(0);
 	}
-	
-	private void replaceString(String cpf){
+
+	private void graficos(int numeroDias) {
+		this.manager = JpaUtil.getEntityManager();
+
+		numeroDias++;
+
+		Calendar dataInicial = Calendar.getInstance();
+		dataInicial.set(Calendar.HOUR_OF_DAY, 0);
+		dataInicial.set(Calendar.MINUTE, 0);
+		dataInicial = DateUtils.truncate(dataInicial, Calendar.DAY_OF_MONTH);
+		dataInicial.add(Calendar.DAY_OF_MONTH, numeroDias * -1);
+
+		Session s = this.manager.unwrap(Session.class);
+		Criteria c = s.createCriteria(ExcursaoEscolar.class);
+		
+		List<ExcursaoEscolar> lista = null; 
+		lista = c
+				.add(Restrictions.ge("dataExcursao", dataInicial.getTime()))
+				.list();
+	}
+
+	private void replaceString(String cpf) {
 		StringBuilder sb = new StringBuilder(cpf.replace(".", "").replaceAll("-", ""));
 		System.out.println(sb.toString());
 	}
-	
+
 	public boolean isCPFValido(String cpf) {
 		if (cpf.equals("11111111111") || cpf.equals("22222222222") || cpf.equals("33333333333")
 				|| cpf.equals("44444444444") || cpf.equals("55555555555") || cpf.equals("66666666666")
-				|| cpf.equals("77777777777") || cpf.equals("88888888888") || cpf.equals("99999999999") || cpf.equals("00000000000")) {
+				|| cpf.equals("77777777777") || cpf.equals("88888888888") || cpf.equals("99999999999")
+				|| cpf.equals("00000000000")) {
 			return false;
 		}
 
@@ -126,8 +114,8 @@ public class JPATest {
 			return false;
 		return true;
 	}
-	
-	private void readProperties(){
+
+	private void readProperties() {
 		try {
 			URL mail = getClass().getResource("/data/Modelo_Lista.xlsx");
 			System.out.println(mail.toURI());
@@ -137,31 +125,31 @@ public class JPATest {
 			e.printStackTrace();
 		}
 	}
-	
-	private void getGrupo(){
+
+	private void getGrupo() {
 		manager = JpaUtil.getEntityManager();
 		Usuario u = this.manager.find(Usuario.class, 2L);
 		System.out.println(u);
-		
+
 		EntityTransaction t = manager.getTransaction();
 		t.begin();
 		u.setGrupo(null);
-		//manager.merge(u);
+		// manager.merge(u);
 		manager.remove(u);
 		t.commit();
 	}
-	
-	private void insertUser(){
+
+	private void insertUser() {
 		Grupo g = new Grupo();
 		g.setNome("USERS");
 		g.setDescricao("Usuáiros do Sistema");
-		
+
 		Usuario u = new Usuario();
 		u.setEmail("joao@email.com");
 		u.setNome("Joao");
 		u.setSenha("123456");
 		u.setGrupo(g);
-		
+
 		manager = JpaUtil.getEntityManager();
 		EntityTransaction t = manager.getTransaction();
 		t.begin();
@@ -169,15 +157,15 @@ public class JPATest {
 		manager.persist(u);
 		t.commit();
 	}
-	
-	private void hashMap(){
+
+	private void hashMap() {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map.put("Fênix", 10);
 		map.put("Quinta do Sol", 7);
 		map.put("Londrina", 8);
-		
+
 		Set s = map.keySet();
-		
+
 		for (Iterator iterator = s.iterator(); iterator.hasNext();) {
 			String aux = (String) iterator.next();
 			System.out.println(map.get(aux));
@@ -193,41 +181,35 @@ public class JPATest {
 		novaFim.setHours(novaInicio.getHours() + 2);
 		novaFim.setMinutes(novaInicio.getMinutes());
 
-		if ((novaInicio.getHours() >= agendadaInicio.getHours())
-				&& (novaInicio.getHours() < agendadaFim.getHours())) {
+		if ((novaInicio.getHours() >= agendadaInicio.getHours()) && (novaInicio.getHours() < agendadaFim.getHours())) {
 			return false;
 		} else if (novaInicio.getHours() == agendadaFim.getHours()) {
-			if (novaInicio.getMinutes() < agendadaFim.getMinutes()) 
+			if (novaInicio.getMinutes() < agendadaFim.getMinutes())
 				return false;
-		}
-		else if (novaFim.getHours() > agendadaInicio.getHours()
-				&& novaFim.getHours() < agendadaFim.getHours()) {
-			//if (novaFim.getMinutes() != agendadaInicio.getMinutes())
-				return false;
-		} else if (novaFim.getHours() == agendadaInicio.getHours()
-				&& novaFim.getMinutes() > agendadaInicio.getMinutes()) {
+		} else if (novaFim.getHours() > agendadaInicio.getHours() && novaFim.getHours() < agendadaFim.getHours()) {
+			// if (novaFim.getMinutes() != agendadaInicio.getMinutes())
 			return false;
-		} 
+		} else
+			if (novaFim.getHours() == agendadaInicio.getHours() && novaFim.getMinutes() > agendadaInicio.getMinutes()) {
+			return false;
+		}
 		return true;
 	}
-	
+
 	private void listExcursoes() {
 		manager = JpaUtil.getEntityManager();
 		String sql = "SELECT e FROM ExcursaoEscolar e JOIN e.guia WHERE e.guia.id = :id AND e.dataExcursao BETWEEN :dataInicial AND :dataFinal";
-		
+
 		Date inicial = new Date();
 		inicial.setHours(8);
 		inicial.setMinutes(0);
 		Date finall = new Date();
 		finall.setHours(17);
 		finall.setMinutes(0);
-		
-		List<ExcursaoEscolar> e = manager.createQuery(sql)
-				.setParameter("id", new Long(1))
-				.setParameter("dataInicial", inicial)
-				.setParameter("dataFinal", finall)
-				.getResultList();
-		
+
+		List<ExcursaoEscolar> e = manager.createQuery(sql).setParameter("id", new Long(1))
+				.setParameter("dataInicial", inicial).setParameter("dataFinal", finall).getResultList();
+
 		for (ExcursaoEscolar excursaoEscolar : e) {
 			System.out.println(excursaoEscolar);
 		}
@@ -243,8 +225,7 @@ public class JPATest {
 		System.out.println(raiz.toString());
 
 		File diretorio = new File(raiz.toString());
-		File arquivo = new File(diretorio.getAbsolutePath() + File.separator
-				+ "acompanhantes.csv");
+		File arquivo = new File(diretorio.getAbsolutePath() + File.separator + "acompanhantes.csv");
 
 		System.out.println(arquivo.getAbsolutePath());
 	}
@@ -292,8 +273,7 @@ public class JPATest {
 		manager = JpaUtil.getEntityManager();
 		String sql = "SELECT i FROM Instituicao i JOIN i.municipio m "
 				+ "WHERE LOWER(i.nome) like LOWER(:nome) and m.estado = :estado ORDER BY i.nome";
-		instituicoes = manager.createQuery(sql)
-				.setParameter("nome", '%' + instituicao + '%')
+		instituicoes = manager.createQuery(sql).setParameter("nome", '%' + instituicao + '%')
 				.setParameter("estado", estado).getResultList();
 
 		System.out.println("");

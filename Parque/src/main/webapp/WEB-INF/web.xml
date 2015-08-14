@@ -4,7 +4,6 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
 	
-	<!-- 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
@@ -12,7 +11,6 @@
 	<listener>
 		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
 	</listener>
-	 -->
 	  
 	<listener>
 		<listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
@@ -27,7 +25,6 @@
 		<welcome-file>Home.jsf</welcome-file>
 	</welcome-file-list>
 	
-	<!-- 
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -39,7 +36,6 @@
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>
 	</filter-mapping>
-	 -->
 
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>

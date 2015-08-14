@@ -145,15 +145,15 @@
 				value="#{agendaExcursaoTuristicaBean.excursao.acompanhantes}"
 				var="acompanhante" paginatorAlwaysVisible="false" rows="10"
 				paginatorPosition="bottom" styleClass="space-top">
-				
+
 				<p:column headerText="Nome" style="width: 25%;">
 					<p:outputLabel value="#{acompanhante.nome}" />
 				</p:column>
-				
+
 				<p:column headerText="RG/CPF" style="width: 10%; text-align:center;">
 					<p:outputLabel value="#{acompanhante.CPF_RG}" />
 				</p:column>
-				
+
 				<p:column headerText="Sexo" style="width:10%; text-align:center;">
 					<p:outputLabel value="#{acompanhante.sexo.sexo}" />
 				</p:column>
@@ -167,7 +167,8 @@
 						<f:convertDateTime pattern="dd - MM - yyyy" locale="pt_BR" />
 					</p:outputLabel>
 				</p:column>
-				<p:column headerText="Município" style="width:32%; text-align: center;">
+				<p:column headerText="Município"
+					style="width:32%; text-align: center;">
 					<p:outputLabel value="#{acompanhante.municipio.nome}" />
 					-
 					<p:outputLabel value="#{acompanhante.municipio.estado}" />
@@ -194,9 +195,6 @@
 					closable="true" />
 
 				<h:panelGrid columns="2" columnClasses="rotulo, campo">
-					<p:outputLabel value="Nome" for="a-nome" />
-					<p:inputText id="a-nome" maxlength="100" size="60"
-						value="#{agendaExcursaoTuristicaBean.acompanhante.nome}" />
 
 					<p:outputLabel value="RG/CPF" for="rg" />
 					<p:inputMask id="rg" mask="99999999?999"
@@ -204,6 +202,10 @@
 						<f:ajax event="change" render="@form"
 							listener="#{agendaExcursaoTuristicaBean.onChangeLabel}" />
 					</p:inputMask>
+
+					<p:outputLabel value="Nome" for="a-nome" />
+					<p:inputText id="a-nome" maxlength="100" size="60"
+						value="#{agendaExcursaoTuristicaBean.acompanhante.nome}" />
 
 					<p:outputLabel value="Sexo" for="a-sexo" />
 					<p:selectOneMenu id="a-sexo"
@@ -237,8 +239,8 @@
 						value="#{agendaExcursaoTuristicaBean.acompanhante.municipio}"
 						completeMethod="#{agendaExcursaoTuristicaBean.filtrarMunicipio}"
 						emptyMessage="Nenhum Muncípio Encontrado." var="municipio"
-						itemLabel="#{municipio.nome} - #{municipio.estado}" itemValue="#{municipio}"
-						maxResults="7" />
+						itemLabel="#{municipio.nome} - #{municipio.estado}"
+						itemValue="#{municipio}" maxResults="7" />
 
 					<p:commandButton value="Salvar"
 						title="Adicionar Acompanhante a excursão" update="@form"
