@@ -5,10 +5,18 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
+	<f:metadata>
+		<f:viewParam name="dummy" />
+		<f:event listener="#{graficosBean.preRender}" type="preRenderView" />
+	</f:metadata>
+
 	<ui:define name="titulo">Home</ui:define>
 
 	<ui:define name="corpo">
-		
+
+		<p:chart type="line" model="#{graficosBean.model}" 
+			style="height: 400px;" responsive="true" />
+
 	</ui:define>
 
 </ui:composition>
